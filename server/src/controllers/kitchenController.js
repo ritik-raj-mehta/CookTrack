@@ -1,0 +1,169 @@
+// controllers/kitchenController.js
+
+import Kitchen from '../models/Kitchen.js';
+import KitchenItem from '../models/KitchenItem.js';
+import ShoppingItem from '../models/ShoppingItem.js';
+import User from '../models/User.js';
+
+const addItemsToKitchen = async (req, res) => {
+  const { kitchenId } = req.params; // if your route uses :KitchenId
+  const body = req.body;
+
+  try {
+    const kitchen = await Kitchen.findOne({ kitchenId: kitchenId });
+    if (!kitchen) {
+      return res
+        .status(404)
+        .json({ isSuccess: false, message: 'Kitchen not exists.' });
+    }
+
+    const item = new KitchenItem({ ...body, kitchenId: kitchenId });
+    await item.save();
+
+    kitchen.kitchenItemIds.push(item._id);
+    kitchen.updatedAt = new Date();
+    await kitchen.save();
+
+    return res.json({
+      isSuccess: true,
+      message: 'Item added successfully.'
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
+const addShoppingItemsToKitchen = async (req, res) => {
+  const { kitchenId } = req.params;
+  const body = req.body;
+
+  try {
+    const kitchen = await Kitchen.findOne({ kitchenId: kitchenId });
+    if (!kitchen) {
+      return res.status(404).json({
+        isSuccess: false,
+        message: "Kitchen doesn't exist."
+      });
+    }
+
+    const shopItem = new ShoppingItem({ ...body, kitchenId: kitchenId });
+    await shopItem.save();
+
+    kitchen.kitchenShoppingItemIds.push(shopItem._id);
+    kitchen.updatedAt = new Date();
+    await kitchen.save();
+
+    return res.json({
+      isSuccess: true,
+      message: 'Shopping item added successfully.'
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
+const getKitchen = async (req, res) => {
+  const { kitchenId, Id } = req.params;
+
+  try {
+    const user = await User.findById(Id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ isSuccess: false, message: 'User not found.' });
+    }
+
+    if (user.kitchenId !== kitchenId) {
+      return res.status(403).json({
+        isSuccess: false,
+        message: 'Kitchen does not belong to this person'
+      });
+    }
+
+    const kitchen = await Kitchen.findOne({ kitchenId: kitchenId })
+      .populate('kitchenItemIds')
+      .populate('kitchenShoppingItemIds');
+
+    return res.json({
+      isSuccess: true,
+      message: 'Kitchen data fetched successfully.',
+      data: kitchen
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occur : ' + err.message
+    });
+  }
+};
+
+const getAllKitchenItemsByKitchenId = async (req, res) => {
+  const { kitchenId } = req.params;
+
+  try {
+    const data = await KitchenItem.find({ kitchenId: kitchenId });
+
+    return res.json({
+      isSuccess: true,
+      message: 'All kitchen data fetch successfully.',
+      data
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occur : ' + err.message
+    });
+  }
+};
+
+const deleteKitchenItem = async (req, res) => {
+  const { kitchenId , itemId } = req.params;
+
+  try {
+    const kitchen = await Kitchen.findOne({ kitchenId: kitchenId });
+    if (!kitchen) {
+      return res
+        .status(404)
+        .json({ isSuccess: false, message: 'Kitchen not found' });
+    }
+
+    // remove item document
+    await KitchenItem.findByIdAndDelete(itemId);
+
+    // remove from array
+    kitchen.kitchenItemIds = kitchen.kitchenItemIds.filter(
+      (id) => id.toString() !== itemId
+    );
+    kitchen.updatedAt = new Date();
+    await kitchen.save();
+
+    return res.json({
+      isSuccess: true,
+      message: 'Item deleted.'
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: err.message
+    });
+  }
+};
+
+export default {
+  addItemsToKitchen,
+  addShoppingItemsToKitchen,
+  getKitchen,
+  getAllKitchenItemsByKitchenId,
+  deleteKitchenItem
+};
