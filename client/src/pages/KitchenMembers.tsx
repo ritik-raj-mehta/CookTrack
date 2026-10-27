@@ -7,11 +7,16 @@ import {
   FiCalendar,
   FiCheck,
   FiCopy,
+  FiEye,
+  FiEyeOff,
+  FiLock,
   FiLogOut,
   FiMail,
+  FiPhone,
   FiShield,
   FiTrash2,
   FiUser,
+  FiUserX,
   FiX,
 } from "react-icons/fi";
 import type { AppDispatch, RootState } from "../stores/store";
@@ -20,6 +25,7 @@ import {
   fetchKitchenMembers,
   leaveKitchen,
   makeMemberAdmin,
+  removeMemberFromKitchen,
 } from "../stores/slices/KitchenSlice";
 import { clearKitchenSession } from "../stores/slices/AuthSlice";
 import type { KitchenMember } from "../types/KitchenTypes";
@@ -40,9 +46,23 @@ const KitchenMembers = () => {
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
 
+  // Delete Kitchen Modal + Verification State
   const [showDeleteKitchenModal, setShowDeleteKitchenModal] = useState(false);
   const [isDeletingKitchen, setIsDeletingKitchen] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deletePhone, setDeletePhone] = useState("");
+  const [showDeletePassword, setShowDeletePassword] = useState(false);
+  const [deleteModalError, setDeleteModalError] = useState<string | null>(null);
 
+  // Remove Member Modal + Verification State
+  const [memberToRemove, setMemberToRemove] = useState<KitchenMember | null>(null);
+  const [isRemovingMember, setIsRemovingMember] = useState(false);
+  const [removePassword, setRemovePassword] = useState("");
+  const [removePhone, setRemovePhone] = useState("");
+  const [showRemovePassword, setShowRemovePassword] = useState(false);
+  const [removeModalError, setRemoveModalError] = useState<string | null>(null);
+
+  // Promote Member Modal State
   const [memberToPromote, setMemberToPromote] = useState<KitchenMember | null>(null);
   const [isPromoting, setIsPromoting] = useState(false);
 
@@ -84,22 +104,71 @@ const KitchenMembers = () => {
     }
   };
 
-  // 2. Delete Entire Kitchen (Admin Only)
+  // 2. Delete Entire Kitchen (Admin Only - Requires Password & Phone Verification)
   const handleConfirmDeleteKitchen = async () => {
+    if (!deletePassword.trim()) {
+      setDeleteModalError("Please enter your admin password.");
+      return;
+    }
+    if (!deletePhone.trim()) {
+      setDeleteModalError("Please enter your registered mobile number.");
+      return;
+    }
+
     setIsDeletingKitchen(true);
-    setActionError(null);
+    setDeleteModalError(null);
     try {
-      await dispatch(deleteWholeKitchen()).unwrap();
+      await dispatch(
+        deleteWholeKitchen({
+          password: deletePassword,
+          phoneNumber: deletePhone,
+        })
+      ).unwrap();
       dispatch(clearKitchenSession());
       setShowDeleteKitchenModal(false);
       navigate("/");
     } catch (err) {
-      setActionError(typeof err === "string" ? err : "Failed to delete kitchen.");
+      setDeleteModalError(typeof err === "string" ? err : "Failed to delete kitchen.");
       setIsDeletingKitchen(false);
     }
   };
 
-  // 3. Promote Member to Admin
+  // 3. Remove Member (Admin Only - Requires Password & Phone Verification)
+  const handleConfirmRemoveMember = async () => {
+    if (!memberToRemove?._id) return;
+    if (!removePassword.trim()) {
+      setRemoveModalError("Please enter your admin password.");
+      return;
+    }
+    if (!removePhone.trim()) {
+      setRemoveModalError("Please enter your registered mobile number.");
+      return;
+    }
+
+    setIsRemovingMember(true);
+    setRemoveModalError(null);
+    try {
+      const res = await dispatch(
+        removeMemberFromKitchen({
+          targetUserId: memberToRemove._id,
+          password: removePassword,
+          phoneNumber: removePhone,
+        })
+      ).unwrap();
+      setActionSuccess(res?.message || `${memberToRemove.userName} has been removed.`);
+      setMemberToRemove(null);
+      setRemovePassword("");
+      setRemovePhone("");
+      setRemoveModalError(null);
+      setTimeout(() => setActionSuccess(null), 4000);
+    } catch (err) {
+      setRemoveModalError(typeof err === "string" ? err : "Failed to remove member.");
+    } finally {
+      setIsRemovingMember(false);
+    }
+  };
+
+  // 4. Promote Member to Admin
   const handleConfirmPromote = async () => {
     if (!memberToPromote?._id) return;
     setIsPromoting(true);
@@ -311,6 +380,24 @@ const KitchenMembers = () => {
                           <span>Make Admin</span>
                         </button>
                       )}
+
+                      {/* Remove Member Button (Only shown to KitchenAdmins for other members) */}
+                      {isCurrentUserAdmin && !isCurrentUser && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMemberToRemove(member);
+                            setRemovePassword("");
+                            setRemovePhone("");
+                            setRemoveModalError(null);
+                          }}
+                          className="flex items-center gap-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200/80 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer hover-lift shadow-2xs"
+                          title={`Remove ${member.userName} from this kitchen`}
+                        >
+                          <FiUserX className="text-xs text-red-600" />
+                          <span>Remove</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 );
@@ -336,7 +423,12 @@ const KitchenMembers = () => {
 
               <button
                 type="button"
-                onClick={() => setShowDeleteKitchenModal(true)}
+                onClick={() => {
+                  setShowDeleteKitchenModal(true);
+                  setDeletePassword("");
+                  setDeletePhone("");
+                  setDeleteModalError(null);
+                }}
                 className="self-start sm:self-auto bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 px-5 rounded-xl shadow-xs transition hover-lift cursor-pointer flex items-center gap-2 shrink-0"
               >
                 <FiTrash2 className="text-base" />
@@ -396,7 +488,7 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {showDeleteKitchenModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto">
             <div className="w-14 h-14 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiAlertTriangle />
             </div>
@@ -416,10 +508,77 @@ const KitchenMembers = () => {
               Warning: This action cannot be undone. All stored kitchen data will be permanently wiped.
             </div>
 
+            {/* Admin Security Verification Inputs */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <FiLock className="text-emerald-600" />
+                Admin Security Verification
+              </p>
+              <p className="text-xs text-slate-500">
+                Please enter your Admin password and registered mobile number to authorize kitchen deletion.
+              </p>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-700 mb-1">
+                  Admin Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showDeletePassword ? "text" : "password"}
+                    value={deletePassword}
+                    onChange={(e) => {
+                      setDeletePassword(e.target.value);
+                      setDeleteModalError(null);
+                    }}
+                    placeholder="Enter your login password"
+                    className="w-full text-xs px-3 py-2 pr-9 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowDeletePassword(!showDeletePassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  >
+                    {showDeletePassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-medium text-slate-700 mb-1 flex items-center gap-1.5">
+                  <FiPhone className="text-slate-400 text-xs" />
+                  <span>Registered Mobile Number</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="tel"
+                    value={deletePhone}
+                    onChange={(e) => {
+                      setDeletePhone(e.target.value);
+                      setDeleteModalError(null);
+                    }}
+                    placeholder="Enter registered mobile number"
+                    className="w-full text-xs px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+                  />
+                </div>
+              </div>
+
+              {deleteModalError && (
+                <div className="bg-red-100 border border-red-200 text-red-700 text-xs p-2.5 rounded-lg font-medium flex items-center gap-1.5">
+                  <FiAlertTriangle className="shrink-0" />
+                  <span>{deleteModalError}</span>
+                </div>
+              )}
+            </div>
+
             <div className="flex items-center gap-3 pt-2">
               <button
                 type="button"
-                onClick={() => setShowDeleteKitchenModal(false)}
+                onClick={() => {
+                  setShowDeleteKitchenModal(false);
+                  setDeletePassword("");
+                  setDeletePhone("");
+                  setDeleteModalError(null);
+                }}
                 disabled={isDeletingKitchen}
                 className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
               >
@@ -432,7 +591,7 @@ const KitchenMembers = () => {
                 className="flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
               >
                 <FiTrash2 className="text-base" />
-                {isDeletingKitchen ? "Deleting..." : "Permanently Delete"}
+                {isDeletingKitchen ? "Verifying..." : "Verify & Permanently Delete"}
               </button>
             </div>
           </div>
@@ -440,7 +599,120 @@ const KitchenMembers = () => {
       )}
 
       {/* ========================================================================= */}
-      {/* 3. PROMOTE MEMBER TO ADMIN CONFIRMATION MODAL                             */}
+      {/* 3. REMOVE MEMBER CONFIRMATION MODAL (ADMIN ONLY)                          */}
+      {/* ========================================================================= */}
+      {memberToRemove && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto">
+            <div className="w-14 h-14 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
+              <FiUserX />
+            </div>
+
+            <div className="text-center space-y-1">
+              <h3 className="text-xl font-bold text-gray-900">Remove Member from Kitchen?</h3>
+              <p className="text-sm text-gray-600 px-2 leading-relaxed">
+                Are you sure you want to remove{" "}
+                <span className="font-semibold text-gray-900">"{memberToRemove.userName}"</span>{" "}
+                ({memberToRemove.userEmail}) from this kitchen?
+              </p>
+            </div>
+
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 leading-relaxed font-medium">
+              This member will immediately lose access to pantry inventory and shopping lists.
+            </div>
+
+            {/* Admin Security Verification Inputs */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <FiLock className="text-emerald-600" />
+                Admin Security Verification
+              </p>
+              <p className="text-xs text-slate-500">
+                To authorize removing this member, please verify your Kitchen Admin password and registered mobile number.
+              </p>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-700 mb-1">
+                  Admin Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showRemovePassword ? "text" : "password"}
+                    value={removePassword}
+                    onChange={(e) => {
+                      setRemovePassword(e.target.value);
+                      setRemoveModalError(null);
+                    }}
+                    placeholder="Enter your login password"
+                    className="w-full text-xs px-3 py-2 pr-9 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowRemovePassword(!showRemovePassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  >
+                    {showRemovePassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-medium text-slate-700 mb-1 flex items-center gap-1.5">
+                  <FiPhone className="text-slate-400 text-xs" />
+                  <span>Registered Mobile Number</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="tel"
+                    value={removePhone}
+                    onChange={(e) => {
+                      setRemovePhone(e.target.value);
+                      setRemoveModalError(null);
+                    }}
+                    placeholder="Enter registered mobile number"
+                    className="w-full text-xs px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+                  />
+                </div>
+              </div>
+
+              {removeModalError && (
+                <div className="bg-red-100 border border-red-200 text-red-700 text-xs p-2.5 rounded-lg font-medium flex items-center gap-1.5">
+                  <FiAlertTriangle className="shrink-0" />
+                  <span>{removeModalError}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMemberToRemove(null);
+                  setRemovePassword("");
+                  setRemovePhone("");
+                  setRemoveModalError(null);
+                }}
+                disabled={isRemovingMember}
+                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmRemoveMember}
+                disabled={isRemovingMember}
+                className="flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
+              >
+                <FiUserX className="text-base" />
+                {isRemovingMember ? "Verifying..." : "Verify & Remove Member"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 4. PROMOTE MEMBER TO ADMIN CONFIRMATION MODAL                             */}
       {/* ========================================================================= */}
       {memberToPromote && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">

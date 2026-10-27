@@ -1,9 +1,59 @@
-// controllers/kitchenController.js
-
+import bcrypt from 'bcrypt';
 import Kitchen from '../models/Kitchen.js';
 import KitchenItem from '../models/KitchenItem.js';
 import ShoppingItem from '../models/ShoppingItem.js';
 import User from '../models/User.js';
+
+const normalizePhone = (str) => {
+  if (!str) return '';
+  const digits = String(str).replace(/\D/g, '');
+  if (digits.length > 10) {
+    return digits.slice(-10);
+  }
+  return digits;
+};
+
+const verifyAdminCredentials = async (adminUser, password, phoneNumber) => {
+  if (!password || !String(password).trim()) {
+    return {
+      isValid: false,
+      message: 'Admin password is required to authorize this action.'
+    };
+  }
+
+  if (!phoneNumber || !String(phoneNumber).trim()) {
+    return {
+      isValid: false,
+      message: 'Registered mobile number is required to authorize this action.'
+    };
+  }
+
+  const isPasswordMatch = await bcrypt.compare(password, adminUser.userPassword);
+  if (!isPasswordMatch) {
+    return { isValid: false, message: 'Invalid admin password. Verification failed.' };
+  }
+
+  const dbPhoneNorm = normalizePhone(adminUser.phoneNumber);
+  const inputPhoneNorm = normalizePhone(phoneNumber);
+
+  if (dbPhoneNorm && inputPhoneNorm) {
+    if (dbPhoneNorm !== inputPhoneNorm) {
+      return {
+        isValid: false,
+        message: 'Mobile number does not match your registered admin mobile number.'
+      };
+    }
+  } else if (adminUser.phoneNumber && String(adminUser.phoneNumber).trim()) {
+    if (String(adminUser.phoneNumber).trim() !== String(phoneNumber).trim()) {
+      return {
+        isValid: false,
+        message: 'Mobile number does not match your registered admin mobile number.'
+      };
+    }
+  }
+
+  return { isValid: true };
+};
 
 const addItemsToKitchen = async (req, res) => {
   const { kitchenId } = req.params; // if your route uses :KitchenId
@@ -367,6 +417,7 @@ const leaveKitchen = async (req, res) => {
 const deleteWholeKitchen = async (req, res) => {
   const { kitchenId } = req.params;
   const userId = req.user?.Id;
+  const { password, phoneNumber } = req.body || {};
 
   try {
     const user = await User.findById(userId);
@@ -390,6 +441,15 @@ const deleteWholeKitchen = async (req, res) => {
       });
     }
 
+    // Verify Admin Password and Phone Number
+    const verification = await verifyAdminCredentials(user, password, phoneNumber);
+    if (!verification.isValid) {
+      return res.status(401).json({
+        isSuccess: false,
+        message: verification.message
+      });
+    }
+
     // 1. Delete all items in kitchen
     await KitchenItem.deleteMany({ kitchenId });
 
@@ -409,6 +469,88 @@ const deleteWholeKitchen = async (req, res) => {
       isSuccess: true,
       message:
         'Kitchen, inventory products, shopping lists, and all member associations permanently deleted.'
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
+const removeMemberFromKitchen = async (req, res) => {
+  const { kitchenId, targetUserId } = req.params;
+  const requesterId = req.user?.Id;
+  const { password, phoneNumber } = req.body || {};
+
+  try {
+    const requester = await User.findById(requesterId);
+    if (!requester) {
+      return res.status(404).json({ isSuccess: false, message: 'Admin user not found.' });
+    }
+
+    const kitchen = await Kitchen.findOne({ kitchenId });
+    if (!kitchen) {
+      return res.status(404).json({ isSuccess: false, message: 'Kitchen not found.' });
+    }
+
+    const isCreator =
+      kitchen.createdBy === requester.userEmail ||
+      kitchen.createdBy === requester._id.toString();
+    const isAdmin = requester.role === 'KitchenAdmin';
+
+    if (!isAdmin && !isCreator) {
+      return res.status(403).json({
+        isSuccess: false,
+        message: 'Permission denied. Only Kitchen Admins can remove members.'
+      });
+    }
+
+    if (targetUserId === requesterId || targetUserId === requester._id.toString()) {
+      return res.status(400).json({
+        isSuccess: false,
+        message: 'You cannot remove yourself using this action. Use Exit Kitchen instead.'
+      });
+    }
+
+    // Verify Admin Password and Phone Number
+    const verification = await verifyAdminCredentials(requester, password, phoneNumber);
+    if (!verification.isValid) {
+      return res.status(401).json({
+        isSuccess: false,
+        message: verification.message
+      });
+    }
+
+    const targetUser = await User.findOne({ _id: targetUserId, kitchenId });
+    if (!targetUser) {
+      return res.status(404).json({
+        isSuccess: false,
+        message: 'Target member not found in this kitchen.'
+      });
+    }
+
+    // 1. Remove target from kitchen.members array (handle both ObjectId string and email)
+    kitchen.members = kitchen.members.filter(
+      (m) =>
+        m !== targetUser._id.toString() &&
+        m !== targetUser.userEmail &&
+        m !== targetUserId
+    );
+    kitchen.updatedAt = new Date();
+    await kitchen.save();
+
+    // 2. Clear target user's kitchen association in database
+    targetUser.kitchenId = '';
+    targetUser.kitchenName = '';
+    targetUser.role = 'User';
+    await targetUser.save();
+
+    return res.json({
+      isSuccess: true,
+      message: `${targetUser.userName} has been removed from the kitchen.`,
+      targetUserId
     });
   } catch (err) {
     console.error(err);
@@ -491,5 +633,6 @@ export default {
   deleteShoppingItem,
   leaveKitchen,
   deleteWholeKitchen,
+  removeMemberFromKitchen,
   makeMemberAdmin
 };

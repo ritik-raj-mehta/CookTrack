@@ -276,19 +276,46 @@ export const leaveKitchen = createAsyncThunk(
 
 export const deleteWholeKitchen = createAsyncThunk(
   "kitchen/deleteWholeKitchen",
-  async (_, { rejectWithValue, getState }) => {
+  async (
+    credentials: { password: string; phoneNumber: string },
+    { rejectWithValue, getState }
+  ) => {
     try {
       const state = getState() as RootState;
       const { kitchenId } = state.auth;
       if (!kitchenId) return rejectWithValue("Kitchen ID missing");
-      const res = await axios.delete(
+      const res = await axios.post(
         `${KITCHEN_API}/deleteKitchen/${kitchenId}`,
+        credentials,
         { withCredentials: true }
       );
       return res.data;
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
       return rejectWithValue(err.response?.data?.message || "Failed to delete kitchen");
+    }
+  }
+);
+
+export const removeMemberFromKitchen = createAsyncThunk(
+  "kitchen/removeMemberFromKitchen",
+  async (
+    payload: { targetUserId: string; password: string; phoneNumber: string },
+    { rejectWithValue, getState }
+  ) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) return rejectWithValue("Kitchen ID missing");
+      const res = await axios.post(
+        `${KITCHEN_API}/removeMember/${kitchenId}/${payload.targetUserId}`,
+        { password: payload.password, phoneNumber: payload.phoneNumber },
+        { withCredentials: true }
+      );
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to remove member");
     }
   }
 );
@@ -529,6 +556,22 @@ export const kitchenSlice = createSlice({
         }
       })
       .addCase(makeMemberAdmin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || null;
+      })
+
+      // remove member from kitchen
+      .addCase(removeMemberFromKitchen.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeMemberFromKitchen.fulfilled, (state, action) => {
+        state.loading = false;
+        const targetUserId = action.meta.arg.targetUserId;
+        state.members = state.members.filter((m) => m._id !== targetUserId);
+        state.message = action.payload?.message || "Member removed successfully";
+      })
+      .addCase(removeMemberFromKitchen.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || action.error.message || null;
       });

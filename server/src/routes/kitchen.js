@@ -27,6 +27,10 @@ router.delete('/kitchen/:kitchenId/item/:itemId', authMiddleware, kitchenCtrl.de
 router.post('/leave/:kitchenId', authMiddleware, kitchenCtrl.leaveKitchen);
 
 router.delete('/deleteKitchen/:kitchenId', authMiddleware, kitchenCtrl.deleteWholeKitchen);
+router.post('/deleteKitchen/:kitchenId', authMiddleware, kitchenCtrl.deleteWholeKitchen);
+
+router.post('/removeMember/:kitchenId/:targetUserId', authMiddleware, kitchenCtrl.removeMemberFromKitchen);
+router.delete('/removeMember/:kitchenId/:targetUserId', authMiddleware, kitchenCtrl.removeMemberFromKitchen);
 
 router.patch('/makeAdmin/:kitchenId/:targetUserId', authMiddleware, kitchenCtrl.makeMemberAdmin);
 
