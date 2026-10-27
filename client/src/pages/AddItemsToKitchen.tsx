@@ -73,13 +73,13 @@ const AddItemsToKitchen = () => {
   return (
     <div className="bg-slate-50 w-full min-h-screen">
       {/* Top Header */}
-      <div className="bg-white py-4 border-b border-gray-100 px-8 flex items-center justify-between">
-        <div className="flex gap-x-4 items-center">
-          <div className="bg-emerald-100 text-emerald-700 text-2xl p-2.5 rounded-2xl shadow-xs">
+      <div className="bg-white py-4 border-b border-gray-100 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="flex gap-x-3.5 sm:gap-x-4 items-center">
+          <div className="bg-emerald-100 text-emerald-700 text-2xl p-2 sm:p-2.5 rounded-2xl shadow-xs shrink-0">
             <FiCodesandbox />
           </div>
           <div>
-            <h1 className="text-3xl font-serif font-bold text-gray-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight">
               Add New Product
             </h1>
             <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
@@ -90,7 +90,7 @@ const AddItemsToKitchen = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 animate-fadeIn">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 animate-fadeIn">
         <form
           onSubmit={handleKitchenItemForm}
           className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6"

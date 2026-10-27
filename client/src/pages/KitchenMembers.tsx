@@ -207,13 +207,13 @@ const KitchenMembers = () => {
   return (
     <div className="w-full bg-slate-50 min-h-screen relative">
       {/* Top Header */}
-      <div className="bg-white py-4 border-b border-gray-100 px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white py-4 border-b border-gray-100 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex gap-3.5 items-center">
-          <div className="bg-gradient-to-tr from-amber-500 to-orange-400 text-2xl p-2.5 rounded-2xl text-white shadow-xs">
+          <div className="bg-gradient-to-tr from-amber-500 to-orange-400 text-2xl p-2 sm:p-2.5 rounded-2xl text-white shadow-xs shrink-0">
             <FaPeopleGroup />
           </div>
           <div>
-            <h1 className="text-3xl font-serif font-bold text-gray-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight">
               Kitchen Members
             </h1>
             <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
@@ -227,7 +227,7 @@ const KitchenMembers = () => {
           {kitchenId && (
             <div className="flex items-center gap-2 bg-amber-50/80 border border-amber-200/90 px-3.5 py-1.5 rounded-xl shadow-2xs">
               <span className="text-xs font-semibold text-amber-900">Invite Code:</span>
-              <span className="font-mono font-bold text-amber-800 text-sm tracking-wider">
+              <span className="font-mono font-bold text-amber-800 text-xs sm:text-sm tracking-wider">
                 {kitchenId}
               </span>
               <button
@@ -244,7 +244,7 @@ const KitchenMembers = () => {
         </div>
       </div>
 
-      <div className="px-8 py-8 max-w-5xl animate-fadeIn space-y-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-5xl animate-fadeIn space-y-6">
         {/* Alerts */}
         {actionSuccess && (
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm p-4 rounded-xl flex items-center justify-between shadow-2xs animate-fadeIn">
@@ -331,42 +331,42 @@ const KitchenMembers = () => {
                 return (
                   <div
                     key={member._id}
-                    className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/70 transition duration-150"
+                    className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 hover:bg-gray-50/70 transition duration-150"
                   >
-                    <div className="flex items-center gap-3.5">
+                    <div className="flex items-center gap-3.5 min-w-0">
                       <div
-                        className={`w-11 h-11 rounded-2xl bg-gradient-to-tr ${getAvatarGradient(
+                        className={`w-10 sm:w-11 h-10 sm:h-11 rounded-2xl bg-gradient-to-tr ${getAvatarGradient(
                           member.userName
-                        )} font-bold flex items-center justify-center text-base shadow-xs shrink-0`}
+                        )} font-bold flex items-center justify-center text-sm sm:text-base shadow-xs shrink-0`}
                       >
                         {member.userName ? member.userName[0].toUpperCase() : "U"}
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <h4 className="font-bold text-gray-900 text-sm leading-tight">
+                          <h4 className="font-bold text-gray-900 text-sm leading-tight truncate">
                             {member.userName}
                           </h4>
                           {isCurrentUser && (
-                            <span className="text-[10px] bg-gray-100 text-gray-600 font-semibold px-2 py-0.5 rounded-full">
+                            <span className="text-[10px] bg-gray-100 text-gray-600 font-semibold px-2 py-0.5 rounded-full shrink-0">
                               You
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-gray-500 flex items-center gap-1.5 mt-0.5">
-                          <FiMail className="text-gray-400 text-xs" />
-                          <span>{member.userEmail}</span>
+                        <p className="text-xs text-gray-500 flex items-center gap-1.5 mt-0.5 truncate">
+                          <FiMail className="text-gray-400 text-xs shrink-0" />
+                          <span className="truncate">{member.userEmail}</span>
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4 sm:gap-5 self-end sm:self-auto text-xs">
-                      <span className="text-gray-400 hidden sm:flex items-center gap-1.5">
+                    <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 self-start sm:self-auto text-xs pl-13 sm:pl-0">
+                      <span className="text-gray-400 hidden md:flex items-center gap-1.5">
                         <FiCalendar className="text-gray-400" />
                         <span>Joined {new Date(member.createdAt).toLocaleDateString()}</span>
                       </span>
 
                       <span
-                        className={`px-3 py-1 rounded-full font-semibold flex items-center gap-1.5 shadow-2xs ${
+                        className={`px-2.5 sm:px-3 py-1 rounded-full font-semibold flex items-center gap-1.5 shadow-2xs ${
                           isMemberAdmin
                             ? "bg-amber-100 text-amber-800 border border-amber-200/80"
                             : "bg-emerald-100 text-emerald-800 border border-emerald-200/80"
@@ -376,7 +376,7 @@ const KitchenMembers = () => {
                         <span>{isMemberAdmin ? "Admin" : member.role || "Member"}</span>
                       </span>
 
-                      {/* Make Admin Button (Only shown to KitchenAdmins for non-admin members) */}
+                      {/* Make Admin Button */}
                       {isCurrentUserAdmin && !isMemberAdmin && (
                         <button
                           type="button"
@@ -389,7 +389,7 @@ const KitchenMembers = () => {
                         </button>
                       )}
 
-                      {/* Remove Member Button (Only shown to KitchenAdmins for other members) */}
+                      {/* Remove Member Button */}
                       {isCurrentUserAdmin && !isCurrentUser && (
                         <button
                           type="button"

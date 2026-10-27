@@ -143,41 +143,41 @@ const KitchenItem = () => {
   return (
     <div className="w-full bg-gray-100 min-h-screen relative">
       {/* HEADER */}
-      <div className="bg-white py-3 border-b border-black/10 px-8 flex justify-between items-center">
+      <div className="bg-white py-3.5 border-b border-black/10 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex gap-3 items-center">
-          <div className="bg-green-200 text-2xl p-2 rounded-full text-green-800">
+          <div className="bg-green-100 text-2xl p-2 rounded-xl text-green-800 shrink-0">
             <FiCodesandbox />
           </div>
           <div>
-            <h1 className="text-3xl font-serif font-semibold text-amber-950">
+            <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-amber-950">
               My Kitchen Items
             </h1>
-            <p className="text-sm font-medium opacity-85">
+            <p className="text-xs sm:text-sm font-medium opacity-85">
               Items in Kitchen Inventory ({filteredItems.length})
             </p>
           </div>
         </div>
 
         <NavLink
-          className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow-md font-semibold transition"
+          className="self-start sm:self-auto bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-xl shadow-xs font-semibold text-sm transition hover-lift text-center"
           to="/additemstokitchen"
         >
           + Add Product
         </NavLink>
       </div>
 
-      <div className="px-8">
+      <div className="px-4 sm:px-6 lg:px-8 py-2">
         {/* FILTER BOX */}
-        <div className="bg-white my-6 font-semibold px-6 py-6 rounded-xl space-y-4 shadow-md">
+        <div className="bg-white my-4 sm:my-6 font-semibold p-4 sm:p-6 rounded-2xl space-y-4 shadow-sm border border-gray-100">
           <div className="flex items-center space-x-2 text-slate-800">
-            <CiFilter className="text-2xl" />
-            <h3 className="text-xl">Filter & Search</h3>
+            <CiFilter className="text-2xl text-emerald-600" />
+            <h3 className="text-lg sm:text-xl font-bold">Filter & Search</h3>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
             {/* Search */}
-            <div className="bg-gray-50 border border-black/20 rounded-lg px-3 py-2 flex items-center space-x-2 flex-1 focus-within:border-green-700 focus-within:ring-1 focus-within:ring-green-700">
-              <CiSearch className="text-xl text-gray-500" />
+            <div className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 flex items-center space-x-2 flex-1 focus-within:border-green-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-green-600 transition">
+              <CiSearch className="text-xl text-gray-500 shrink-0" />
               <input
                 type="text"
                 className="outline-none w-full bg-transparent text-sm font-normal"
@@ -187,10 +187,10 @@ const KitchenItem = () => {
               />
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               {/* Category Filter */}
               <select
-                className="bg-gray-50 border border-black/20 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-700"
+                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
               >
@@ -209,7 +209,7 @@ const KitchenItem = () => {
 
               {/* Unit Filter */}
               <select
-                className="bg-gray-50 border border-black/20 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-700"
+                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
                 value={unitFilter}
                 onChange={(e) => setUnitFilter(e.target.value)}
               >

@@ -326,27 +326,27 @@ const AddItemsToShoppingCart = () => {
   return (
     <div className="bg-gray-100 w-full min-h-screen">
       {/* Top Header Bar */}
-      <div className="bg-white py-3 border-b border-black/10 px-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex gap-x-4 items-center">
-          <div className="bg-green-100 text-2xl p-2.5 rounded-full text-green-700 shadow-sm">
+      <div className="bg-white py-4 border-b border-black/10 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex gap-x-3.5 sm:gap-x-4 items-center">
+          <div className="bg-green-100 text-2xl p-2 sm:p-2.5 rounded-2xl text-green-700 shadow-2xs shrink-0">
             <FaCartPlus />
           </div>
           <div>
-            <h1 className="text-3xl font-serif font-semibold text-amber-950">
+            <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-amber-950">
               Shopping List
             </h1>
-            <p className="text-sm font-medium opacity-80">
+            <p className="text-xs sm:text-sm font-medium opacity-80">
               Manage items needed for {kitchenData?.kitchenName || "your kitchen"}
             </p>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           <button
             type="button"
             onClick={handleDownloadPDF}
-            className="flex items-center gap-2 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-black py-2 px-4 rounded-lg font-semibold text-sm shadow-sm transition cursor-pointer"
+            className="flex items-center gap-2 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-black py-2 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm shadow-2xs transition cursor-pointer hover-lift"
             title="Download Shopping List as PDF"
           >
             <FaFilePdf className="text-red-500 text-base" />
@@ -356,7 +356,7 @@ const AddItemsToShoppingCart = () => {
           <button
             type="button"
             onClick={() => setShowAddForm((prev) => !prev)}
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-semibold text-sm shadow-sm transition cursor-pointer"
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm shadow-xs transition cursor-pointer hover-lift"
           >
             {showAddForm ? <FiX className="text-base" /> : <FiPlus className="text-base" />}
             {showAddForm ? "Close Form" : "+ Add Item"}
@@ -364,7 +364,7 @@ const AddItemsToShoppingCart = () => {
         </div>
       </div>
 
-      <div className="px-8 py-6 space-y-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         {/* Quick Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
@@ -629,7 +629,7 @@ const AddItemsToShoppingCart = () => {
               {filteredItems.map((item) => (
                 <div
                   key={item._id}
-                  className={`p-4 md:px-6 flex items-center justify-between gap-4 transition hover:bg-gray-50 ${
+                  className={`p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 transition hover:bg-gray-50 ${
                     item.isBought ? "bg-gray-50/60 opacity-80" : "bg-white"
                   }`}
                 >
@@ -638,7 +638,7 @@ const AddItemsToShoppingCart = () => {
                     <button
                       type="button"
                       onClick={() => handleToggleBought(item._id)}
-                      className={`text-xl transition p-1 rounded-full cursor-pointer ${
+                      className={`text-xl transition p-1 rounded-full cursor-pointer shrink-0 ${
                         item.isBought
                           ? "text-green-600 hover:text-green-700"
                           : "text-gray-300 hover:text-green-500"
@@ -655,7 +655,7 @@ const AddItemsToShoppingCart = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span
-                          className={`font-semibold text-base transition ${
+                          className={`font-semibold text-sm sm:text-base transition break-words ${
                             item.isBought
                               ? "line-through text-gray-400"
                               : "text-gray-900"
@@ -683,13 +683,13 @@ const AddItemsToShoppingCart = () => {
                     </div>
                   </div>
 
-                  {/* Middle: Quantity & Timestamp */}
-                  <div className="flex items-center gap-4 text-right">
-                    <div className="bg-amber-50 border border-amber-200/80 px-3 py-1 rounded-lg text-sm font-semibold text-amber-900 whitespace-nowrap">
+                  {/* Right: Quantity, Timestamp & Delete */}
+                  <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 pl-9 sm:pl-0 shrink-0">
+                    <div className="bg-amber-50 border border-amber-200/80 px-2.5 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-semibold text-amber-900 whitespace-nowrap">
                       {item.neededQuantity} {item.unit}
                     </div>
 
-                    <div className="hidden sm:flex items-center gap-1 text-xs text-gray-400 whitespace-nowrap">
+                    <div className="hidden md:flex items-center gap-1 text-xs text-gray-400 whitespace-nowrap">
                       <FiClock className="text-xs" />
                       <span>{formatDate(item.createdAt)}</span>
                     </div>
@@ -698,7 +698,7 @@ const AddItemsToShoppingCart = () => {
                     <button
                       type="button"
                       onClick={() => handleDeleteItem(item._id, item.name)}
-                      className="text-gray-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer"
+                      className="text-gray-400 hover:text-red-500 p-1.5 sm:p-2 rounded-lg hover:bg-red-50 transition cursor-pointer"
                       title="Delete item"
                     >
                       <FiTrash2 className="text-base" />

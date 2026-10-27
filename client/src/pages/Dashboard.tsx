@@ -80,9 +80,9 @@ const Dashboard = () => {
   return (
     <div className="w-full bg-slate-50 min-h-screen">
       {/* Top Header Bar */}
-      <div className="bg-white py-4 border-b border-gray-100 px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white py-4 border-b border-gray-100 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-serif font-bold text-gray-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight">
             {kitchenData?.kitchenName || "Kitchen Dashboard"}
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
@@ -90,11 +90,11 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           {kitchenId && (
             <div className="flex items-center gap-2 bg-amber-50/80 border border-amber-200/90 px-3 py-1.5 rounded-xl shadow-2xs">
               <span className="text-xs font-semibold text-amber-900">Code:</span>
-              <span className="font-mono font-bold text-amber-800 text-sm tracking-wider">
+              <span className="font-mono font-bold text-amber-800 text-xs sm:text-sm tracking-wider">
                 {kitchenId}
               </span>
               <button
@@ -110,14 +110,14 @@ const Dashboard = () => {
           )}
           <Link
             to="/"
-            className="bg-white hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-xl font-semibold text-sm transition shadow-2xs cursor-pointer hover-lift"
+            className="bg-white hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-1.5 rounded-xl font-semibold text-xs sm:text-sm transition shadow-2xs cursor-pointer hover-lift"
           >
             Home
           </Link>
         </div>
       </div>
 
-      <div className="px-8 py-6 space-y-8 animate-fadeIn">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6 sm:space-y-8 animate-fadeIn">
         {/* Metric Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Total Products */}
@@ -258,16 +258,16 @@ const Dashboard = () => {
               recentItems.map((k, idx) => (
                 <div
                   key={k._id || `${k.productName}-${idx}`}
-                  className="flex items-center justify-between p-4 bg-gray-50/70 hover:bg-white border border-gray-100 hover:border-gray-200 rounded-xl transition duration-150 hover-lift"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50/70 hover:bg-white border border-gray-100 hover:border-gray-200 rounded-xl transition duration-150 hover-lift gap-3"
                 >
-                  <div className="flex items-center gap-3.5">
-                    <div className="bg-emerald-100 text-emerald-700 text-lg rounded-xl p-2.5">
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div className="bg-emerald-100 text-emerald-700 text-lg rounded-xl p-2.5 shrink-0">
                       <FiCodesandbox />
                     </div>
 
-                    <div>
-                      <h3 className="text-sm font-bold text-gray-900">{k.productName}</h3>
-                      <div className="flex items-center gap-2 text-xs text-gray-500 font-medium mt-0.5">
+                    <div className="min-w-0">
+                      <h3 className="text-sm font-bold text-gray-900 truncate">{k.productName}</h3>
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 font-medium mt-0.5">
                         <span className="text-gray-700 font-semibold">
                           {k.quantity} {k.unit}
                         </span>
@@ -276,22 +276,24 @@ const Dashboard = () => {
                         {k.category && (
                           <>
                             <span>•</span>
-                            <span className="text-gray-400">{k.category}</span>
+                            <span className="text-gray-400 truncate max-w-[120px]">{k.category}</span>
                           </>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  {k.quantity > 2 ? (
-                    <span className="bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full shadow-2xs">
-                      In Stock
-                    </span>
-                  ) : (
-                    <span className="bg-red-100 text-red-700 border border-red-200 text-xs font-bold px-3 py-1 rounded-full shadow-2xs">
-                      Low Stock
-                    </span>
-                  )}
+                  <div className="self-start sm:self-auto shrink-0">
+                    {k.quantity > 2 ? (
+                      <span className="bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full shadow-2xs">
+                        In Stock
+                      </span>
+                    ) : (
+                      <span className="bg-red-100 text-red-700 border border-red-200 text-xs font-bold px-3 py-1 rounded-full shadow-2xs">
+                        Low Stock
+                      </span>
+                    )}
+                  </div>
                 </div>
               ))
             )}
