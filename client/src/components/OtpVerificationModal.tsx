@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiMail, FiCheck, FiRefreshCw, FiArrowLeft } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "../stores/store";
 import { verifyOtp, resendOtp, clearError } from "../stores/slices/AuthSlice";
 
@@ -13,8 +12,7 @@ type OtpModalProps = {
 
 const OtpVerificationModal: React.FC<OtpModalProps> = ({ email, onBack, previewUrl }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const { loading, error, message, isAuthenticated } = useSelector(
+  const { loading, error, message } = useSelector(
     (state: RootState) => state.auth
   );
 
@@ -30,12 +28,6 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({ email, onBack, previewU
     }
     return () => clearTimeout(timer);
   }, [resendCooldown]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/dashboard");
-    }
-  }, [isAuthenticated, navigate]);
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) {
@@ -82,9 +74,11 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({ email, onBack, previewU
 
     try {
       await dispatch(verifyOtp({ email, otp: fullOtp })).unwrap();
-      navigate("/dashboard");
+      // Use window.location.href to guarantee complete clean session & state load on dashboard
+      window.location.href = "/dashboard";
     } catch (err) {
       console.error("OTP verification error:", err);
+      setLocalError(typeof err === "string" ? err : "Verification failed. Please check the code.");
     }
   };
 

@@ -18,10 +18,10 @@ const Dashboard = () => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated && kitchenId && userId) {
+    if (kitchenId && userId) {
       dispatch(fetchKitchenData());
     }
-  }, [dispatch, isAuthenticated, kitchenId, userId]);
+  }, [dispatch, kitchenId, userId, isAuthenticated]);
 
   const handleCopyCode = () => {
     if (kitchenId) {
