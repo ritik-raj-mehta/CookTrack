@@ -313,6 +313,171 @@ const deleteShoppingItem = async (req, res) => {
   }
 };
 
+const leaveKitchen = async (req, res) => {
+  const { kitchenId } = req.params;
+  const userId = req.user?.Id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ isSuccess: false, message: 'User not found.' });
+    }
+
+    if (user.kitchenId !== kitchenId) {
+      return res
+        .status(400)
+        .json({ isSuccess: false, message: 'You are not a member of this kitchen.' });
+    }
+
+    const kitchen = await Kitchen.findOne({ kitchenId });
+    if (kitchen) {
+      kitchen.members = (kitchen.members || []).filter(
+        (m) => m !== user._id.toString() && m !== user.userEmail
+      );
+      kitchen.updatedAt = new Date();
+      await kitchen.save();
+
+      // If no members left in the kitchen, delete the kitchen and its items
+      const remainingUsers = await User.countDocuments({ kitchenId });
+      if (remainingUsers <= 1) {
+        await KitchenItem.deleteMany({ kitchenId });
+        await ShoppingItem.deleteMany({ kitchenId });
+        await Kitchen.findOneAndDelete({ kitchenId });
+      }
+    }
+
+    user.kitchenId = '';
+    user.kitchenName = '';
+    user.role = 'User';
+    await user.save();
+
+    return res.json({
+      isSuccess: true,
+      message: 'You have left the kitchen successfully.'
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
+const deleteWholeKitchen = async (req, res) => {
+  const { kitchenId } = req.params;
+  const userId = req.user?.Id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ isSuccess: false, message: 'User not found.' });
+    }
+
+    const kitchen = await Kitchen.findOne({ kitchenId });
+    if (!kitchen) {
+      return res.status(404).json({ isSuccess: false, message: 'Kitchen not found.' });
+    }
+
+    const isCreator =
+      kitchen.createdBy === user.userEmail || kitchen.createdBy === user._id.toString();
+    const isAdmin = user.role === 'KitchenAdmin';
+
+    if (!isAdmin && !isCreator) {
+      return res.status(403).json({
+        isSuccess: false,
+        message: 'Permission denied. Only Kitchen Admins can delete the kitchen.'
+      });
+    }
+
+    // 1. Delete all items in kitchen
+    await KitchenItem.deleteMany({ kitchenId });
+
+    // 2. Delete all shopping items in kitchen
+    await ShoppingItem.deleteMany({ kitchenId });
+
+    // 3. Reset kitchenId and role for all members belonging to this kitchen
+    await User.updateMany(
+      { kitchenId },
+      { $set: { kitchenId: '', kitchenName: '', role: 'User' } }
+    );
+
+    // 4. Delete the kitchen document itself
+    await Kitchen.findOneAndDelete({ kitchenId });
+
+    return res.json({
+      isSuccess: true,
+      message:
+        'Kitchen, inventory products, shopping lists, and all member associations permanently deleted.'
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
+const makeMemberAdmin = async (req, res) => {
+  const { kitchenId, targetUserId } = req.params;
+  const requesterId = req.user?.Id;
+
+  try {
+    const requester = await User.findById(requesterId);
+    if (!requester) {
+      return res.status(404).json({ isSuccess: false, message: 'Requester not found.' });
+    }
+
+    const kitchen = await Kitchen.findOne({ kitchenId });
+    if (!kitchen) {
+      return res.status(404).json({ isSuccess: false, message: 'Kitchen not found.' });
+    }
+
+    const isCreator =
+      kitchen.createdBy === requester.userEmail ||
+      kitchen.createdBy === requester._id.toString();
+    const isAdmin = requester.role === 'KitchenAdmin';
+
+    if (!isAdmin && !isCreator) {
+      return res.status(403).json({
+        isSuccess: false,
+        message: 'Permission denied. Only Kitchen Admins can promote other members.'
+      });
+    }
+
+    const targetUser = await User.findOne({ _id: targetUserId, kitchenId });
+    if (!targetUser) {
+      return res.status(404).json({
+        isSuccess: false,
+        message: 'Target member not found in this kitchen.'
+      });
+    }
+
+    targetUser.role = 'KitchenAdmin';
+    await targetUser.save();
+
+    return res.json({
+      isSuccess: true,
+      message: `${targetUser.userName} is now a Kitchen Admin.`,
+      data: {
+        _id: targetUser._id.toString(),
+        userName: targetUser.userName,
+        userEmail: targetUser.userEmail,
+        role: targetUser.role,
+        phoneNumber: targetUser.phoneNumber,
+        createdAt: targetUser.createdAt
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
 export default {
   addItemsToKitchen,
   addShoppingItemsToKitchen,
@@ -323,5 +488,8 @@ export default {
   updateKitchenItem,
   getAllShoppingItemsByKitchenId,
   toggleShoppingItemBought,
-  deleteShoppingItem
+  deleteShoppingItem,
+  leaveKitchen,
+  deleteWholeKitchen,
+  makeMemberAdmin
 };

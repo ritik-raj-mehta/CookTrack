@@ -130,6 +130,10 @@ export const authSlice = createSlice({
     clearMessage: (state) => {
       state.message = null;
     },
+    clearKitchenSession: (state) => {
+      state.kitchenId = "";
+      state.role = "User";
+    },
   },
 
   extraReducers: (builder) => {
@@ -258,5 +262,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage } = authSlice.actions;
+export const { clearError, clearMessage, clearKitchenSession } = authSlice.actions;
 export default authSlice.reducer;

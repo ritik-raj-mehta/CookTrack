@@ -24,4 +24,10 @@ router.put('/kitchen/:kitchenId/item/:itemId', authMiddleware, kitchenCtrl.updat
 
 router.delete('/kitchen/:kitchenId/item/:itemId', authMiddleware, kitchenCtrl.deleteKitchenItem);
 
+router.post('/leave/:kitchenId', authMiddleware, kitchenCtrl.leaveKitchen);
+
+router.delete('/deleteKitchen/:kitchenId', authMiddleware, kitchenCtrl.deleteWholeKitchen);
+
+router.patch('/makeAdmin/:kitchenId/:targetUserId', authMiddleware, kitchenCtrl.makeMemberAdmin);
+
 export default router;

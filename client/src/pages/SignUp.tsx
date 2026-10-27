@@ -3,7 +3,7 @@ import { LuChefHat } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../stores/store";
 import { register, clearError, clearMessage } from "../stores/slices/AuthSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export type SignUpType = {
   userName: string;
@@ -16,7 +16,13 @@ export type SignUpType = {
 const SignUp = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { loading, error, message } = useSelector((state: RootState) => state.auth);
+  const { loading, error, message, isAuthenticated, kitchenId } = useSelector(
+    (state: RootState) => state.auth
+  );
+
+  if (isAuthenticated && kitchenId) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const [inputData, setInputData] = useState<SignUpType>({
     userName: "",

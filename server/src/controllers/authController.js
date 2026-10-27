@@ -200,13 +200,18 @@ const loginUser = async (req, res) => {
 const getMe = async (req, res) => {
   try {
     const claims = req.user; // from auth middleware
-    const userId = claims.Id;
-    const email = claims.userEmail;
-    const role = claims.role;
-    const username = claims.userName;
-    const kitchenId = claims.KitchenId;
+    const user = await User.findById(claims.Id);
+    if (!user) {
+      return res.status(404).json({ isSuccess: false, message: 'User not found' });
+    }
 
-    return res.json({ email, role, username, kitchenId, userId });
+    return res.json({
+      email: user.userEmail,
+      role: user.role,
+      username: user.userName,
+      kitchenId: user.kitchenId,
+      userId: user._id.toString()
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({

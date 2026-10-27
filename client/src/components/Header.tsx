@@ -8,7 +8,7 @@ import { logout } from "../stores/slices/AuthSlice";
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, kitchenId } = useSelector((state: RootState) => state.auth);
 
   const handleLogout = async () => {
     try {
@@ -40,12 +40,14 @@ const Header = () => {
 
       {isAuthenticated ? (
         <div className="space-x-3 flex items-center">
-          <NavLink
-            to="/dashboard"
-            className="bg-emerald-50 border border-emerald-300 text-emerald-800 font-semibold py-2 px-4 rounded-xl text-sm hover:bg-emerald-100 transition shadow-xs hover-lift"
-          >
-            Dashboard
-          </NavLink>
+          {kitchenId && (
+            <NavLink
+              to="/dashboard"
+              className="bg-emerald-50 border border-emerald-300 text-emerald-800 font-semibold py-2 px-4 rounded-xl text-sm hover:bg-emerald-100 transition shadow-xs hover-lift"
+            >
+              Dashboard
+            </NavLink>
+          )}
           <button
             type="button"
             onClick={handleLogout}

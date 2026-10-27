@@ -5,8 +5,11 @@ import { FiCodesandbox } from "react-icons/fi";
 import { FaRegClock } from "react-icons/fa";
 import { MdOutlineFamilyRestroom } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../stores/store";
 
 const Home = () => {
+  const { isAuthenticated, kitchenId } = useSelector((state: RootState) => state.auth);
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50/40 via-white to-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
@@ -52,21 +55,39 @@ const Home = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <Link
-                to="/signup"
-                className="flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold py-3.5 px-7 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover-lift group"
-              >
-                <span>Create a Kitchen</span>
-                <FaArrowRightLong className="group-hover:translate-x-1.5 transition-transform duration-200" />
-              </Link>
-              <Link
-                to="/registertokitchen"
-                className="flex items-center justify-center gap-2 bg-white hover:bg-amber-50 border border-amber-300/80 text-amber-900 font-bold py-3.5 px-6 rounded-xl shadow-xs hover:shadow-md transition-all duration-300 hover-lift"
-              >
-                Join Existing Kitchen
-              </Link>
-            </div>
+            {isAuthenticated && kitchenId ? (
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                <Link
+                  to="/dashboard"
+                  className="flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold py-3.5 px-7 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover-lift group"
+                >
+                  <span>Go to Dashboard</span>
+                  <FaArrowRightLong className="group-hover:translate-x-1.5 transition-transform duration-200" />
+                </Link>
+                <Link
+                  to="/kitchenitems"
+                  className="flex items-center justify-center gap-2 bg-white hover:bg-emerald-50 border border-emerald-300/80 text-emerald-900 font-bold py-3.5 px-6 rounded-xl shadow-xs hover:shadow-md transition-all duration-300 hover-lift"
+                >
+                  View Pantry Inventory
+                </Link>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                <Link
+                  to="/signup"
+                  className="flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold py-3.5 px-7 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover-lift group"
+                >
+                  <span>Create a Kitchen</span>
+                  <FaArrowRightLong className="group-hover:translate-x-1.5 transition-transform duration-200" />
+                </Link>
+                <Link
+                  to="/registertokitchen"
+                  className="flex items-center justify-center gap-2 bg-white hover:bg-amber-50 border border-amber-300/80 text-amber-900 font-bold py-3.5 px-6 rounded-xl shadow-xs hover:shadow-md transition-all duration-300 hover-lift"
+                >
+                  Join Existing Kitchen
+                </Link>
+              </div>
+            )}
 
             {/* Feature Badges */}
             <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-gray-100">

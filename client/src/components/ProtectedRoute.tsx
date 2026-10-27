@@ -9,12 +9,16 @@ type ProtectedRouteProps = {
 };
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const {role} = useSelector((state:RootState) => state.auth)
-  console.log(role);
-  
+  const { isAuthenticated, kitchenId } = useSelector(
+    (state: RootState) => state.auth
+  );
 
-  if (!role) {
+  if (!isAuthenticated) {
     return <Navigate to="/signin" replace />;
+  }
+
+  if (!kitchenId) {
+    return <Navigate to="/" replace />;
   }
 
   return children;

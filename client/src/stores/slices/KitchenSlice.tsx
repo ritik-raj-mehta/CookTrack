@@ -254,6 +254,65 @@ export const fetchKitchenMembers = createAsyncThunk(
   }
 );
 
+export const leaveKitchen = createAsyncThunk(
+  "kitchen/leaveKitchen",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) return rejectWithValue("Kitchen ID missing");
+      const res = await axios.post(
+        `${KITCHEN_API}/leave/${kitchenId}`,
+        {},
+        { withCredentials: true }
+      );
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to leave kitchen");
+    }
+  }
+);
+
+export const deleteWholeKitchen = createAsyncThunk(
+  "kitchen/deleteWholeKitchen",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) return rejectWithValue("Kitchen ID missing");
+      const res = await axios.delete(
+        `${KITCHEN_API}/deleteKitchen/${kitchenId}`,
+        { withCredentials: true }
+      );
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to delete kitchen");
+    }
+  }
+);
+
+export const makeMemberAdmin = createAsyncThunk(
+  "kitchen/makeMemberAdmin",
+  async (targetUserId: string, { rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) return rejectWithValue("Kitchen ID missing");
+      const res = await axios.patch(
+        `${KITCHEN_API}/makeAdmin/${kitchenId}/${targetUserId}`,
+        {},
+        { withCredentials: true }
+      );
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to promote member");
+    }
+  }
+);
+
 export const kitchenSlice = createSlice({
   name: "kitchen",
   initialState,
@@ -262,6 +321,14 @@ export const kitchenSlice = createSlice({
       state.message = null;
     },
     clearKitchenError: (state) => {
+      state.error = null;
+    },
+    resetKitchenState: (state) => {
+      state.kitchenData = null;
+      state.kitchenItems = [];
+      state.shoppingItems = [];
+      state.members = [];
+      state.message = null;
       state.error = null;
     },
   },
@@ -409,10 +476,65 @@ export const kitchenSlice = createSlice({
       .addCase(fetchKitchenMembers.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || action.error.message || null;
+      })
+
+      // leave kitchen
+      .addCase(leaveKitchen.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(leaveKitchen.fulfilled, (state, action) => {
+        state.loading = false;
+        state.kitchenData = null;
+        state.kitchenItems = [];
+        state.shoppingItems = [];
+        state.members = [];
+        state.message = action.payload?.message || "Left kitchen successfully";
+      })
+      .addCase(leaveKitchen.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || null;
+      })
+
+      // delete whole kitchen
+      .addCase(deleteWholeKitchen.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteWholeKitchen.fulfilled, (state, action) => {
+        state.loading = false;
+        state.kitchenData = null;
+        state.kitchenItems = [];
+        state.shoppingItems = [];
+        state.members = [];
+        state.message = action.payload?.message || "Kitchen permanently deleted";
+      })
+      .addCase(deleteWholeKitchen.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || null;
+      })
+
+      // make member admin
+      .addCase(makeMemberAdmin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(makeMemberAdmin.fulfilled, (state, action) => {
+        state.loading = false;
+        const updated = action.payload?.data;
+        if (updated) {
+          state.members = state.members.map((m) =>
+            m._id === updated._id ? { ...m, role: "KitchenAdmin" } : m
+          );
+        }
+      })
+      .addCase(makeMemberAdmin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || null;
       });
   },
 });
 
-export const { clearKitchenMessage, clearKitchenError } = kitchenSlice.actions;
+export const { clearKitchenMessage, clearKitchenError, resetKitchenState } = kitchenSlice.actions;
 
 export default kitchenSlice.reducer;
