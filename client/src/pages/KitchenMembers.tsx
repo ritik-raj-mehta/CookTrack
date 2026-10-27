@@ -20,6 +20,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import type { AppDispatch, RootState } from "../stores/store";
+import { persistor } from "../stores/store";
 import {
   deleteWholeKitchen,
   fetchKitchenMembers,
@@ -27,7 +28,7 @@ import {
   makeMemberAdmin,
   removeMemberFromKitchen,
 } from "../stores/slices/KitchenSlice";
-import { clearKitchenSession } from "../stores/slices/AuthSlice";
+import { logout } from "../stores/slices/AuthSlice";
 import type { KitchenMember } from "../types/KitchenTypes";
 
 const KitchenMembers = () => {
@@ -89,13 +90,18 @@ const KitchenMembers = () => {
     return "from-blue-500 to-indigo-600 text-white";
   };
 
-  // 1. Leave Kitchen
+  // 1. Leave Kitchen (User account completely deleted from DB; logs out to signup fresh)
   const handleConfirmLeave = async () => {
     setIsLeaving(true);
     setActionError(null);
     try {
       await dispatch(leaveKitchen()).unwrap();
-      dispatch(clearKitchenSession());
+      try {
+        await dispatch(logout()).unwrap();
+      } catch {
+        // ignore if session already invalidated
+      }
+      await persistor.purge();
       setShowLeaveModal(false);
       navigate("/");
     } catch (err) {
@@ -104,7 +110,7 @@ const KitchenMembers = () => {
     }
   };
 
-  // 2. Delete Entire Kitchen (Admin Only - Requires Password & Phone Verification)
+  // 2. Delete Entire Kitchen (Admin Only - Requires Password & Phone Verification; wipes all accounts so all can signup fresh)
   const handleConfirmDeleteKitchen = async () => {
     if (!deletePassword.trim()) {
       setDeleteModalError("Please enter your admin password.");
@@ -124,7 +130,12 @@ const KitchenMembers = () => {
           phoneNumber: deletePhone,
         })
       ).unwrap();
-      dispatch(clearKitchenSession());
+      try {
+        await dispatch(logout()).unwrap();
+      } catch {
+        // ignore
+      }
+      await persistor.purge();
       setShowDeleteKitchenModal(false);
       navigate("/");
     } catch (err) {
@@ -450,14 +461,18 @@ const KitchenMembers = () => {
             </div>
 
             <div className="text-center space-y-1">
-              <h3 className="text-xl font-bold text-gray-900">Exit Kitchen?</h3>
+              <h3 className="text-xl font-bold text-gray-900">Exit Kitchen & Delete Account?</h3>
               <p className="text-sm text-gray-600 px-2 leading-relaxed">
                 Are you sure you want to exit{" "}
                 <span className="font-semibold text-gray-900">
                   "{kitchenData?.kitchenName || "this kitchen"}"
                 </span>
-                ? You will be removed from members and lose access to its inventory.
+                ? Your entire account, login credentials, and Gmail record will be permanently deleted from the database so you can sign up completely fresh anytime.
               </p>
+            </div>
+
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 leading-relaxed font-medium">
+              Notice: Your login data will be completely wiped from the system. You will be logged out immediately.
             </div>
 
             <div className="flex items-center gap-3 pt-2">
@@ -476,7 +491,7 @@ const KitchenMembers = () => {
                 className="flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
               >
                 <FiLogOut className="text-base" />
-                {isLeaving ? "Leaving..." : "Yes, Exit Kitchen"}
+                {isLeaving ? "Exiting & Deleting..." : "Yes, Exit & Delete Account"}
               </button>
             </div>
           </div>
@@ -494,18 +509,18 @@ const KitchenMembers = () => {
             </div>
 
             <div className="text-center space-y-1">
-              <h3 className="text-xl font-bold text-gray-900">Permanently Delete Kitchen?</h3>
+              <h3 className="text-xl font-bold text-gray-900">Permanently Delete Kitchen & All Accounts?</h3>
               <p className="text-sm text-gray-600 px-2 leading-relaxed">
                 This will permanently delete{" "}
                 <span className="font-semibold text-gray-900">
                   "{kitchenData?.kitchenName || "the kitchen"}"
                 </span>
-                , all pantry inventory items, shopping lists, and disconnect all members.
+                , all pantry inventory items, shopping lists, and completely delete all member and admin accounts from the database so everyone can sign up fresh.
               </p>
             </div>
 
             <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-800 leading-relaxed font-medium">
-              Warning: This action cannot be undone. All stored kitchen data will be permanently wiped.
+              Warning: This action cannot be undone. All stored kitchen data, login credentials, and Gmail records will be permanently wiped.
             </div>
 
             {/* Admin Security Verification Inputs */}
@@ -609,7 +624,7 @@ const KitchenMembers = () => {
             </div>
 
             <div className="text-center space-y-1">
-              <h3 className="text-xl font-bold text-gray-900">Remove Member from Kitchen?</h3>
+              <h3 className="text-xl font-bold text-gray-900">Remove Member & Delete Account?</h3>
               <p className="text-sm text-gray-600 px-2 leading-relaxed">
                 Are you sure you want to remove{" "}
                 <span className="font-semibold text-gray-900">"{memberToRemove.userName}"</span>{" "}
@@ -617,8 +632,8 @@ const KitchenMembers = () => {
               </p>
             </div>
 
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 leading-relaxed font-medium">
-              This member will immediately lose access to pantry inventory and shopping lists.
+            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-800 leading-relaxed font-medium">
+              Notice: This member's entire account, login credentials, and Gmail record will be completely deleted from the database. When they return, they will need to sign up fresh.
             </div>
 
             {/* Admin Security Verification Inputs */}

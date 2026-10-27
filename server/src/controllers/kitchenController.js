@@ -396,14 +396,20 @@ const leaveKitchen = async (req, res) => {
       }
     }
 
-    user.kitchenId = '';
-    user.kitchenName = '';
-    user.role = 'User';
-    await user.save();
+    // Completely delete the user account from MongoDB (login data, gmail, profile)
+    await User.findByIdAndDelete(userId);
+
+    // Clear authentication cookie so the user is logged out immediately
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      path: '/'
+    });
 
     return res.json({
       isSuccess: true,
-      message: 'You have left the kitchen successfully.'
+      message: 'You have exited the kitchen and your account data has been completely deleted. You can sign up fresh anytime.'
     });
   } catch (err) {
     console.error(err);
@@ -456,19 +462,24 @@ const deleteWholeKitchen = async (req, res) => {
     // 2. Delete all shopping items in kitchen
     await ShoppingItem.deleteMany({ kitchenId });
 
-    // 3. Reset kitchenId and role for all members belonging to this kitchen
-    await User.updateMany(
-      { kitchenId },
-      { $set: { kitchenId: '', kitchenName: '', role: 'User' } }
-    );
+    // 3. Permanently delete all user accounts belonging to this kitchen so they can signup fresh
+    await User.deleteMany({ kitchenId });
 
     // 4. Delete the kitchen document itself
     await Kitchen.findOneAndDelete({ kitchenId });
 
+    // 5. Clear authentication cookie for admin
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      path: '/'
+    });
+
     return res.json({
       isSuccess: true,
       message:
-        'Kitchen, inventory products, shopping lists, and all member associations permanently deleted.'
+        'Kitchen, inventory products, shopping lists, and all member accounts have been permanently deleted.'
     });
   } catch (err) {
     console.error(err);
@@ -541,15 +552,12 @@ const removeMemberFromKitchen = async (req, res) => {
     kitchen.updatedAt = new Date();
     await kitchen.save();
 
-    // 2. Clear target user's kitchen association in database
-    targetUser.kitchenId = '';
-    targetUser.kitchenName = '';
-    targetUser.role = 'User';
-    await targetUser.save();
+    // 2. Permanently delete target user account (login data, gmail, profile) from MongoDB
+    await User.findByIdAndDelete(targetUserId);
 
     return res.json({
       isSuccess: true,
-      message: `${targetUser.userName} has been removed from the kitchen.`,
+      message: `${targetUser.userName}'s account and credentials have been permanently deleted from the database.`,
       targetUserId
     });
   } catch (err) {
