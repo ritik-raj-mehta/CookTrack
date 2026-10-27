@@ -62,113 +62,155 @@ const SignUp = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex justify-center items-center py-10 px-4">
-      <div className="flex items-center flex-col bg-white px-8 md:px-10 py-8 w-full max-w-[530px] rounded-2xl shadow-xl">
-        <div className="text-4xl bg-green-100 rounded-full text-green-600 p-3 mb-3">
-          <LuChefHat />
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/40 to-amber-50/30 flex justify-center items-center py-12 px-4 relative overflow-hidden">
+      {/* Soft ambient decorative background blobs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-300/15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <h2 className="text-3xl font-bold text-amber-950">Join CookTrack</h2>
-        <p className="opacity-80 text-sm pb-4 text-center">
-          Create your account to start managing your kitchen inventory efficiently
+      <div className="relative flex items-center flex-col bg-white p-8 sm:p-10 w-full max-w-xl rounded-3xl shadow-xl border border-gray-100 animate-fadeIn">
+        <Link
+          to="/"
+          className="text-3xl bg-gradient-to-tr from-emerald-600 to-green-500 rounded-2xl text-white p-3 mb-4 shadow-md hover:scale-105 transition-transform duration-300"
+        >
+          <LuChefHat />
+        </Link>
+
+        <h2 className="text-2xl sm:text-3xl font-bold font-serif text-gray-900 pb-1 text-center">
+          Join CookTrack
+        </h2>
+        <p className="text-gray-500 text-xs sm:text-sm pb-6 text-center">
+          Create your account and set up a smart inventory for your kitchen
         </p>
 
+        {/* Feedback alerts */}
+        {localError && (
+          <div className="w-full text-red-600 text-xs sm:text-sm bg-red-50 border border-red-200 p-3 rounded-xl mb-4 text-center animate-fadeIn">
+            {localError}
+          </div>
+        )}
+        {error && (
+          <div className="w-full text-red-600 text-xs sm:text-sm bg-red-50 border border-red-200 p-3 rounded-xl mb-4 text-center animate-fadeIn">
+            {error}
+          </div>
+        )}
+        {message && (
+          <div className="w-full text-emerald-800 text-xs sm:text-sm bg-emerald-50 border border-emerald-200 p-3 rounded-xl mb-4 text-center animate-fadeIn">
+            {message}
+          </div>
+        )}
+
         <div className="w-full">
-          <form className="space-y-3.5" onSubmit={handleForm}>
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-sm text-gray-700" htmlFor="userName">Full Name</label>
-              <input
-                id="userName"
-                type="text"
-                required
-                className="bg-gray-50 border border-black/20 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-700 focus:ring-1 focus:ring-green-700"
-                placeholder="Enter your name"
-                name="userName"
-                value={inputData.userName}
-                onChange={handleInputData}
-              />
+          <form className="space-y-4" onSubmit={handleForm}>
+            {/* Full Name & Email */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="userName">
+                  Full Name
+                </label>
+                <input
+                  id="userName"
+                  type="text"
+                  required
+                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  placeholder="e.g. John Doe"
+                  name="userName"
+                  value={inputData.userName}
+                  onChange={handleInputData}
+                />
+              </div>
+
+              <div className="flex flex-col space-y-1.5">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="userEmail">
+                  Email Address
+                </label>
+                <input
+                  id="userEmail"
+                  type="email"
+                  required
+                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  placeholder="name@example.com"
+                  name="userEmail"
+                  value={inputData.userEmail}
+                  onChange={handleInputData}
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-sm text-gray-700" htmlFor="userEmail">Email Address</label>
-              <input
-                id="userEmail"
-                type="email"
-                required
-                className="bg-gray-50 border border-black/20 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-700 focus:ring-1 focus:ring-green-700"
-                placeholder="Enter your email"
-                name="userEmail"
-                value={inputData.userEmail}
-                onChange={handleInputData}
-              />
+            {/* Password & Confirm */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="userPassword">
+                  Password (8-20 chars)
+                </label>
+                <input
+                  id="userPassword"
+                  type="password"
+                  required
+                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  placeholder="Create password"
+                  name="userPassword"
+                  value={inputData.userPassword}
+                  onChange={handleInputData}
+                />
+              </div>
+
+              <div className="flex flex-col space-y-1.5">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="confirmPassword">
+                  Confirm Password
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  required
+                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  placeholder="Repeat password"
+                  name="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    setLocalError(null);
+                  }}
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-sm text-gray-700" htmlFor="userPassword">Password (8-20 characters)</label>
-              <input
-                id="userPassword"
-                type="password"
-                required
-                className="bg-gray-50 border border-black/20 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-700 focus:ring-1 focus:ring-green-700"
-                placeholder="Create a password"
-                name="userPassword"
-                value={inputData.userPassword}
-                onChange={handleInputData}
-              />
+            {/* Kitchen Name & Phone */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="kitchenName">
+                  Kitchen Name
+                </label>
+                <input
+                  id="kitchenName"
+                  type="text"
+                  required
+                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  placeholder="e.g. My Home Kitchen"
+                  name="kitchenName"
+                  value={inputData.kitchenName}
+                  onChange={handleInputData}
+                />
+              </div>
+
+              <div className="flex flex-col space-y-1.5">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="phoneNumber">
+                  Phone (Optional)
+                </label>
+                <input
+                  id="phoneNumber"
+                  type="tel"
+                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  placeholder="+1 (555) 000-0000"
+                  name="phoneNumber"
+                  value={inputData.phoneNumber}
+                  onChange={handleInputData}
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-sm text-gray-700" htmlFor="confirmPassword">Confirm Password</label>
-              <input
-                id="confirmPassword"
-                type="password"
-                required
-                className="bg-gray-50 border border-black/20 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-700 focus:ring-1 focus:ring-green-700"
-                placeholder="Re-enter your password"
-                name="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                  setLocalError(null);
-                }}
-              />
-            </div>
-
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-sm text-gray-700" htmlFor="kitchenName">Kitchen Name</label>
-              <input
-                id="kitchenName"
-                type="text"
-                required
-                className="bg-gray-50 border border-black/20 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-700 focus:ring-1 focus:ring-green-700"
-                placeholder="e.g. My Home, Smith Family Kitchen"
-                name="kitchenName"
-                value={inputData.kitchenName}
-                onChange={handleInputData}
-              />
-            </div>
-
-            <div className="flex flex-col space-y-1">
-              <label className="font-medium text-sm text-gray-700" htmlFor="phoneNumber">Phone Number (optional)</label>
-              <input
-                id="phoneNumber"
-                type="text"
-                className="bg-gray-50 border border-black/20 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-700 focus:ring-1 focus:ring-green-700"
-                placeholder="Enter your phone number"
-                name="phoneNumber"
-                value={inputData.phoneNumber}
-                onChange={handleInputData}
-              />
-            </div>
-
-            {/* Feedback */}
-            {localError && <p className="text-red-500 text-sm bg-red-50 p-2 rounded">{localError}</p>}
-            {error && <p className="text-red-500 text-sm bg-red-50 p-2 rounded">{error}</p>}
-            {message && <p className="text-green-600 text-sm bg-green-50 p-2 rounded">{message}</p>}
-
-            <div>
+            <div className="pt-2">
               <button
-                className="bg-green-500 hover:bg-green-600 text-white rounded-lg py-2.5 font-medium text-center w-full transition cursor-pointer disabled:opacity-50 mt-2"
+                className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-xl py-3 font-bold text-sm text-center w-full shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer disabled:opacity-50 hover-lift"
                 type="submit"
                 disabled={loading}
               >
@@ -177,14 +219,19 @@ const SignUp = () => {
             </div>
           </form>
 
-          <div className="text-center pt-4 text-sm">
-            <span className="opacity-70">Already have an account? </span>
-            <Link to="/signin" className="font-bold text-green-600 hover:underline">Sign In</Link>
-          </div>
-
-          <div className="text-center pt-2 text-sm">
-            <span className="opacity-70">Joining someone else's kitchen? </span>
-            <Link to="/registertokitchen" className="font-bold text-amber-700 hover:underline">Join with Invite Code</Link>
+          <div className="text-center pt-5 text-xs text-gray-500 border-t border-gray-100 mt-6 space-y-2">
+            <div>
+              <span>Already have an account? </span>
+              <Link to="/signin" className="font-bold text-emerald-600 hover:text-emerald-700">
+                Sign In
+              </Link>
+            </div>
+            <div>
+              <span>Joining someone else's kitchen? </span>
+              <Link to="/registertokitchen" className="font-bold text-amber-700 hover:text-amber-800">
+                Join with Invite Code
+              </Link>
+            </div>
           </div>
         </div>
       </div>

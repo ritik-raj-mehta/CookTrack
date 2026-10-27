@@ -20,6 +20,8 @@ router.patch('/shoppingItem/:kitchenId/:itemId/toggle', authMiddleware, kitchenC
 
 router.delete('/shoppingItem/:kitchenId/:itemId', authMiddleware, kitchenCtrl.deleteShoppingItem);
 
+router.put('/kitchen/:kitchenId/item/:itemId', authMiddleware, kitchenCtrl.updateKitchenItem);
+
 router.delete('/kitchen/:kitchenId/item/:itemId', authMiddleware, kitchenCtrl.deleteKitchenItem);
 
 export default router;

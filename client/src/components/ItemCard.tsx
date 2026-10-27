@@ -1,14 +1,16 @@
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
+import { FiEdit3 } from "react-icons/fi";
 import type { ItemsTypes } from "../types/KitchenTypes";
 
 type ProductPropTypes = {
   productData: ItemsTypes[];
-  onDelete?: (id: string) => void;
+  onDelete?: (item: ItemsTypes) => void;
+  onEdit?: (item: ItemsTypes) => void;
 };
 
-const ItemCard = ({ productData, onDelete }: ProductPropTypes) => {
+const ItemCard = ({ productData, onDelete, onEdit }: ProductPropTypes) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pb-8 place-content-center gap-[30px]">
       {productData.map((k, idx) => {
@@ -34,7 +36,10 @@ const ItemCard = ({ productData, onDelete }: ProductPropTypes) => {
         }
 
         return (
-          <div key={itemId} className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition flex flex-col justify-between">
+          <div
+            key={itemId}
+            className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition flex flex-col justify-between border border-gray-100"
+          >
             <div>
               <div className="flex justify-between items-start gap-2">
                 <h3 className="font-bold text-lg text-slate-800 break-words">{k.productName}</h3>
@@ -46,7 +51,8 @@ const ItemCard = ({ productData, onDelete }: ProductPropTypes) => {
                 <div className="space-y-[-2px]">
                   <p className="opacity-70 text-xs">Quantity</p>
                   <p className="font-semibold text-slate-700">
-                    <span>{k.quantity} </span>{k.unit}
+                    <span>{k.quantity} </span>
+                    {k.unit}
                   </p>
                 </div>
 
@@ -74,15 +80,25 @@ const ItemCard = ({ productData, onDelete }: ProductPropTypes) => {
               )}
             </div>
 
-            <div className="pt-5 flex justify-end">
-              {onDelete && k._id && (
+            <div className="pt-5 flex items-center gap-3">
+              {onEdit && (
                 <button
                   type="button"
-                  onClick={() => onDelete(k._id!)}
-                  className="w-full py-1.5 rounded-lg flex items-center justify-center gap-x-2 text-red-600 bg-red-50 hover:bg-red-100 font-semibold border border-red-200 text-sm cursor-pointer transition"
+                  onClick={() => onEdit(k)}
+                  className="flex-1 py-2 px-3 rounded-lg flex items-center justify-center gap-x-1.5 text-blue-700 bg-blue-50 hover:bg-blue-100 font-semibold border border-blue-200 text-sm cursor-pointer transition shadow-xs"
                 >
-                  <MdDeleteOutline className="text-lg" />
-                  Delete Item
+                  <FiEdit3 className="text-base" />
+                  Edit
+                </button>
+              )}
+              {onDelete && (
+                <button
+                  type="button"
+                  onClick={() => onDelete(k)}
+                  className="flex-1 py-2 px-3 rounded-lg flex items-center justify-center gap-x-1.5 text-red-600 bg-red-50 hover:bg-red-100 font-semibold border border-red-200 text-sm cursor-pointer transition shadow-xs"
+                >
+                  <MdDeleteOutline className="text-base" />
+                  Delete
                 </button>
               )}
             </div>

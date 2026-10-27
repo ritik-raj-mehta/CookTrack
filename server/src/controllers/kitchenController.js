@@ -197,6 +197,44 @@ const deleteKitchenItem = async (req, res) => {
   }
 };
 
+const updateKitchenItem = async (req, res) => {
+  const { kitchenId, itemId } = req.params;
+  const updates = req.body;
+
+  try {
+    const item = await KitchenItem.findOne({ _id: itemId, kitchenId: kitchenId });
+    if (!item) {
+      return res.status(404).json({
+        isSuccess: false,
+        message: 'Kitchen item not found.'
+      });
+    }
+
+    if (updates.productName !== undefined) item.productName = updates.productName;
+    if (updates.category !== undefined) item.category = updates.category;
+    if (updates.quantity !== undefined) item.quantity = Number(updates.quantity);
+    if (updates.unit !== undefined) item.unit = updates.unit;
+    if (updates.storageLocation !== undefined) item.storageLocation = updates.storageLocation;
+    if (updates.expiryDate !== undefined) item.expiryDate = updates.expiryDate;
+    if (updates.notes !== undefined) item.notes = updates.notes;
+
+    item.updatedAt = new Date();
+    await item.save();
+
+    return res.json({
+      isSuccess: true,
+      message: 'Item updated successfully.',
+      data: item
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
 const getAllShoppingItemsByKitchenId = async (req, res) => {
   const { kitchenId } = req.params;
 
@@ -282,6 +320,7 @@ export default {
   getAllKitchenItemsByKitchenId,
   getKitchenMembers,
   deleteKitchenItem,
+  updateKitchenItem,
   getAllShoppingItemsByKitchenId,
   toggleShoppingItemBought,
   deleteShoppingItem

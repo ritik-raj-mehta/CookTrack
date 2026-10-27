@@ -208,6 +208,31 @@ export const deleteKitchenItem = createAsyncThunk(
   }
 );
 
+export const updateKitchenItem = createAsyncThunk(
+  "kitchen/updateKitchenItem",
+  async (
+    { itemId, data }: { itemId: string; data: Partial<ItemsTypes> },
+    { rejectWithValue, getState }
+  ) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) {
+        return rejectWithValue("Kitchen ID missing");
+      }
+      const res = await axios.put(
+        `${KITCHEN_API}/kitchen/${kitchenId}/item/${itemId}`,
+        data,
+        { withCredentials: true }
+      );
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to update item");
+    }
+  }
+);
+
 export const fetchKitchenMembers = createAsyncThunk(
   "kitchen/fetchKitchenMembers",
   async (_, { rejectWithValue, getState }) => {
@@ -346,6 +371,30 @@ export const kitchenSlice = createSlice({
             (item) => item._id !== action.payload.itemId
           );
         }
+      })
+
+      // update item
+      .addCase(updateKitchenItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateKitchenItem.fulfilled, (state, action) => {
+        state.loading = false;
+        const updated = action.payload?.data;
+        if (updated) {
+          state.kitchenItems = state.kitchenItems.map((item) =>
+            item._id === updated._id ? { ...item, ...updated } : item
+          );
+          if (state.kitchenData?.kitchenItemIds) {
+            state.kitchenData.kitchenItemIds = state.kitchenData.kitchenItemIds.map((item) =>
+              item._id === updated._id ? { ...item, ...updated } : item
+            );
+          }
+        }
+      })
+      .addCase(updateKitchenItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || null;
       })
 
       // fetch members
