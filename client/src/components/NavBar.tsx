@@ -12,16 +12,15 @@ import { FaPeopleGroup } from "react-icons/fa6";
 
 
 
-const { Header, Sider } = Layout;
+const { Sider } = Layout;
 
 const NavBar: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   const location = useLocation();
-
 
   const pathToKey: Record<string, string> = {
     "/dashboard": "1",
@@ -29,75 +28,78 @@ const NavBar: React.FC = () => {
     "/additemstokitchen": "3",
     "/additemstoshoppingcart": "4",
     "/kitchenmembers": "5",
-
-    // "/admin" : "6",
-    // "/admin/adddoctor" : "7"
   };
 
   const selectedKey = pathToKey[location.pathname] || "1";
 
-
   return (
-    <div className="min-h-screen">
-      <Layout style={{ minHeight: "100vh" }}>
-        <Sider
-          style={{ background: colorBgContainer, minHeight: "100vh" }}
-          trigger={null}
-          collapsible
-          collapsed={collapsed}
-        >
-          <h1 className="text-yellow-500 mx-auto font-bold text-center text-2xl pt-5 w-fit">
-            {collapsed ? "CT" : "Cook Track"}
-          </h1>
-          <div className="demo-logo-vertical" />
+    <Sider
+      style={{
+        background: colorBgContainer,
+        minHeight: "100vh",
+        boxShadow: "2px 0 8px 0 rgba(0, 0, 0, 0.05)",
+        zIndex: 10,
+      }}
+      trigger={null}
+      collapsible
+      collapsed={collapsed}
+      width={220}
+      collapsedWidth={80}
+    >
+      <div
+        className={`flex items-center ${
+          collapsed ? "justify-center" : "justify-between"
+        } px-4 py-4 border-b border-gray-100 min-h-[64px]`}
+      >
+        {!collapsed && (
+          <span className="text-amber-700 font-bold text-xl font-serif tracking-tight truncate">
+            Cook Track
+          </span>
+        )}
+        <Button
+          type="text"
+          icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          onClick={() => setCollapsed(!collapsed)}
+          className="text-gray-600 hover:text-black"
+          style={{ fontSize: "18px" }}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        />
+      </div>
 
-          <Menu
-            style={{ fontSize: "16px", paddingTop: "20px" }}
-            theme="light"
-            mode="inline"
-            selectedKeys={[selectedKey]}
-            items={[
-              {
-                key: "1",
-                icon: <FaHome />,
-                label: <NavLink to="/dashboard">Dashboard</NavLink>,
-              },
-              {
-                key: "2",
-                icon: <FiCodesandbox />,
-                label: <NavLink to="/kitchenitems">My Items</NavLink>,
-              },
-              {
-                key: "3",
-                icon: <IoMdAdd />,
-                label: <NavLink to="/additemstokitchen">Add Items</NavLink>,
-              },
-              {
-                key: "4",
-                icon: <FaCartPlus />,
-                label: <NavLink to="/additemstoshoppingcart">Shopping List</NavLink>,
-              },
-              {
-                key: "5",
-                icon: <FaPeopleGroup />,
-                label: <NavLink to="/kitchenmembers">Members</NavLink>,
-              },
-            ]}
-          />
-        </Sider>
-
-        <Layout>
-          <Header style={{ padding: 0, background: colorBgContainer, height: "64px" }}>
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{ fontSize: "18px", width: 64, height: 64 }}
-            />
-          </Header>
-        </Layout>
-      </Layout>
-    </div>
+      <Menu
+        style={{ fontSize: "15px", paddingTop: "12px", borderRight: 0 }}
+        theme="light"
+        mode="inline"
+        selectedKeys={[selectedKey]}
+        items={[
+          {
+            key: "1",
+            icon: <FaHome className="text-lg" />,
+            label: <NavLink to="/dashboard">Dashboard</NavLink>,
+          },
+          {
+            key: "2",
+            icon: <FiCodesandbox className="text-lg" />,
+            label: <NavLink to="/kitchenitems">My Items</NavLink>,
+          },
+          {
+            key: "3",
+            icon: <IoMdAdd className="text-lg" />,
+            label: <NavLink to="/additemstokitchen">Add Items</NavLink>,
+          },
+          {
+            key: "4",
+            icon: <FaCartPlus className="text-lg" />,
+            label: <NavLink to="/additemstoshoppingcart">Shopping List</NavLink>,
+          },
+          {
+            key: "5",
+            icon: <FaPeopleGroup className="text-lg" />,
+            label: <NavLink to="/kitchenmembers">Members</NavLink>,
+          },
+        ]}
+      />
+    </Sider>
   );
 };
 

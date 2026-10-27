@@ -44,6 +44,25 @@ export type KitchenMember = {
   createdAt: string;
 };
 
+export type ShoppingItemInput = {
+  name: string;
+  neededQuantity: number;
+  unit: string;
+  notes?: string;
+};
+
+export type ShoppingItem = {
+  _id: string;
+  kitchenId?: string;
+  name: string;
+  neededQuantity: number;
+  unit: string;
+  notes?: string;
+  isBought?: boolean;
+  createdAt: string;
+  updatedAt?: string;
+};
+
 export type KitchenData = {
   _id?: string;
   kitchenName: string;
@@ -51,13 +70,5 @@ export type KitchenData = {
   createdBy?: string;
   members?: string[];
   kitchenItemIds?: KitchenItem[];
-  kitchenShoppingItemIds?: {
-    _id: string;
-    name: string;
-    neededQuantity: number;
-    unit: string;
-    notes?: string;
-    isBought?: boolean;
-    createdAt: string;
-  }[];
+  kitchenShoppingItemIds?: ShoppingItem[];
 };

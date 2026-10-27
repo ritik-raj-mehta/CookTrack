@@ -14,6 +14,12 @@ router.post('/addItems/:kitchenId', authMiddleware, kitchenCtrl.addItemsToKitche
 
 router.post('/addShoppingItems/:kitchenId', authMiddleware, kitchenCtrl.addShoppingItemsToKitchen);
 
+router.get('/shoppingItems/:kitchenId', authMiddleware, kitchenCtrl.getAllShoppingItemsByKitchenId);
+
+router.patch('/shoppingItem/:kitchenId/:itemId/toggle', authMiddleware, kitchenCtrl.toggleShoppingItemBought);
+
+router.delete('/shoppingItem/:kitchenId/:itemId', authMiddleware, kitchenCtrl.deleteShoppingItem);
+
 router.delete('/kitchen/:kitchenId/item/:itemId', authMiddleware, kitchenCtrl.deleteKitchenItem);
 
 export default router;

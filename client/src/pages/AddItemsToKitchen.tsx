@@ -43,7 +43,7 @@ const AddItemsToKitchen = () => {
 
   return (
     <div className="bg-gray-100 w-full">
-      <div className="bg-white py-2 border-b border-black/10 ps-17 space-y-[-5px]">
+      <div className="bg-white py-3 border-b border-black/10 px-8">
 
         <div className="flex gap-x-4">
           <div className="bg-green-200 text-2xl p-2 rounded-[100%] items-center my-auto text-green-800">

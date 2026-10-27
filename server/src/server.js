@@ -24,7 +24,9 @@ app.use(cookieParser());
 // Default allowed origins (local dev)
 const DEFAULT_ALLOWED = [
   'http://localhost:3000',
-  'http://localhost:5173'
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175'
 ];
 
 // Extra origins from env (comma-separated)

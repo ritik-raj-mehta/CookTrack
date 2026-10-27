@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import type { RootState } from "../store";
-import type { shoppingItemTypes } from "../../pages/AddItemsToShoppingCart";
-import type { ItemsTypes, KitchenData, KitchenMember } from "../../types/KitchenTypes";
+import type { ItemsTypes, KitchenData, KitchenMember, ShoppingItem, ShoppingItemInput } from "../../types/KitchenTypes";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const KITCHEN_API = `${API_BASE}/api/kitchen`;
@@ -13,6 +12,7 @@ export type KitchenStateType = {
   error: string | null;
   kitchenData: KitchenData | null;
   kitchenItems: ItemsTypes[];
+  shoppingItems: ShoppingItem[];
   members: KitchenMember[];
 };
 
@@ -22,6 +22,7 @@ const initialState: KitchenStateType = {
   error: null,
   kitchenData: null,
   kitchenItems: [],
+  shoppingItems: [],
   members: [],
 };
 
@@ -101,7 +102,7 @@ export const addKitchenItems = createAsyncThunk(
 
 export const addItemsToShoppingCart = createAsyncThunk(
   "kitchen/addItemsToShoppingCart",
-  async (data: shoppingItemTypes, { rejectWithValue, getState }) => {
+  async (data: ShoppingItemInput, { rejectWithValue, getState }) => {
     try {
       const state = getState() as RootState;
       const { kitchenId } = state.auth;
@@ -121,6 +122,70 @@ export const addItemsToShoppingCart = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
       return rejectWithValue(err.response?.data?.message || "Items not added successfully");
+    }
+  }
+);
+
+export const fetchShoppingItems = createAsyncThunk(
+  "kitchen/fetchShoppingItems",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) {
+        return rejectWithValue("Kitchen ID missing");
+      }
+      const res = await axios.get(
+        `${KITCHEN_API}/shoppingItems/${kitchenId}`,
+        { withCredentials: true }
+      );
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Fetching shopping items failed");
+    }
+  }
+);
+
+export const toggleShoppingItemBought = createAsyncThunk(
+  "kitchen/toggleShoppingItemBought",
+  async (itemId: string, { rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) {
+        return rejectWithValue("Kitchen ID missing");
+      }
+      const res = await axios.patch(
+        `${KITCHEN_API}/shoppingItem/${kitchenId}/${itemId}/toggle`,
+        {},
+        { withCredentials: true }
+      );
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Updating item status failed");
+    }
+  }
+);
+
+export const deleteShoppingItem = createAsyncThunk(
+  "kitchen/deleteShoppingItem",
+  async (itemId: string, { rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) {
+        return rejectWithValue("Kitchen ID missing");
+      }
+      const res = await axios.delete(
+        `${KITCHEN_API}/shoppingItem/${kitchenId}/${itemId}`,
+        { withCredentials: true }
+      );
+      return { ...res.data, itemId };
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to delete item");
     }
   }
 );
@@ -167,18 +232,23 @@ export const fetchKitchenMembers = createAsyncThunk(
 export const kitchenSlice = createSlice({
   name: "kitchen",
   initialState,
-  reducers: {},
+  reducers: {
+    clearKitchenMessage: (state) => {
+      state.message = null;
+    },
+    clearKitchenError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // fetch kitchen
       .addCase(fetchKitchenData.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.message = null;
       })
       .addCase(fetchKitchenData.fulfilled, (state, action) => {
         state.loading = false;
-        state.message = action.payload?.message || null;
         state.kitchenData = action.payload?.data || null;
       })
       .addCase(fetchKitchenData.rejected, (state, action) => {
@@ -190,11 +260,9 @@ export const kitchenSlice = createSlice({
       .addCase(fetchAllKitchenItemsByKitchenId.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.message = null;
       })
       .addCase(fetchAllKitchenItemsByKitchenId.fulfilled, (state, action) => {
         state.loading = false;
-        state.message = action.payload?.message || null;
         state.kitchenItems = Array.isArray(action.payload?.data) ? action.payload.data : [];
       })
       .addCase(fetchAllKitchenItemsByKitchenId.rejected, (state, action) => {
@@ -226,11 +294,46 @@ export const kitchenSlice = createSlice({
       })
       .addCase(addItemsToShoppingCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.message = action.payload?.message || "Items added successfully";
+        state.message = action.payload?.message || "Shopping item added successfully";
+        if (action.payload?.data) {
+          state.shoppingItems = [action.payload.data, ...state.shoppingItems];
+        }
       })
       .addCase(addItemsToShoppingCart.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || action.error.message || null;
+      })
+
+      // fetch shopping items
+      .addCase(fetchShoppingItems.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchShoppingItems.fulfilled, (state, action) => {
+        state.loading = false;
+        state.shoppingItems = Array.isArray(action.payload?.data) ? action.payload.data : [];
+      })
+      .addCase(fetchShoppingItems.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || null;
+        state.shoppingItems = [];
+      })
+
+      // toggle shopping item bought
+      .addCase(toggleShoppingItemBought.fulfilled, (state, action) => {
+        const updated = action.payload?.data;
+        if (updated) {
+          state.shoppingItems = state.shoppingItems.map((item) =>
+            item._id === updated._id ? updated : item
+          );
+        }
+      })
+
+      // delete shopping item
+      .addCase(deleteShoppingItem.fulfilled, (state, action) => {
+        state.shoppingItems = state.shoppingItems.filter(
+          (item) => item._id !== action.payload.itemId
+        );
       })
 
       // delete item
@@ -260,5 +363,7 @@ export const kitchenSlice = createSlice({
       });
   },
 });
+
+export const { clearKitchenMessage, clearKitchenError } = kitchenSlice.actions;
 
 export default kitchenSlice.reducer;

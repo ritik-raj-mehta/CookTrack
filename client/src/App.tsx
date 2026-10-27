@@ -16,9 +16,11 @@ import { getMe, clearError, clearMessage } from "./stores/slices/AuthSlice";
 import type { AppDispatch } from "./stores/store";
 
 const Layout = () => (
-  <div className="flex">
+  <div className="flex min-h-screen w-full bg-gray-100">
     <NavBar />
-    <Outlet />
+    <main className="flex-1 min-w-0 overflow-y-auto">
+      <Outlet />
+    </main>
   </div>
 );
 

@@ -59,7 +59,8 @@ const addShoppingItemsToKitchen = async (req, res) => {
 
     return res.json({
       isSuccess: true,
-      message: 'Shopping item added successfully.'
+      message: 'Shopping item added successfully.',
+      data: shopItem
     });
   } catch (err) {
     console.error(err);
@@ -196,11 +197,92 @@ const deleteKitchenItem = async (req, res) => {
   }
 };
 
+const getAllShoppingItemsByKitchenId = async (req, res) => {
+  const { kitchenId } = req.params;
+
+  try {
+    const data = await ShoppingItem.find({ kitchenId: kitchenId }).sort({ createdAt: -1 });
+
+    return res.json({
+      isSuccess: true,
+      message: 'Shopping items fetched successfully.',
+      data
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
+const toggleShoppingItemBought = async (req, res) => {
+  const { kitchenId, itemId } = req.params;
+
+  try {
+    const item = await ShoppingItem.findOne({ _id: itemId, kitchenId: kitchenId });
+    if (!item) {
+      return res.status(404).json({
+        isSuccess: false,
+        message: 'Shopping item not found.'
+      });
+    }
+
+    item.isBought = !item.isBought;
+    await item.save();
+
+    return res.json({
+      isSuccess: true,
+      message: 'Status updated.',
+      data: item
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
+const deleteShoppingItem = async (req, res) => {
+  const { kitchenId, itemId } = req.params;
+
+  try {
+    const kitchen = await Kitchen.findOne({ kitchenId: kitchenId });
+    if (kitchen) {
+      kitchen.kitchenShoppingItemIds = kitchen.kitchenShoppingItemIds.filter(
+        (id) => id.toString() !== itemId
+      );
+      kitchen.updatedAt = new Date();
+      await kitchen.save();
+    }
+
+    await ShoppingItem.findByIdAndDelete(itemId);
+
+    return res.json({
+      isSuccess: true,
+      message: 'Shopping item deleted.',
+      itemId
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
 export default {
   addItemsToKitchen,
   addShoppingItemsToKitchen,
   getKitchen,
   getAllKitchenItemsByKitchenId,
   getKitchenMembers,
-  deleteKitchenItem
+  deleteKitchenItem,
+  getAllShoppingItemsByKitchenId,
+  toggleShoppingItemBought,
+  deleteShoppingItem
 };
