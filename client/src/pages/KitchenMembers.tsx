@@ -46,6 +46,9 @@ const KitchenMembers = () => {
   // Modal States
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
+  const [leavePassword, setLeavePassword] = useState("");
+  const [showLeavePassword, setShowLeavePassword] = useState(false);
+  const [leaveModalError, setLeaveModalError] = useState<string | null>(null);
 
   // Delete Kitchen Modal + Verification State
   const [showDeleteKitchenModal, setShowDeleteKitchenModal] = useState(false);
@@ -90,12 +93,17 @@ const KitchenMembers = () => {
     return "from-blue-500 to-indigo-600 text-white";
   };
 
-  // 1. Leave Kitchen (User account completely deleted from DB; logs out to signup fresh)
+  // 1. Leave Kitchen (User account completely deleted from DB; requires password verification; logs out to signup fresh)
   const handleConfirmLeave = async () => {
+    if (!leavePassword.trim()) {
+      setLeaveModalError("Please enter your password.");
+      return;
+    }
+
     setIsLeaving(true);
-    setActionError(null);
+    setLeaveModalError(null);
     try {
-      await dispatch(leaveKitchen()).unwrap();
+      await dispatch(leaveKitchen(leavePassword)).unwrap();
       try {
         await dispatch(logout()).unwrap();
       } catch {
@@ -105,7 +113,7 @@ const KitchenMembers = () => {
       setShowLeaveModal(false);
       navigate("/");
     } catch (err) {
-      setActionError(typeof err === "string" ? err : "Failed to leave kitchen.");
+      setLeaveModalError(typeof err === "string" ? err : "Failed to leave kitchen.");
       setIsLeaving(false);
     }
   };
@@ -233,17 +241,6 @@ const KitchenMembers = () => {
               </button>
             </div>
           )}
-
-          {/* Exit Kitchen Button */}
-          <button
-            type="button"
-            onClick={() => setShowLeaveModal(true)}
-            className="flex items-center gap-1.5 bg-white border border-gray-200 hover:border-red-300 hover:bg-red-50 text-gray-700 hover:text-red-600 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-2xs transition cursor-pointer hover-lift"
-            title="Leave this kitchen"
-          >
-            <FiLogOut className="text-sm text-red-500" />
-            <span>Exit Kitchen</span>
-          </button>
         </div>
       </div>
 
@@ -448,6 +445,35 @@ const KitchenMembers = () => {
             </div>
           </div>
         )}
+
+        {/* Exit Kitchen Card (Below Delete Kitchen) */}
+        <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-6 shadow-xs space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-base font-bold text-amber-950 flex items-center gap-2">
+                <FiLogOut className="text-amber-600 text-lg" />
+                Exit Kitchen
+              </h3>
+              <p className="text-xs sm:text-sm text-amber-800/80 mt-1 max-w-xl leading-relaxed">
+                Leave this kitchen and permanently remove your account data from the database. You will be able to sign up fresh whenever you return.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowLeaveModal(true);
+                setLeavePassword("");
+                setShowLeavePassword(false);
+                setLeaveModalError(null);
+              }}
+              className="self-start sm:self-auto bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm py-2.5 px-5 rounded-xl shadow-xs transition hover-lift cursor-pointer flex items-center gap-2 shrink-0"
+            >
+              <FiLogOut className="text-base" />
+              <span>Exit Kitchen</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* ========================================================================= */}
@@ -455,7 +481,7 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {showLeaveModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto">
             <div className="w-14 h-14 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiLogOut />
             </div>
@@ -475,10 +501,57 @@ const KitchenMembers = () => {
               Notice: Your login data will be completely wiped from the system. You will be logged out immediately.
             </div>
 
+            {/* Password Verification Field */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <FiLock className="text-amber-600" />
+                Security Verification
+              </p>
+              <p className="text-xs text-slate-500">
+                Please enter your login password to confirm exiting this kitchen and deleting your account.
+              </p>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-700 mb-1">
+                  Your Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showLeavePassword ? "text" : "password"}
+                    value={leavePassword}
+                    onChange={(e) => {
+                      setLeavePassword(e.target.value);
+                      setLeaveModalError(null);
+                    }}
+                    placeholder="Enter your login password"
+                    className="w-full text-xs px-3 py-2 pr-9 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowLeavePassword(!showLeavePassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  >
+                    {showLeavePassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
+                  </button>
+                </div>
+              </div>
+
+              {leaveModalError && (
+                <div className="bg-red-100 border border-red-200 text-red-700 text-xs p-2.5 rounded-lg font-medium flex items-center gap-1.5 animate-fadeIn">
+                  <FiAlertTriangle className="shrink-0" />
+                  <span>{leaveModalError}</span>
+                </div>
+              )}
+            </div>
+
             <div className="flex items-center gap-3 pt-2">
               <button
                 type="button"
-                onClick={() => setShowLeaveModal(false)}
+                onClick={() => {
+                  setShowLeaveModal(false);
+                  setLeavePassword("");
+                  setLeaveModalError(null);
+                }}
                 disabled={isLeaving}
                 className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
               >
@@ -488,10 +561,10 @@ const KitchenMembers = () => {
                 type="button"
                 onClick={handleConfirmLeave}
                 disabled={isLeaving}
-                className="flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
+                className="flex-1 py-2.5 px-4 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
               >
                 <FiLogOut className="text-base" />
-                {isLeaving ? "Exiting & Deleting..." : "Yes, Exit & Delete Account"}
+                {isLeaving ? "Verifying..." : "Verify & Exit Kitchen"}
               </button>
             </div>
           </div>

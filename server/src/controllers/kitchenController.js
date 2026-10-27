@@ -366,6 +366,7 @@ const deleteShoppingItem = async (req, res) => {
 const leaveKitchen = async (req, res) => {
   const { kitchenId } = req.params;
   const userId = req.user?.Id;
+  const { password } = req.body || {};
 
   try {
     const user = await User.findById(userId);
@@ -377,6 +378,22 @@ const leaveKitchen = async (req, res) => {
       return res
         .status(400)
         .json({ isSuccess: false, message: 'You are not a member of this kitchen.' });
+    }
+
+    // Verify user password before exiting kitchen
+    if (!password || !String(password).trim()) {
+      return res.status(400).json({
+        isSuccess: false,
+        message: 'Password is required to exit the kitchen.'
+      });
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, user.userPassword);
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        isSuccess: false,
+        message: 'Invalid password. Verification failed.'
+      });
     }
 
     const kitchen = await Kitchen.findOne({ kitchenId });

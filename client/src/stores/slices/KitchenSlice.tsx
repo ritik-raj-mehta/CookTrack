@@ -256,14 +256,14 @@ export const fetchKitchenMembers = createAsyncThunk(
 
 export const leaveKitchen = createAsyncThunk(
   "kitchen/leaveKitchen",
-  async (_, { rejectWithValue, getState }) => {
+  async (password: string, { rejectWithValue, getState }) => {
     try {
       const state = getState() as RootState;
       const { kitchenId } = state.auth;
       if (!kitchenId) return rejectWithValue("Kitchen ID missing");
       const res = await axios.post(
         `${KITCHEN_API}/leave/${kitchenId}`,
-        {},
+        { password },
         { withCredentials: true }
       );
       return res.data;
