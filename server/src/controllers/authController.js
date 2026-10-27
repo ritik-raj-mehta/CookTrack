@@ -86,30 +86,33 @@ const registerToKitchen = async (req, res) => {
       });
     }
 
+    // verify kitchen exists before saving the user
+    const kitchen = await Kitchen.findOne({ kitchenId });
+    if (!kitchen) {
+      return res
+        .status(404)
+        .json({ isSuccess: false, message: 'Kitchen not found with this code.' });
+    }
+
     const hashed = await bcrypt.hash(userPassword, 10);
 
     const user = new User({
       userName,
       userPassword: hashed,
       userEmail,
-      kitchenName,
+      kitchenName: kitchenName || kitchen.kitchenName,
       role: 'User',
       kitchenId,
       phoneNumber
     });
     await user.save();
 
-    // add user id to kitchen members
-    const kitchen = await Kitchen.findOne({ kitchenId });
-    if (!kitchen) {
-      return res
-        .status(404)
-        .json({ isSuccess: false, message: 'Kitchen not found.' });
+    // add user id to kitchen members if not already there
+    if (!kitchen.members.includes(user._id.toString())) {
+      kitchen.members.push(user._id.toString());
+      kitchen.updatedAt = new Date();
+      await kitchen.save();
     }
-
-    kitchen.members.push(user._id.toString());
-    kitchen.updatedAt = new Date();
-    await kitchen.save();
 
     return res.json({
       isSuccess: true,

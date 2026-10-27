@@ -43,7 +43,7 @@ const corsOptions = {
       callback(null, true);
     } else {
       console.warn('CORS blocked origin:', origin);
-      callback(new Error('Not allowed by CORS'));
+      callback(null, false);
     }
   },
   credentials: true,
@@ -58,6 +58,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/kitchen', kitchenRoutes);
 
 app.get('/', (req, res) => res.send('CookTrack MERN server is running'));
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled server error:', err);
+  res.status(err.status || 500).json({
+    isSuccess: false,
+    message: err.message || 'Internal Server Error'
+  });
+});
 
 // ---- START SERVER ----
 app.listen(PORT, () => {

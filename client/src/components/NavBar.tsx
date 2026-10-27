@@ -38,17 +38,21 @@ const NavBar: React.FC = () => {
 
 
   return (
-    <div className="">
-      <Layout>
+    <div className="min-h-screen">
+      <Layout style={{ minHeight: "100vh" }}>
         <Sider
-          style={{ fontSize: "30px", width: 64, height: 64, background: colorBgContainer, }}
-          trigger={null} collapsible collapsed={collapsed}>
-          <h1 className=" text-yellow-400 mx-auto font-bold text-center text-3xl pt-5 w-fit">Cook Track</h1>
+          style={{ background: colorBgContainer, minHeight: "100vh" }}
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
+        >
+          <h1 className="text-yellow-500 mx-auto font-bold text-center text-2xl pt-5 w-fit">
+            {collapsed ? "CT" : "Cook Track"}
+          </h1>
           <div className="demo-logo-vertical" />
 
           <Menu
-
-            style={{ fontSize: "20px", paddingTop: "30px", }}
+            style={{ fontSize: "16px", paddingTop: "20px" }}
             theme="light"
             mode="inline"
             selectedKeys={[selectedKey]}
@@ -56,7 +60,7 @@ const NavBar: React.FC = () => {
               {
                 key: "1",
                 icon: <FaHome />,
-                label: <NavLink to="/dashboard">DashBoard</NavLink>,
+                label: <NavLink to="/dashboard">Dashboard</NavLink>,
               },
               {
                 key: "2",
@@ -71,56 +75,29 @@ const NavBar: React.FC = () => {
               {
                 key: "4",
                 icon: <FaCartPlus />,
-                label: <NavLink to="/additemstoshoppingcart">Shopping Cart</NavLink>,
+                label: <NavLink to="/additemstoshoppingcart">Shopping List</NavLink>,
               },
               {
                 key: "5",
                 icon: <FaPeopleGroup />,
                 label: <NavLink to="/kitchenmembers">Members</NavLink>,
               },
-
-              // {
-              //   key: "5",
-              //   icon: <MdContactPage />,
-              //   label: <NavLink to="/admin/contactmessage">Messages</NavLink>,
-              // },
-              // {
-              //   key: "7",
-              //   icon: <HiOutlineUserAdd />,
-              //   label: <NavLink to="/admin/adddoctor">Add Docotor</NavLink>,
-              // },
             ]}
-
           />
-
-
         </Sider>
 
         <Layout>
-          <Header style={{ padding: 0, background: colorBgContainer }}>
+          <Header style={{ padding: 0, background: colorBgContainer, height: "64px" }}>
             <Button
               type="text"
               icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
               onClick={() => setCollapsed(!collapsed)}
-              style={{ fontSize: "20px", width: 64, height: 64, display: "relative" }}
+              style={{ fontSize: "18px", width: 64, height: 64 }}
             />
-
           </Header>
-          {/* <Content
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}
-        >
-          Content
-        </Content> */}
         </Layout>
       </Layout>
     </div>
-
   );
 };
 

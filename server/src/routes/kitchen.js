@@ -8,10 +8,12 @@ router.get('/kitchen/:kitchenId/:Id', authMiddleware, kitchenCtrl.getKitchen);
 
 router.get('/kitchenItems/:kitchenId', authMiddleware, kitchenCtrl.getAllKitchenItemsByKitchenId);
 
+router.get('/members/:kitchenId', authMiddleware, kitchenCtrl.getKitchenMembers);
+
 router.post('/addItems/:kitchenId', authMiddleware, kitchenCtrl.addItemsToKitchen);
 
 router.post('/addShoppingItems/:kitchenId', authMiddleware, kitchenCtrl.addShoppingItemsToKitchen);
 
-router.delete('/kitchen/:kitchenId/item/:itemId', kitchenCtrl.deleteKitchenItem);
+router.delete('/kitchen/:kitchenId/item/:itemId', authMiddleware, kitchenCtrl.deleteKitchenItem);
 
 export default router;

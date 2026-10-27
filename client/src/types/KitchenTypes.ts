@@ -1,14 +1,14 @@
 export type ProductTypes = {
-    category : string
-    expiryDate : string
-    notes : string
-    productName : string
-    quantity : number
-    storageLocation : string
-    unit : string
-    productId? : string
-}
-
+  _id?: string;
+  category: string;
+  expiryDate: string;
+  notes: string;
+  productName: string;
+  quantity: number;
+  storageLocation: string;
+  unit: string;
+  productId?: string;
+};
 
 export type KitchenItem = {
   _id: string;
@@ -24,11 +24,40 @@ export type KitchenItem = {
 };
 
 export type ItemsTypes = {
-  productName: string,
-  category: string,
-  quantity: number
-  unit: string
-  storageLocation: string
-  expiryDate: string
-  notes: string
-}
+  _id?: string;
+  productName: string;
+  category: string;
+  quantity: number;
+  unit: string;
+  storageLocation: string;
+  expiryDate: string;
+  notes: string;
+  createdAt?: string;
+};
+
+export type KitchenMember = {
+  _id: string;
+  userName: string;
+  userEmail: string;
+  role: string;
+  phoneNumber?: string;
+  createdAt: string;
+};
+
+export type KitchenData = {
+  _id?: string;
+  kitchenName: string;
+  kitchenId: string;
+  createdBy?: string;
+  members?: string[];
+  kitchenItemIds?: KitchenItem[];
+  kitchenShoppingItemIds?: {
+    _id: string;
+    name: string;
+    neededQuantity: number;
+    unit: string;
+    notes?: string;
+    isBought?: boolean;
+    createdAt: string;
+  }[];
+};

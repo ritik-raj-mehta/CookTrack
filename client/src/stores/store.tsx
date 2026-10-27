@@ -4,21 +4,19 @@ import kitchenReducer from "./slices/KitchenSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const persistConfig = {
-  key: "root",
+const authPersistConfig = {
+  key: "auth",
   storage,
-    whitelist: ["auth"],
+  whitelist: ["isAuthenticated", "role", "kitchenId", "userId", "user"],
 };
 
 const rootReducer = combineReducers({
-  auth: authReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
   kitchen: kitchenReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,

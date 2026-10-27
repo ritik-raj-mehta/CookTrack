@@ -12,7 +12,7 @@ import AddItemsToShoppingCart from "./pages/AddItemsToShoppingCart";
 import KitchenItem from "./pages/KitchenItem";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getMe } from "./stores/slices/AuthSlice";
+import { getMe, clearError, clearMessage } from "./stores/slices/AuthSlice";
 import type { AppDispatch } from "./stores/store";
 
 const Layout = () => (
@@ -26,6 +26,8 @@ const App = () => {
    const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
+    dispatch(clearError());
+    dispatch(clearMessage());
     dispatch(getMe()); // validate session from cookie
   }, [dispatch]);
   return (

@@ -126,6 +126,41 @@ const getAllKitchenItemsByKitchenId = async (req, res) => {
   }
 };
 
+const getKitchenMembers = async (req, res) => {
+  const { kitchenId } = req.params;
+
+  try {
+    const kitchen = await Kitchen.findOne({ kitchenId: kitchenId });
+    if (!kitchen) {
+      return res
+        .status(404)
+        .json({ isSuccess: false, message: 'Kitchen not found' });
+    }
+
+    const members = await User.find(
+      { kitchenId: kitchenId },
+      'userName userEmail role phoneNumber createdAt'
+    );
+
+    return res.json({
+      isSuccess: true,
+      message: 'Kitchen members fetched successfully.',
+      data: {
+        kitchenName: kitchen.kitchenName,
+        kitchenId: kitchen.kitchenId,
+        createdBy: kitchen.createdBy,
+        members
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
 const deleteKitchenItem = async (req, res) => {
   const { kitchenId , itemId } = req.params;
 
@@ -149,7 +184,8 @@ const deleteKitchenItem = async (req, res) => {
 
     return res.json({
       isSuccess: true,
-      message: 'Item deleted.'
+      message: 'Item deleted.',
+      itemId
     });
   } catch (err) {
     console.error(err);
@@ -165,5 +201,6 @@ export default {
   addShoppingItemsToKitchen,
   getKitchen,
   getAllKitchenItemsByKitchenId,
+  getKitchenMembers,
   deleteKitchenItem
 };

@@ -16,10 +16,10 @@ const UserSchema = new mongoose.Schema({
   userPassword: { type: String, required: true },
   userEmail: { type: String, required: true, unique: true },
   role: { type: String, default: 'User' },
-  kitchenId: { type: String, default: generateKitchenCode() },
+  kitchenId: { type: String, default: generateKitchenCode },
   kitchenName: { type: String },
   phoneNumber: { type: String }
 }, { timestamps: true });
 
-// module.exports = mongoose.model('User', UserSchema);
+export { generateKitchenCode };
 export default mongoose.model('User', UserSchema);

@@ -26,7 +26,7 @@ const Home = () => {
 
             <div className="text-center">
               <p className="text-green-400 text-3xl font-bold">2.5x</p>
-              <p className="opacity-70 font-medium">Better Plaining</p>
+              <p className="opacity-70 font-medium">Better Planning</p>
             </div>
 
             <div className="text-center">
@@ -35,8 +35,13 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="flex justify-center py-10">
-            <Link to="/registertokitchen" className="flex gap-3 items-center bg-green-500 py-2 px-6 rounded-lg font-bold text-white">Get into the Kitchen <FaArrowRightLong /></Link>
+          <div className="flex gap-4 justify-center py-10">
+            <Link to="/signup" className="flex gap-2 items-center bg-green-500 hover:bg-green-600 py-2.5 px-6 rounded-lg font-bold text-white transition">
+              Create a Kitchen <FaArrowRightLong />
+            </Link>
+            <Link to="/registertokitchen" className="flex gap-2 items-center bg-amber-50 hover:bg-amber-100 border border-amber-300 py-2.5 px-6 rounded-lg font-bold text-amber-800 transition">
+              Join Existing Kitchen
+            </Link>
           </div>
 
           <div className="flex gap-x-8">

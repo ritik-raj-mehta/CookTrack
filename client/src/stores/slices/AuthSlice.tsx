@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { REHYDRATE } from "redux-persist";
 import type { SignUpType } from "../../pages/SignUp";
 import type { FormDataType } from "../../pages/SignIn";
 import type { RegisterOtherUserType } from "../../pages/RegisterToKitchen";
@@ -33,7 +34,8 @@ const initialState: AuthState = {
 
 /* ---------------- API BASE ---------------- */
 
-const API = "http://localhost:5000/api/auth";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API = `${API_BASE}/api/auth`;
 
 /* ---------------- THUNKS ---------------- */
 
@@ -46,8 +48,9 @@ export const register = createAsyncThunk(
         withCredentials: true,
       });
       return res.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Registration failed");
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Registration failed");
     }
   }
 );
@@ -61,8 +64,9 @@ export const registerToKitchen = createAsyncThunk(
         withCredentials: true,
       });
       return res.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Registration failed");
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Registration failed");
     }
   }
 );
@@ -76,8 +80,9 @@ export const login = createAsyncThunk(
         withCredentials: true,
       });
       return res.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Login failed");
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Login failed");
     }
   }
 );
@@ -87,14 +92,11 @@ export const getMe = createAsyncThunk(
   "auth/getMe",
   async (_, { rejectWithValue }) => {
     try {
-      console.log("🔍 Checking session with getMe()...");
       const res = await axios.get(`${API}/me`, {
         withCredentials: true,
       });
-      console.log("✅ Session valid, user:", res.data);
       return res.data;
-    } catch (error: any) {
-      // console.error("❌ Session check failed:", error.response?.status, error.response?.data);
+    } catch {
       return rejectWithValue("Session expired");
     }
   }
@@ -105,15 +107,13 @@ export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      console.log("Calling logout API...");
       const res = await axios.post(`${API}/logout`, {}, {
         withCredentials: true,
       });
-      console.log("Logout API response:", res.data);
       return res.data;
-    } catch (error: any) {
-      // console.error("Logout API error:", error.response?.data);
-      return rejectWithValue(error.response?.data?.message || "Logout failed");
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Logout failed");
     }
   }
 );
@@ -123,20 +123,39 @@ export const logout = createAsyncThunk(
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+    clearMessage: (state) => {
+      state.message = null;
+    },
+  },
 
   extraReducers: (builder) => {
+    /* ---------- REHYDRATE (Redux Persist) ---------- */
+    builder
+      .addCase(REHYDRATE, (state) => {
+        state.loading = false;
+        state.error = null;
+        state.message = null;
+      });
+
     /* ---------- REGISTER ---------- */
     builder
       .addCase(register.pending, (state) => {
         state.loading = true;
+        state.error = null;
+        state.message = null;
       })
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         state.message = action.payload.message;
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
+        state.message = null;
         state.error = action.payload as string;
       });
 
@@ -144,13 +163,17 @@ export const authSlice = createSlice({
     builder
       .addCase(registerToKitchen.pending, (state) => {
         state.loading = true;
+        state.error = null;
+        state.message = null;
       })
       .addCase(registerToKitchen.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         state.message = action.payload.message;
       })
       .addCase(registerToKitchen.rejected, (state, action) => {
         state.loading = false;
+        state.message = null;
         state.error = action.payload as string;
       });
 
@@ -158,17 +181,25 @@ export const authSlice = createSlice({
     builder
       .addCase(login.pending, (state) => {
         state.loading = true;
+        state.error = null;
+        state.message = null;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         state.message = action.payload.message;
         state.role = action.payload.role;
         state.kitchenId = action.payload.kitchenId;
-        state.userId = action.payload.id;
+        state.userId = action.payload.id || action.payload.userId;
+        state.user = {
+          email: action.payload.email,
+          username: action.payload.name || action.payload.userName,
+        };
         state.isAuthenticated = true;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
+        state.message = null;
         state.error = action.payload as string;
         state.isAuthenticated = false;
       });
@@ -181,6 +212,8 @@ export const authSlice = createSlice({
       .addCase(getMe.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
+        state.error = null;
+        state.message = null;
         state.user = {
           email: action.payload.email,
           username: action.payload.username,
@@ -190,19 +223,22 @@ export const authSlice = createSlice({
         state.userId = action.payload.userId;
       })
       .addCase(getMe.rejected, (state) => {
-        // 🔥 VERY IMPORTANT: RESET AUTH
         state.loading = false;
         state.isAuthenticated = false;
         state.user = null;
         state.role = "";
         state.kitchenId = "";
         state.userId = "";
+        state.error = null;
+        state.message = null;
       });
 
     /* ---------- LOGOUT ---------- */
     builder
       .addCase(logout.pending, (state) => {
         state.loading = true;
+        state.error = null;
+        state.message = null;
       })
       .addCase(logout.fulfilled, (state) => {
         state.loading = false;
@@ -216,9 +252,11 @@ export const authSlice = createSlice({
       })
       .addCase(logout.rejected, (state, action) => {
         state.loading = false;
+        state.message = null;
         state.error = action.payload as string;
       });
   },
 });
 
+export const { clearError, clearMessage } = authSlice.actions;
 export default authSlice.reducer;
