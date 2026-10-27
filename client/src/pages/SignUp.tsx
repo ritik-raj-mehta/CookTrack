@@ -59,9 +59,14 @@ const SignUp = () => {
       return;
     }
 
+    if (!inputData.phoneNumber.trim()) {
+      setLocalError("Mobile number is required.");
+      return;
+    }
+
     try {
       await dispatch(register(inputData)).unwrap();
-      navigate("/signin");
+      navigate("/dashboard");
     } catch (err) {
       console.error("Registration failed:", err);
     }
@@ -199,14 +204,16 @@ const SignUp = () => {
               </div>
 
               <div className="flex flex-col space-y-1.5">
-                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="phoneNumber">
-                  Phone (Optional)
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700 flex items-center gap-1" htmlFor="phoneNumber">
+                  <span>Mobile Number</span>
+                  <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="phoneNumber"
                   type="tel"
+                  required
                   className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
-                  placeholder="+1 (555) 000-0000"
+                  placeholder="e.g. 9876543210"
                   name="phoneNumber"
                   value={inputData.phoneNumber}
                   onChange={handleInputData}

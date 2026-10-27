@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
   role: { type: String, default: 'User' },
   kitchenId: { type: String, default: () => generateKitchenCode(6) },
   kitchenName: { type: String },
-  phoneNumber: { type: String }
+  phoneNumber: { type: String, required: true }
 }, { timestamps: true });
 
 export { generateKitchenCode };

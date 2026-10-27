@@ -16,6 +16,13 @@ const registerUser = async (req, res) => {
   const { userName, userPassword, userEmail, kitchenName, phoneNumber } = req.body;
 
   try {
+    if (!phoneNumber || !String(phoneNumber).trim()) {
+      return res.status(400).json({
+        isSuccess: false,
+        message: 'Mobile number is compulsory.'
+      });
+    }
+
     const existing = await User.findOne({ userEmail });
     if (existing) {
       return res
@@ -39,7 +46,7 @@ const registerUser = async (req, res) => {
       userEmail,
       role: 'KitchenAdmin',
       kitchenName,
-      phoneNumber
+      phoneNumber: String(phoneNumber).trim()
     });
     await user.save();
 
@@ -52,8 +59,39 @@ const registerUser = async (req, res) => {
     });
     await newKitchen.save();
 
+    // Auto-login: issue JWT cookie directly
+    const jwtExpires = parseInt(
+      process.env.JWT_EXPIRES_MINUTES || '1440',
+      10
+    );
+
+    const payload = {
+      userEmail: user.userEmail,
+      role: user.role,
+      userName: user.userName,
+      KitchenId: user.kitchenId,
+      Id: user._id.toString()
+    };
+
+    const token = createToken(payload, jwtExpires);
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      expires: new Date(Date.now() + jwtExpires * 60 * 1000),
+      path: "/"
+    };
+
+    res.cookie('jwt', token, cookieOptions);
+
     return res.json({
       isSuccess: true,
+      email: user.userEmail,
+      role: user.role,
+      username: user.userName,
+      kitchenId: user.kitchenId,
+      userId: user._id.toString(),
       message: 'User registered successfully.'
     });
   } catch (err) {
@@ -72,6 +110,13 @@ const registerToKitchen = async (req, res) => {
     req.body;
 
   try {
+    if (!phoneNumber || !String(phoneNumber).trim()) {
+      return res.status(400).json({
+        isSuccess: false,
+        message: 'Mobile number is compulsory.'
+      });
+    }
+
     const existing = await User.findOne({ userEmail });
     if (existing) {
       return res
@@ -103,7 +148,7 @@ const registerToKitchen = async (req, res) => {
       kitchenName: kitchenName || kitchen.kitchenName,
       role: 'User',
       kitchenId,
-      phoneNumber
+      phoneNumber: String(phoneNumber).trim()
     });
     await user.save();
 
@@ -114,8 +159,39 @@ const registerToKitchen = async (req, res) => {
       await kitchen.save();
     }
 
+    // Auto-login: issue JWT cookie directly
+    const jwtExpires = parseInt(
+      process.env.JWT_EXPIRES_MINUTES || '1440',
+      10
+    );
+
+    const payload = {
+      userEmail: user.userEmail,
+      role: user.role,
+      userName: user.userName,
+      KitchenId: user.kitchenId,
+      Id: user._id.toString()
+    };
+
+    const token = createToken(payload, jwtExpires);
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      expires: new Date(Date.now() + jwtExpires * 60 * 1000),
+      path: "/"
+    };
+
+    res.cookie('jwt', token, cookieOptions);
+
     return res.json({
       isSuccess: true,
+      email: user.userEmail,
+      role: user.role,
+      username: user.userName,
+      kitchenId: user.kitchenId,
+      userId: user._id.toString(),
       message: 'User registered to kitchen successfully.'
     });
   } catch (err) {

@@ -156,6 +156,14 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
+        state.role = action.payload.role;
+        state.kitchenId = action.payload.kitchenId;
+        state.userId = action.payload.id || action.payload.userId;
+        state.user = {
+          email: action.payload.email,
+          username: action.payload.name || action.payload.userName,
+        };
+        state.isAuthenticated = true;
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
@@ -174,6 +182,14 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
+        state.role = action.payload.role;
+        state.kitchenId = action.payload.kitchenId;
+        state.userId = action.payload.id || action.payload.userId;
+        state.user = {
+          email: action.payload.email,
+          username: action.payload.name || action.payload.userName,
+        };
+        state.isAuthenticated = true;
       })
       .addCase(registerToKitchen.rejected, (state, action) => {
         state.loading = false;
