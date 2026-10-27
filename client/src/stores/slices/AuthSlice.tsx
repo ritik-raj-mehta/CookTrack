@@ -71,6 +71,45 @@ export const registerToKitchen = createAsyncThunk(
   }
 );
 
+// Verify OTP
+export const verifyOtp = createAsyncThunk(
+  "auth/verifyOtp",
+  async (
+    data: { email: string; otp: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await axios.post(`${API}/verify-otp`, data, {
+        withCredentials: true,
+      });
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "OTP verification failed");
+    }
+  }
+);
+
+// Resend OTP
+export const resendOtp = createAsyncThunk(
+  "auth/resendOtp",
+  async (email: string, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        `${API}/resend-otp`,
+        { email },
+        {
+          withCredentials: true,
+        }
+      );
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to resend OTP");
+    }
+  }
+);
+
 // Login
 export const login = createAsyncThunk(
   "auth/login",
@@ -156,14 +195,16 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
-        state.role = action.payload.role;
-        state.kitchenId = action.payload.kitchenId;
-        state.userId = action.payload.id || action.payload.userId;
-        state.user = {
-          email: action.payload.email,
-          username: action.payload.name || action.payload.userName,
-        };
-        state.isAuthenticated = true;
+        if (!action.payload.requiresOtp) {
+          state.role = action.payload.role;
+          state.kitchenId = action.payload.kitchenId;
+          state.userId = action.payload.id || action.payload.userId;
+          state.user = {
+            email: action.payload.email,
+            username: action.payload.name || action.payload.userName,
+          };
+          state.isAuthenticated = true;
+        }
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
@@ -182,6 +223,34 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.message = action.payload.message;
+        if (!action.payload.requiresOtp) {
+          state.role = action.payload.role;
+          state.kitchenId = action.payload.kitchenId;
+          state.userId = action.payload.id || action.payload.userId;
+          state.user = {
+            email: action.payload.email,
+            username: action.payload.name || action.payload.userName,
+          };
+          state.isAuthenticated = true;
+        }
+      })
+      .addCase(registerToKitchen.rejected, (state, action) => {
+        state.loading = false;
+        state.message = null;
+        state.error = action.payload as string;
+      });
+
+    /* ---------- VERIFY OTP ---------- */
+    builder
+      .addCase(verifyOtp.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.message = null;
+      })
+      .addCase(verifyOtp.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload.message;
         state.role = action.payload.role;
         state.kitchenId = action.payload.kitchenId;
         state.userId = action.payload.id || action.payload.userId;
@@ -191,9 +260,25 @@ export const authSlice = createSlice({
         };
         state.isAuthenticated = true;
       })
-      .addCase(registerToKitchen.rejected, (state, action) => {
+      .addCase(verifyOtp.rejected, (state, action) => {
         state.loading = false;
         state.message = null;
+        state.error = action.payload as string;
+      });
+
+    /* ---------- RESEND OTP ---------- */
+    builder
+      .addCase(resendOtp.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resendOtp.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.message = action.payload.message;
+      })
+      .addCase(resendOtp.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload as string;
       });
 

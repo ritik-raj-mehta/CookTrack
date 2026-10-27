@@ -5,6 +5,8 @@ import type { AppDispatch, RootState } from "../stores/store";
 import { register, clearError, clearMessage } from "../stores/slices/AuthSlice";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
+import OtpVerificationModal from "../components/OtpVerificationModal";
+
 export type SignUpType = {
   userName: string;
   userEmail: string;
@@ -33,6 +35,8 @@ const SignUp = () => {
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [localError, setLocalError] = useState<string | null>(null);
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(clearError());
@@ -65,8 +69,13 @@ const SignUp = () => {
     }
 
     try {
-      await dispatch(register(inputData)).unwrap();
-      navigate("/dashboard");
+      const res = await dispatch(register(inputData)).unwrap();
+      if (res?.requiresOtp) {
+        setShowOtpModal(true);
+        if (res.previewUrl) setPreviewUrl(res.previewUrl);
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
       console.error("Registration failed:", err);
     }
@@ -77,6 +86,14 @@ const SignUp = () => {
       {/* Soft ambient decorative background blobs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-300/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      {showOtpModal && (
+        <OtpVerificationModal
+          email={inputData.userEmail.trim()}
+          previewUrl={previewUrl}
+          onBack={() => setShowOtpModal(false)}
+        />
+      )}
 
       <div className="relative flex items-center flex-col bg-white p-8 sm:p-10 w-full max-w-xl rounded-3xl shadow-xl border border-gray-100 animate-fadeIn">
         <Link

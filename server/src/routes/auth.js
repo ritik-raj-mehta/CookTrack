@@ -10,6 +10,12 @@ router.post('/register', authCtrl.registerUser);
 // Register user to a kitchen
 router.post('/registerToKitchen', authCtrl.registerToKitchen);
 
+// Verify OTP and complete signup
+router.post('/verify-otp', authCtrl.verifyOtpAndRegister);
+
+// Resend OTP
+router.post('/resend-otp', authCtrl.resendOtp);
+
 // Login user
 router.post('/login', authCtrl.loginUser);
 
