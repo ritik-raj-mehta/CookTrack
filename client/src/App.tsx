@@ -30,9 +30,9 @@ const PageLoader = () => (
 );
 
 const Layout = () => (
-  <div className="flex min-h-screen w-full bg-gray-100">
+  <div className="flex flex-col md:flex-row min-h-screen w-full bg-slate-50">
     <NavBar />
-    <main className="flex-1 min-w-0 overflow-y-auto">
+    <main className="flex-1 min-w-0 overflow-y-auto pb-20 md:pb-0">
       <Outlet />
     </main>
   </div>
