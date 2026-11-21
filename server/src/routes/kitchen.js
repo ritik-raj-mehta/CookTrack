@@ -22,6 +22,8 @@ router.get('/shoppingItems/:kitchenId', verifyKitchenAccess, kitchenCtrl.getAllS
 
 router.patch('/shoppingItem/:kitchenId/:itemId/toggle', verifyKitchenAccess, kitchenCtrl.toggleShoppingItemBought);
 
+router.put('/shoppingItem/:kitchenId/:itemId', verifyKitchenAccess, kitchenCtrl.updateShoppingItem);
+
 router.delete('/shoppingItem/:kitchenId/:itemId', verifyKitchenAccess, kitchenCtrl.deleteShoppingItem);
 
 router.put('/kitchen/:kitchenId/item/:itemId', verifyKitchenAccess, kitchenCtrl.updateKitchenItem);

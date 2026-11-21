@@ -150,6 +150,28 @@ export const toggleShoppingItemBought = createAsyncThunk(
   }
 );
 
+export const updateShoppingItem = createAsyncThunk(
+  "kitchen/updateShoppingItem",
+  async (
+    { itemId, data }: { itemId: string; data: Partial<ShoppingItemInput> },
+    { rejectWithValue, getState }
+  ) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) return rejectWithValue("Kitchen ID missing");
+      const res = await apiClient.put(
+        `${KITCHEN_API}/shoppingItem/${kitchenId}/${itemId}`,
+        data
+      );
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to update shopping item");
+    }
+  }
+);
+
 export const deleteShoppingItem = createAsyncThunk(
   "kitchen/deleteShoppingItem",
   async (itemId: string, { rejectWithValue, getState }) => {
@@ -387,7 +409,15 @@ export const kitchenSlice = createSlice({
         state.loading = false;
         state.message = action.payload?.message || "Shopping item added successfully";
         if (action.payload?.data) {
-          state.shoppingItems = [action.payload.data, ...state.shoppingItems];
+          const item = action.payload.data;
+          const exists = state.shoppingItems.some((s) => s._id === item._id);
+          if (exists) {
+            state.shoppingItems = state.shoppingItems.map((s) =>
+              s._id === item._id ? item : s
+            );
+          } else {
+            state.shoppingItems = [item, ...state.shoppingItems];
+          }
         }
       })
       .addCase(addItemsToShoppingCart.rejected, (state, action) => {
@@ -412,6 +442,16 @@ export const kitchenSlice = createSlice({
 
       // toggle shopping item bought
       .addCase(toggleShoppingItemBought.fulfilled, (state, action) => {
+        const updated = action.payload?.data;
+        if (updated) {
+          state.shoppingItems = state.shoppingItems.map((item) =>
+            item._id === updated._id ? updated : item
+          );
+        }
+      })
+
+      // update shopping item
+      .addCase(updateShoppingItem.fulfilled, (state, action) => {
         const updated = action.payload?.data;
         if (updated) {
           state.shoppingItems = state.shoppingItems.map((item) =>

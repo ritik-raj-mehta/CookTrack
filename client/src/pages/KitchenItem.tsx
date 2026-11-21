@@ -6,8 +6,10 @@ import { FiAlertTriangle, FiCodesandbox, FiEdit3, FiX } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import type { AppDispatch, RootState } from "../stores/store";
 import {
+  addItemsToShoppingCart,
   deleteKitchenItem,
   fetchAllKitchenItemsByKitchenId,
+  fetchShoppingItems,
   updateKitchenItem,
 } from "../stores/slices/KitchenSlice";
 import ItemCard from "../components/ItemCard";
@@ -21,6 +23,25 @@ const KitchenItem = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [unitFilter, setUnitFilter] = useState("");
+  const [shoppingNotification, setShoppingNotification] = useState<string | null>(null);
+
+  // Add low/out-of-stock item to shopping list
+  const handleAddToShoppingList = async (item: ItemsTypes) => {
+    try {
+      await dispatch(
+        addItemsToShoppingCart({
+          name: item.productName,
+          neededQuantity: 1,
+          unit: item.unit || "Pieces",
+          notes: `Restock needed for ${item.productName} (${item.category || "Pantry"})`,
+        })
+      ).unwrap();
+      setShoppingNotification(`Added "${item.productName}" to shopping list!`);
+      setTimeout(() => setShoppingNotification(null), 3500);
+    } catch (err) {
+      console.error("Failed to add to shopping list:", err);
+    }
+  };
 
   // Delete Confirmation Popup State
   const [itemToDelete, setItemToDelete] = useState<ItemsTypes | null>(null);
@@ -43,6 +64,7 @@ const KitchenItem = () => {
   useEffect(() => {
     if (kitchenId) {
       dispatch(fetchAllKitchenItemsByKitchenId());
+      dispatch(fetchShoppingItems());
     }
   }, [dispatch, kitchenId]);
 
@@ -230,6 +252,18 @@ const KitchenItem = () => {
 
         {/* PRODUCT LIST */}
         <div className="my-6">
+          {shoppingNotification && (
+            <div className="mb-4 bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-md flex items-center justify-between text-sm font-semibold animate-fadeIn">
+              <span>{shoppingNotification}</span>
+              <NavLink
+                to="/additemstoshoppingcart"
+                className="underline text-emerald-100 hover:text-white ml-3 text-xs"
+              >
+                View Shopping List →
+              </NavLink>
+            </div>
+          )}
+
           {filteredItems.length === 0 ? (
             <div className="bg-white p-12 text-center rounded-xl shadow-sm text-slate-500">
               <p className="text-lg font-medium">No items found</p>
@@ -248,6 +282,7 @@ const KitchenItem = () => {
               productData={filteredItems}
               onDelete={handleDeleteTrigger}
               onEdit={handleEditTrigger}
+              onAddToShoppingList={handleAddToShoppingList}
             />
           )}
         </div>

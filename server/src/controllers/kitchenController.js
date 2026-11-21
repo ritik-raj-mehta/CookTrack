@@ -111,9 +111,39 @@ const addShoppingItemsToKitchen = async (req, res) => {
     }
 
     const { name, neededQuantity, unit, notes } = body;
+    const cleanName = String(name || '').trim();
+    if (!cleanName) {
+      return res.status(400).json({
+        isSuccess: false,
+        message: 'Item name is required.'
+      });
+    }
+
+    // Check if an unbought item with this name already exists in this kitchen
+    const escapedName = cleanName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const existing = await ShoppingItem.findOne({
+      kitchenId,
+      name: { $regex: new RegExp(`^${escapedName}$`, 'i') },
+      isBought: false
+    });
+
+    if (existing) {
+      existing.neededQuantity = (existing.neededQuantity || 1) + (Number(neededQuantity) || 1);
+      if (notes && !existing.notes) existing.notes = notes;
+      existing.updatedAt = new Date();
+      await existing.save();
+
+      return res.json({
+        isSuccess: true,
+        alreadyExists: true,
+        message: `"${cleanName}" is already in your shopping list. Quantity increased to ${existing.neededQuantity}.`,
+        data: existing
+      });
+    }
+
     const shopItem = new ShoppingItem({
       kitchenId,
-      name: String(name || '').trim(),
+      name: cleanName,
       neededQuantity: Number(neededQuantity) || 1,
       unit: unit ? String(unit).trim() : 'pcs',
       notes: notes ? String(notes).trim() : '',
@@ -376,6 +406,50 @@ const deleteShoppingItem = async (req, res) => {
       isSuccess: true,
       message: 'Shopping item deleted.',
       itemId
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Exception Occurred: ' + err.message
+    });
+  }
+};
+
+const updateShoppingItem = async (req, res) => {
+  const { kitchenId, itemId } = req.params;
+  const updates = req.body || {};
+
+  try {
+    const item = await ShoppingItem.findOne({ _id: itemId, kitchenId: kitchenId });
+    if (!item) {
+      return res.status(404).json({
+        isSuccess: false,
+        message: 'Shopping item not found.'
+      });
+    }
+
+    if (updates.name !== undefined) {
+      const trimmed = String(updates.name).trim();
+      if (!trimmed) {
+        return res.status(400).json({
+          isSuccess: false,
+          message: 'Product name cannot be empty.'
+        });
+      }
+      item.name = trimmed;
+    }
+    if (updates.neededQuantity !== undefined) item.neededQuantity = Number(updates.neededQuantity) || 1;
+    if (updates.unit !== undefined) item.unit = String(updates.unit).trim();
+    if (updates.notes !== undefined) item.notes = String(updates.notes).trim();
+
+    item.updatedAt = new Date();
+    await item.save();
+
+    return res.json({
+      isSuccess: true,
+      message: 'Shopping item updated successfully.',
+      data: item
     });
   } catch (err) {
     console.error(err);
@@ -678,6 +752,7 @@ export default {
   updateKitchenItem,
   getAllShoppingItemsByKitchenId,
   toggleShoppingItemBought,
+  updateShoppingItem,
   deleteShoppingItem,
   leaveKitchen,
   deleteWholeKitchen,
