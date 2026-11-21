@@ -90,10 +90,10 @@ const AddItemsToKitchen = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 animate-fadeIn">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 animate-fadeIn pb-24 sm:pb-12">
         <form
           onSubmit={handleKitchenItemForm}
-          className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6"
+          className="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6"
         >
           <div className="border-b border-gray-100 pb-4">
             <h3 className="text-xl font-bold text-gray-900">Product Information</h3>
@@ -275,13 +275,13 @@ const AddItemsToKitchen = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full sm:flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 cursor-pointer hover-lift"
+              className="w-full sm:flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 active:scale-95 text-white font-bold text-sm shadow-md transition-all duration-200 disabled:opacity-50 cursor-pointer"
             >
               {loading ? "Restocking..." : "Restock Pantry Item"}
             </button>
             <button
               type="button"
-              className="w-full sm:w-auto py-3 px-6 rounded-xl bg-white hover:bg-gray-100 border border-gray-200 text-gray-700 font-semibold text-sm transition cursor-pointer"
+              className="w-full sm:w-auto py-3 px-6 rounded-xl bg-white hover:bg-gray-100 active:scale-95 border border-gray-200 text-gray-700 font-semibold text-sm transition cursor-pointer"
               onClick={() =>
                 setKitchenItems({
                   productName: "",

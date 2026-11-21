@@ -15,6 +15,100 @@ import { FaIndianRupeeSign, FaLeaf } from "react-icons/fa6";
 import { IoSparklesOutline } from "react-icons/io5";
 import type { AppDispatch, RootState } from "../stores/store";
 import { fetchKitchenAnalytics } from "../stores/slices/KitchenSlice";
+import type {
+  AnalyticsData,
+  MonthlyTrend,
+  CategoryStat,
+  StorageStat,
+  ActivityLog,
+} from "../types/KitchenTypes";
+
+// Fallback preview analytics for demo and unauthenticated visual inspection
+const PREVIEW_ANALYTICS: AnalyticsData = {
+  wasteStats: {
+    totalConsumed: 48,
+    totalWasted: 6,
+    totalRestocked: 52,
+    consumedRatio: 89,
+    moneySaved: 4850,
+    moneyWasted: 420,
+    ecoScore: "A",
+    ecoLabel: "Eco Champion",
+  },
+  inventoryHealth: {
+    totalProducts: 24,
+    totalUnits: 45,
+    freshCount: 19,
+    expiringSoonCount: 4,
+    expiredCount: 1,
+    atRiskValue: 680,
+  },
+  monthlyTrends: [
+    { month: "Jun", year: 2026, consumed: 28, wasted: 5, restocked: 32, saved: 2800 },
+    { month: "Jul", year: 2026, consumed: 35, wasted: 4, restocked: 38, saved: 3500 },
+    { month: "Aug", year: 2026, consumed: 42, wasted: 6, restocked: 44, saved: 4200 },
+    { month: "Sep", year: 2026, consumed: 38, wasted: 3, restocked: 40, saved: 3800 },
+    { month: "Oct", year: 2026, consumed: 46, wasted: 4, restocked: 50, saved: 4600 },
+    { month: "Nov", year: 2026, consumed: 48, wasted: 6, restocked: 52, saved: 4850 },
+  ],
+  categoryDistribution: [
+    { category: "Dairy & Eggs", count: 8, percentage: 33 },
+    { category: "Fruits & Vegetable", count: 6, percentage: 25 },
+    { category: "Pantry Items", count: 5, percentage: 21 },
+    { category: "Baking Supplies", count: 3, percentage: 13 },
+    { category: "Beverages", count: 2, percentage: 8 },
+  ],
+  storageDistribution: [
+    { location: "Refrigerator", count: 12 },
+    { location: "Pantry", count: 9 },
+    { location: "Freezer", count: 3 },
+  ],
+  topWastedCategories: [
+    { category: "Fruits & Vegetable", count: 3 },
+  ],
+  recentActivity: [
+    {
+      _id: "act-1",
+      action: "consumed",
+      productName: "Whole Milk",
+      quantity: 1,
+      unit: "liters",
+      category: "Dairy & Eggs",
+      userName: "Chef Ritik",
+      loggedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    },
+    {
+      _id: "act-2",
+      action: "consumed",
+      productName: "Baby Spinach",
+      quantity: 500,
+      unit: "grams",
+      category: "Fruits & Vegetable",
+      userName: "Alex",
+      loggedAt: new Date(Date.now() - 3600000 * 6).toISOString(),
+    },
+    {
+      _id: "act-3",
+      action: "wasted",
+      productName: "Greek Yogurt",
+      quantity: 1,
+      unit: "cups",
+      category: "Dairy & Eggs",
+      userName: "Chef Ritik",
+      loggedAt: new Date(Date.now() - 3600000 * 24).toISOString(),
+    },
+    {
+      _id: "act-4",
+      action: "restocked",
+      productName: "Organic Eggs",
+      quantity: 12,
+      unit: "Pieces",
+      category: "Dairy & Eggs",
+      userName: "Priya",
+      loggedAt: new Date(Date.now() - 3600000 * 36).toISOString(),
+    },
+  ],
+};
 
 const KitchenInsights: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,13 +129,14 @@ const KitchenInsights: React.FC = () => {
     dispatch(fetchKitchenAnalytics());
   };
 
-  const stats = analyticsData?.wasteStats;
-  const health = analyticsData?.inventoryHealth;
-  const trends = analyticsData?.monthlyTrends || [];
-  const categories = analyticsData?.categoryDistribution || [];
-  const storage = analyticsData?.storageDistribution || [];
-  const topWasted = analyticsData?.topWastedCategories || [];
-  const activity = analyticsData?.recentActivity || [];
+  const effectiveData: AnalyticsData | null = analyticsData || (!kitchenId ? PREVIEW_ANALYTICS : null);
+  const stats = effectiveData?.wasteStats;
+  const health = effectiveData?.inventoryHealth;
+  const trends: MonthlyTrend[] = effectiveData?.monthlyTrends || [];
+  const categories: CategoryStat[] = effectiveData?.categoryDistribution || [];
+  const storage: StorageStat[] = effectiveData?.storageDistribution || [];
+  const topWasted: CategoryStat[] = effectiveData?.topWastedCategories || [];
+  const activity: ActivityLog[] = effectiveData?.recentActivity || [];
 
   // Radial Donut stroke calculations
   const consumedRatio = stats?.consumedRatio ?? 100;
@@ -80,12 +175,12 @@ const KitchenInsights: React.FC = () => {
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2.5">
+        <div className="grid grid-cols-2 sm:flex items-center gap-2.5 w-full sm:w-auto">
           <button
             type="button"
             onClick={handleRefresh}
             disabled={analyticsLoading}
-            className="flex items-center gap-1.5 bg-white border border-gray-200 hover:border-gray-300 text-gray-700 py-2 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold shadow-2xs transition hover-lift cursor-pointer disabled:opacity-50"
+            className="flex items-center justify-center gap-1.5 bg-white border border-gray-200 hover:border-gray-300 active:scale-95 text-gray-700 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold shadow-2xs transition cursor-pointer disabled:opacity-50"
             title="Refresh analytics data"
           >
             <FiRefreshCw className={`${analyticsLoading ? "animate-spin text-emerald-600" : ""}`} />
@@ -94,7 +189,7 @@ const KitchenInsights: React.FC = () => {
 
           <Link
             to="/kitchenitems"
-            className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white py-2 px-3.5 sm:px-4 rounded-xl text-xs sm:text-sm font-bold shadow-xs transition hover-lift"
+            className="flex items-center justify-center gap-1.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 active:scale-95 text-white py-2.5 px-3.5 sm:px-4 rounded-xl text-xs sm:text-sm font-bold shadow-xs transition"
           >
             <span>View Pantry</span>
             <FiArrowUpRight className="text-base" />
@@ -102,54 +197,54 @@ const KitchenInsights: React.FC = () => {
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-7xl mx-auto space-y-7 animate-fadeIn">
-        {/* 4 PRIMARY KPI HIGHLIGHT CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-7xl mx-auto space-y-6 sm:space-y-7 animate-fadeIn pb-24 sm:pb-12">
+        {/* 4 PRIMARY KPI HIGHLIGHT CARDS: 2x2 grid on mobile/tablet, 4 columns on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {/* 1. Money Saved */}
-          <div className="bg-white p-6 rounded-2xl shadow-xs border border-gray-100 hover:border-emerald-200 transition-all duration-200 relative overflow-hidden group hover-lift">
+          <div className="bg-white p-3.5 sm:p-5 lg:p-6 rounded-2xl shadow-2xs border border-gray-100 hover:border-emerald-200 transition-all duration-200 relative overflow-hidden group hover-lift">
             <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-50 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+            <div className="flex justify-between items-start gap-1">
+              <div className="min-w-0">
+                <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider truncate">
                   Money Saved
                 </p>
-                <div className="flex items-baseline gap-1 mt-1.5">
-                  <span className="text-3xl font-extrabold text-emerald-600 tracking-tight">
+                <div className="flex items-baseline gap-1 mt-1 sm:mt-1.5 flex-wrap">
+                  <span className="text-xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight">
                     ₹{stats?.moneySaved ?? 0}
                   </span>
-                  <span className="text-xs font-semibold text-emerald-700">saved</span>
+                  <span className="text-[10px] sm:text-xs font-semibold text-emerald-700">saved</span>
                 </div>
-                <p className="text-xs text-gray-400 mt-1">
-                  Food consumed before expiration
+                <p className="hidden sm:block text-xs text-gray-400 mt-1 truncate">
+                  Food consumed in time
                 </p>
               </div>
-              <div className="bg-emerald-50 text-emerald-600 text-2xl p-3 rounded-2xl shadow-2xs">
+              <div className="bg-emerald-50 text-emerald-600 text-lg sm:text-2xl p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-2xs shrink-0">
                 <FaIndianRupeeSign />
               </div>
             </div>
-            <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between text-xs">
+            <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-gray-50 flex items-center justify-between text-[11px] sm:text-xs">
               <span className="text-gray-500 font-medium">Lost to Waste:</span>
               <span className="font-bold text-red-500">₹{stats?.moneyWasted ?? 0}</span>
             </div>
           </div>
 
           {/* 2. Consumed vs Wasted Ratio */}
-          <div className="bg-white p-6 rounded-2xl shadow-xs border border-gray-100 hover:border-teal-200 transition-all duration-200 relative overflow-hidden hover-lift">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+          <div className="bg-white p-3.5 sm:p-5 lg:p-6 rounded-2xl shadow-2xs border border-gray-100 hover:border-teal-200 transition-all duration-200 relative overflow-hidden hover-lift">
+            <div className="flex justify-between items-center gap-1">
+              <div className="min-w-0">
+                <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider truncate">
                   Consumption Rate
                 </p>
-                <h3 className="text-3xl font-extrabold text-gray-900 mt-1.5">
+                <h3 className="text-xl sm:text-3xl font-extrabold text-gray-900 mt-1 sm:mt-1.5">
                   {consumedRatio}%
                 </h3>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="hidden sm:block text-xs text-gray-400 mt-1 truncate">
                   {100 - consumedRatio}% reported wasted
                 </p>
               </div>
 
               {/* Radial Donut Gauge */}
-              <div className="relative w-16 h-16 flex items-center justify-center shrink-0">
+              <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center shrink-0">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                   <circle
                     cx="50"
@@ -173,76 +268,76 @@ const KitchenInsights: React.FC = () => {
                     fill="transparent"
                   />
                 </svg>
-                <span className="absolute text-[11px] font-extrabold text-gray-800">
+                <span className="absolute text-[10px] sm:text-[11px] font-extrabold text-gray-800">
                   {consumedRatio}%
                 </span>
               </div>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between text-xs font-semibold">
-              <span className="text-emerald-600 flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Consumed ({stats?.totalConsumed ?? 0})
+            <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-gray-50 flex items-center justify-between text-[10px] sm:text-xs font-semibold">
+              <span className="text-emerald-600 flex items-center gap-1 truncate">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span> Consumed ({stats?.totalConsumed ?? 0})
               </span>
-              <span className="text-red-500 flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-red-400"></span> Wasted ({stats?.totalWasted ?? 0})
+              <span className="text-red-500 flex items-center gap-1 truncate">
+                <span className="w-2 h-2 rounded-full bg-red-400 shrink-0"></span> Wasted ({stats?.totalWasted ?? 0})
               </span>
             </div>
           </div>
 
           {/* 3. Kitchen Eco Score */}
-          <div className="bg-white p-6 rounded-2xl shadow-xs border border-gray-100 hover:border-emerald-200 transition-all duration-200 relative overflow-hidden hover-lift">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+          <div className="bg-white p-3.5 sm:p-5 lg:p-6 rounded-2xl shadow-2xs border border-gray-100 hover:border-emerald-200 transition-all duration-200 relative overflow-hidden hover-lift">
+            <div className="flex justify-between items-start gap-1">
+              <div className="min-w-0">
+                <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider truncate">
                   Kitchen Eco Score
                 </p>
-                <div className="flex items-center gap-2 mt-1.5">
-                  <span className="text-3xl font-extrabold text-emerald-700 font-serif">
+                <div className="flex items-center gap-1.5 sm:gap-2 mt-1 sm:mt-1.5">
+                  <span className="text-xl sm:text-3xl font-extrabold text-emerald-700 font-serif">
                     {stats?.ecoScore || "A"}
                   </span>
-                  <span className="bg-emerald-100 text-emerald-800 font-bold text-xs px-2 py-0.5 rounded-lg">
+                  <span className="bg-emerald-100 text-emerald-800 font-bold text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-lg">
                     Grade
                   </span>
                 </div>
-                <p className="text-xs text-emerald-700/90 font-medium mt-1">
+                <p className="hidden sm:block text-xs text-emerald-700/90 font-medium mt-1 truncate">
                   {stats?.ecoLabel || "Eco Champion"}
                 </p>
               </div>
-              <div className="bg-emerald-50 text-emerald-600 text-2xl p-3 rounded-2xl shadow-2xs">
+              <div className="bg-emerald-50 text-emerald-600 text-lg sm:text-2xl p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-2xs shrink-0">
                 <FaLeaf />
               </div>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-gray-50 flex items-center gap-1 text-[11px] text-gray-500">
-              <FiCheckCircle className="text-emerald-600 shrink-0" />
-              <span className="truncate">Minimizing household grocery loss</span>
+            <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-gray-50 flex items-center gap-1 text-[10px] sm:text-[11px] text-gray-500">
+              <FiCheckCircle className="text-emerald-600 shrink-0 text-xs" />
+              <span className="truncate">Household grocery loss</span>
             </div>
           </div>
 
           {/* 4. Pantry Freshness Health */}
-          <div className="bg-white p-6 rounded-2xl shadow-xs border border-gray-100 hover:border-amber-200 transition-all duration-200 relative overflow-hidden hover-lift">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+          <div className="bg-white p-3.5 sm:p-5 lg:p-6 rounded-2xl shadow-2xs border border-gray-100 hover:border-amber-200 transition-all duration-200 relative overflow-hidden hover-lift">
+            <div className="flex justify-between items-start gap-1">
+              <div className="min-w-0">
+                <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider truncate">
                   At-Risk Value
                 </p>
-                <div className="flex items-baseline gap-1 mt-1.5">
-                  <span className="text-3xl font-extrabold text-amber-600">
+                <div className="flex items-baseline gap-1 mt-1 sm:mt-1.5 flex-wrap">
+                  <span className="text-xl sm:text-3xl font-extrabold text-amber-600">
                     ₹{health?.atRiskValue ?? 0}
                   </span>
-                  <span className="text-xs font-semibold text-gray-400">potential loss</span>
+                  <span className="text-[10px] sm:text-xs font-semibold text-gray-400">at risk</span>
                 </div>
-                <p className="text-xs text-amber-700/80 font-medium mt-1">
-                  {health?.expiringSoonCount ?? 0} items expiring in 7 days
+                <p className="hidden sm:block text-xs text-amber-700/80 font-medium mt-1 truncate">
+                  {health?.expiringSoonCount ?? 0} items expiring soon
                 </p>
               </div>
-              <div className="bg-amber-50 text-amber-600 text-2xl p-3 rounded-2xl shadow-2xs">
+              <div className="bg-amber-50 text-amber-600 text-lg sm:text-2xl p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-2xs shrink-0">
                 <FiAlertTriangle />
               </div>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between text-xs">
-              <span className="text-gray-500">Expired in Pantry:</span>
+            <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-gray-50 flex items-center justify-between text-[11px] sm:text-xs">
+              <span className="text-gray-500">Expired:</span>
               <span className="font-bold text-red-600">{health?.expiredCount ?? 0} items</span>
             </div>
           </div>
@@ -279,84 +374,86 @@ const KitchenInsights: React.FC = () => {
               </div>
             </div>
 
-            {/* SVG Interactive Multi-Bar Chart */}
-            <div className="h-64 flex items-end justify-between gap-3 pt-6 pb-2 px-2">
-              {trends.length === 0 ? (
-                <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 text-xs">
-                  <FiPieChart className="text-3xl mb-2 stroke-1" />
-                  <span>No monthly activity recorded yet. Start consuming or restocking items!</span>
-                </div>
-              ) : (
-                trends.map((item, index) => {
-                  const consumedHeight = Math.max(6, Math.round((item.consumed / maxBarValue) * 180));
-                  const wastedHeight = Math.max(item.wasted > 0 ? 6 : 0, Math.round((item.wasted / maxBarValue) * 180));
-                  const restockedHeight = Math.max(item.restocked > 0 ? 6 : 0, Math.round((item.restocked / maxBarValue) * 180));
-                  const isHovered = hoveredBarIndex === index;
+            {/* SVG Interactive Multi-Bar Chart with Horizontal Scroll Protection */}
+            <div className="overflow-x-auto pb-2 -mx-2 px-2">
+              <div className="h-60 sm:h-64 min-w-[320px] flex items-end justify-between gap-2 sm:gap-3 pt-6 pb-2 px-2">
+                {trends.length === 0 ? (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 text-xs">
+                    <FiPieChart className="text-3xl mb-2 stroke-1" />
+                    <span>No monthly activity recorded yet. Start consuming or restocking items!</span>
+                  </div>
+                ) : (
+                  trends.map((item, index) => {
+                    const consumedHeight = Math.max(6, Math.round((item.consumed / maxBarValue) * 180));
+                    const wastedHeight = Math.max(item.wasted > 0 ? 6 : 0, Math.round((item.wasted / maxBarValue) * 180));
+                    const restockedHeight = Math.max(item.restocked > 0 ? 6 : 0, Math.round((item.restocked / maxBarValue) * 180));
+                    const isHovered = hoveredBarIndex === index;
 
-                  return (
-                    <div
-                      key={index}
-                      className="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer"
-                      onMouseEnter={() => setHoveredBarIndex(index)}
-                      onMouseLeave={() => setHoveredBarIndex(null)}
-                    >
-                      {/* Floating Tooltip */}
-                      {isHovered && (
-                        <div className="absolute -top-12 z-20 bg-gray-900 text-white text-[11px] py-1.5 px-3 rounded-lg shadow-lg whitespace-nowrap animate-fadeIn pointer-events-none">
-                          <p className="font-bold border-b border-gray-700 pb-0.5 mb-0.5">
-                            {item.month} {item.year}
-                          </p>
-                          <p className="text-emerald-300">🍽️ Consumed: {item.consumed}</p>
-                          <p className="text-red-300">🗑️ Wasted: {item.wasted}</p>
-                          <p className="text-blue-300">📦 Restocked: {item.restocked}</p>
+                    return (
+                      <div
+                        key={index}
+                        className="flex-1 flex flex-col items-center h-full justify-end group relative cursor-pointer"
+                        onMouseEnter={() => setHoveredBarIndex(index)}
+                        onMouseLeave={() => setHoveredBarIndex(null)}
+                      >
+                        {/* Floating Tooltip */}
+                        {isHovered && (
+                          <div className="absolute -top-12 z-20 bg-gray-900 text-white text-[11px] py-1.5 px-3 rounded-lg shadow-lg whitespace-nowrap animate-fadeIn pointer-events-none">
+                            <p className="font-bold border-b border-gray-700 pb-0.5 mb-0.5">
+                              {item.month} {item.year}
+                            </p>
+                            <p className="text-emerald-300">🍽️ Consumed: {item.consumed}</p>
+                            <p className="text-red-300">🗑️ Wasted: {item.wasted}</p>
+                            <p className="text-blue-300">📦 Restocked: {item.restocked}</p>
+                          </div>
+                        )}
+
+                        {/* Bar Group */}
+                        <div className="w-full flex items-end justify-center gap-1 sm:gap-1.5 h-full">
+                          {/* Consumed Bar */}
+                          <div
+                            style={{ height: `${consumedHeight}px` }}
+                            className={`w-2.5 sm:w-3.5 lg:w-4 rounded-t-md transition-all duration-300 ${
+                              isHovered
+                                ? "bg-emerald-600 shadow-md shadow-emerald-200"
+                                : "bg-emerald-500 hover:bg-emerald-600"
+                            }`}
+                          ></div>
+
+                          {/* Wasted Bar */}
+                          {item.wasted > 0 && (
+                            <div
+                              style={{ height: `${wastedHeight}px` }}
+                              className={`w-2.5 sm:w-3.5 lg:w-4 rounded-t-md transition-all duration-300 ${
+                                isHovered
+                                  ? "bg-red-500 shadow-md shadow-red-200"
+                                  : "bg-red-400 hover:bg-red-500"
+                              }`}
+                            ></div>
+                          )}
+
+                          {/* Restocked Bar */}
+                          {item.restocked > 0 && (
+                            <div
+                              style={{ height: `${restockedHeight}px` }}
+                              className={`w-2.5 sm:w-3.5 lg:w-4 rounded-t-md transition-all duration-300 ${
+                                isHovered
+                                  ? "bg-blue-500 shadow-md shadow-blue-200"
+                                  : "bg-blue-400 hover:bg-blue-500"
+                              }`}
+                            ></div>
+                          )}
                         </div>
-                      )}
 
-                      {/* Bar Group */}
-                      <div className="w-full flex items-end justify-center gap-1 sm:gap-1.5 h-full">
-                        {/* Consumed Bar */}
-                        <div
-                          style={{ height: `${consumedHeight}px` }}
-                          className={`w-3 sm:w-4 rounded-t-md transition-all duration-300 ${
-                            isHovered
-                              ? "bg-emerald-600 shadow-md shadow-emerald-200"
-                              : "bg-emerald-500 hover:bg-emerald-600"
-                          }`}
-                        ></div>
-
-                        {/* Wasted Bar */}
-                        {item.wasted > 0 && (
-                          <div
-                            style={{ height: `${wastedHeight}px` }}
-                            className={`w-3 sm:w-4 rounded-t-md transition-all duration-300 ${
-                              isHovered
-                                ? "bg-red-500 shadow-md shadow-red-200"
-                                : "bg-red-400 hover:bg-red-500"
-                            }`}
-                          ></div>
-                        )}
-
-                        {/* Restocked Bar */}
-                        {item.restocked > 0 && (
-                          <div
-                            style={{ height: `${restockedHeight}px` }}
-                            className={`w-3 sm:w-4 rounded-t-md transition-all duration-300 ${
-                              isHovered
-                                ? "bg-blue-500 shadow-md shadow-blue-200"
-                                : "bg-blue-400 hover:bg-blue-500"
-                            }`}
-                          ></div>
-                        )}
+                        {/* Month Label */}
+                        <span className="text-[11px] font-semibold text-gray-500 mt-2 truncate">
+                          {item.month}
+                        </span>
                       </div>
-
-                      {/* Month Label */}
-                      <span className="text-[11px] font-semibold text-gray-500 mt-2 truncate">
-                        {item.month}
-                      </span>
-                    </div>
-                  );
-                })
-              )}
+                    );
+                  })
+                )}
+              </div>
             </div>
 
             {/* Bottom Chart Footer / Summary */}

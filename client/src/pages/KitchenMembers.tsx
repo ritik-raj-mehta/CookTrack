@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaPeopleGroup } from "react-icons/fa6";
@@ -31,6 +31,31 @@ import {
 import { logout } from "../stores/slices/AuthSlice";
 import type { KitchenMember } from "../types/KitchenTypes";
 
+// Fallback preview members for demo and unauthenticated visual inspection
+const PREVIEW_MEMBERS: KitchenMember[] = [
+  {
+    _id: "demo-member-1",
+    userName: "Chef Ritik",
+    userEmail: "ritik@cooktrack.local",
+    role: "KitchenAdmin",
+    createdAt: new Date(Date.now() - 3600000 * 24 * 30).toISOString(),
+  },
+  {
+    _id: "demo-member-2",
+    userName: "Alex Sharma",
+    userEmail: "alex@cooktrack.local",
+    role: "Member",
+    createdAt: new Date(Date.now() - 3600000 * 24 * 14).toISOString(),
+  },
+  {
+    _id: "demo-member-3",
+    userName: "Priya Patel",
+    userEmail: "priya@cooktrack.local",
+    role: "Member",
+    createdAt: new Date(Date.now() - 3600000 * 24 * 5).toISOString(),
+  },
+];
+
 const KitchenMembers = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -38,6 +63,18 @@ const KitchenMembers = () => {
     (state: RootState) => state.kitchen
   );
   const { kitchenId, role, userId } = useSelector((state: RootState) => state.auth);
+
+  const effectiveMembers = useMemo(() => {
+    if (Array.isArray(members) && members.length > 0) {
+      return members;
+    }
+    if (!kitchenId) {
+      return PREVIEW_MEMBERS;
+    }
+    return [];
+  }, [members, kitchenId]);
+
+  const effectiveKitchenId = kitchenId || "CT-84920";
 
   const [copied, setCopied] = useState(false);
   const [actionSuccess, setActionSuccess] = useState<string | null>(null);
@@ -79,8 +116,8 @@ const KitchenMembers = () => {
   }, [dispatch, kitchenId]);
 
   const handleCopyCode = () => {
-    if (kitchenId) {
-      navigator.clipboard.writeText(kitchenId);
+    if (effectiveKitchenId) {
+      navigator.clipboard.writeText(effectiveKitchenId);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
@@ -223,17 +260,17 @@ const KitchenMembers = () => {
         </div>
 
         {/* Actions in Header */}
-        <div className="flex items-center gap-3">
-          {kitchenId && (
-            <div className="flex items-center gap-2 bg-amber-50/80 border border-amber-200/90 px-3.5 py-1.5 rounded-xl shadow-2xs">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          {effectiveKitchenId && (
+            <div className="flex items-center justify-between sm:justify-start gap-2 bg-amber-50/80 border border-amber-200/90 px-3.5 py-1.5 rounded-xl shadow-2xs w-full sm:w-auto">
               <span className="text-xs font-semibold text-amber-900">Invite Code:</span>
               <span className="font-mono font-bold text-amber-800 text-xs sm:text-sm tracking-wider">
-                {kitchenId}
+                {effectiveKitchenId}
               </span>
               <button
                 type="button"
                 onClick={handleCopyCode}
-                className="text-xs flex items-center gap-1 bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1 rounded-lg transition font-medium cursor-pointer shadow-xs"
+                className="text-xs flex items-center gap-1 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white px-2.5 py-1 rounded-lg transition font-medium cursor-pointer shadow-xs"
                 title="Copy code for others to join"
               >
                 {copied ? <FiCheck className="text-sm" /> : <FiCopy className="text-sm" />}
@@ -244,7 +281,7 @@ const KitchenMembers = () => {
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-5xl animate-fadeIn space-y-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-5xl animate-fadeIn space-y-6 pb-24 sm:pb-12">
         {/* Alerts */}
         {actionSuccess && (
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm p-4 rounded-xl flex items-center justify-between shadow-2xs animate-fadeIn">
@@ -276,7 +313,7 @@ const KitchenMembers = () => {
         )}
 
         {/* Invite Banner Card */}
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50/60 border border-amber-200/70 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50/60 border border-amber-200/70 rounded-2xl p-4 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h3 className="text-base font-bold text-amber-950 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-500"></span>
@@ -285,7 +322,7 @@ const KitchenMembers = () => {
             <p className="text-xs sm:text-sm text-amber-900/80 mt-1 max-w-2xl leading-relaxed">
               Share your kitchen invite code{" "}
               <strong className="font-mono bg-white/70 px-2 py-0.5 rounded border border-amber-200 text-amber-950">
-                {kitchenId}
+                {effectiveKitchenId}
               </strong>
               . Others can join by choosing "Join Existing Kitchen" during signup.
             </p>
@@ -293,7 +330,7 @@ const KitchenMembers = () => {
           <button
             type="button"
             onClick={handleCopyCode}
-            className="self-start md:self-auto bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-xs hover-lift shrink-0"
+            className="w-full md:w-auto justify-center self-start md:self-auto bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl flex items-center gap-2 transition cursor-pointer shadow-xs shrink-0"
           >
             {copied ? <FiCheck /> : <FiCopy />}
             <span>{copied ? "Code Copied!" : "Copy Invite Code"}</span>
@@ -302,11 +339,11 @@ const KitchenMembers = () => {
 
         {/* Members List Container */}
         <div className="bg-white rounded-2xl shadow-xs border border-gray-100 overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+          <div className="p-4 sm:p-6 border-b border-gray-100 flex justify-between items-center">
             <div>
               <h2 className="text-lg font-bold text-gray-900">Crew Members</h2>
               <p className="text-xs text-gray-500 mt-0.5">
-                Active participants with inventory permissions ({members.length})
+                Active participants with inventory permissions ({effectiveMembers.length})
               </p>
             </div>
             {loading && (
@@ -317,14 +354,14 @@ const KitchenMembers = () => {
           </div>
 
           <div className="divide-y divide-gray-100">
-            {members.length === 0 && !loading ? (
+            {effectiveMembers.length === 0 && !loading ? (
               <div className="p-12 text-center text-gray-500 space-y-2">
                 <FiUser className="text-3xl text-gray-300 mx-auto" />
                 <p className="text-sm font-medium">No members found for this kitchen.</p>
                 <p className="text-xs text-gray-400">Share your invite code to get started.</p>
               </div>
             ) : (
-              members.map((member) => {
+              effectiveMembers.map((member) => {
                 const isMemberAdmin = member.role === "KitchenAdmin";
                 const isCurrentUser = member._id === userId;
 
@@ -359,8 +396,8 @@ const KitchenMembers = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 self-start sm:self-auto text-xs pl-13 sm:pl-0">
-                      <span className="text-gray-400 hidden md:flex items-center gap-1.5">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 self-start sm:self-auto text-xs pl-13 sm:pl-0">
+                      <span className="text-gray-400 hidden lg:flex items-center gap-1.5">
                         <FiCalendar className="text-gray-400" />
                         <span>Joined {new Date(member.createdAt).toLocaleDateString()}</span>
                       </span>
@@ -381,7 +418,7 @@ const KitchenMembers = () => {
                         <button
                           type="button"
                           onClick={() => setMemberToPromote(member)}
-                          className="flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300/80 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer hover-lift shadow-2xs"
+                          className="flex items-center gap-1 bg-amber-50 hover:bg-amber-100 active:scale-95 text-amber-800 border border-amber-300/80 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer shadow-2xs"
                           title={`Make ${member.userName} a Kitchen Admin`}
                         >
                           <FiShield className="text-xs text-amber-700" />
@@ -399,7 +436,7 @@ const KitchenMembers = () => {
                             setRemovePhone("");
                             setRemoveModalError(null);
                           }}
-                          className="flex items-center gap-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200/80 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer hover-lift shadow-2xs"
+                          className="flex items-center gap-1 bg-red-50 hover:bg-red-100 active:scale-95 text-red-700 border border-red-200/80 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer shadow-2xs"
                           title={`Remove ${member.userName} from this kitchen`}
                         >
                           <FiUserX className="text-xs text-red-600" />
@@ -437,7 +474,7 @@ const KitchenMembers = () => {
                   setDeletePhone("");
                   setDeleteModalError(null);
                 }}
-                className="self-start sm:self-auto bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 px-5 rounded-xl shadow-xs transition hover-lift cursor-pointer flex items-center gap-2 shrink-0"
+                className="self-start sm:self-auto bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-xs sm:text-sm py-2.5 px-5 rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center gap-2 w-full sm:w-auto shrink-0"
               >
                 <FiTrash2 className="text-base" />
                 <span>Delete Kitchen</span>
@@ -467,7 +504,7 @@ const KitchenMembers = () => {
                 setShowLeavePassword(false);
                 setLeaveModalError(null);
               }}
-              className="self-start sm:self-auto bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm py-2.5 px-5 rounded-xl shadow-xs transition hover-lift cursor-pointer flex items-center gap-2 shrink-0"
+              className="self-start sm:self-auto bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-bold text-xs sm:text-sm py-2.5 px-5 rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center gap-2 w-full sm:w-auto shrink-0"
             >
               <FiLogOut className="text-base" />
               <span>Exit Kitchen</span>
@@ -481,7 +518,7 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {showLeaveModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
             <div className="w-14 h-14 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiLogOut />
             </div>
@@ -576,7 +613,7 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {showDeleteKitchenModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
             <div className="w-14 h-14 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiAlertTriangle />
             </div>
@@ -691,7 +728,7 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {memberToRemove && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
             <div className="w-14 h-14 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiUserX />
             </div>
@@ -804,7 +841,7 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {memberToPromote && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100">
+          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
             <div className="w-14 h-14 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiShield />
             </div>
