@@ -81,6 +81,14 @@ const App = () => {
             }
           />
           <Route
+            path="/preview-pantry"
+            element={<KitchenItem />}
+          />
+          <Route
+            path="/preview-market"
+            element={<AddItemsToShoppingCart />}
+          />
+          <Route
             path="/kitchenmembers"
             element={
               <ProtectedRoute>

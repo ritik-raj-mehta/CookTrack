@@ -173,8 +173,72 @@ const KitchenItem = () => {
     }
   };
 
+  const samplePreviewItems: ItemsTypes[] = [
+    {
+      _id: "prev1",
+      productName: "Royal Basmati Rice",
+      category: "Pantry Items",
+      quantity: 10,
+      unit: "kg",
+      storageLocation: "Pantry Cabinet",
+      expiryDate: "2027-04-15",
+      notes: "Aromatic long grain rice for family meals",
+    },
+    {
+      _id: "prev2",
+      productName: "Organic Whole Milk",
+      category: "Dairy & Eggs",
+      quantity: 1,
+      unit: "liters",
+      storageLocation: "Fridge",
+      expiryDate: "2026-11-24",
+      notes: "1 liter remaining - refill recommended",
+    },
+    {
+      _id: "prev3",
+      productName: "Fresh Vine Tomatoes",
+      category: "Fruits & Vegetable",
+      quantity: 2,
+      unit: "kg",
+      storageLocation: "Veggie Drawer",
+      expiryDate: "2026-11-23",
+      notes: "Use within 2 days",
+    },
+    {
+      _id: "prev4",
+      productName: "Cold Pressed Olive Oil",
+      category: "Condiment & Sauces",
+      quantity: 500,
+      unit: "ml",
+      storageLocation: "Spice Rack",
+      expiryDate: "2027-02-10",
+      notes: "Virgin Italian olive oil",
+    },
+    {
+      _id: "prev5",
+      productName: "Greek Protein Yogurt",
+      category: "Dairy & Eggs",
+      quantity: 0,
+      unit: "cups",
+      storageLocation: "Fridge",
+      expiryDate: "2026-11-25",
+      notes: "Completely finished yesterday",
+    },
+    {
+      _id: "prev6",
+      productName: "Organic Brown Eggs",
+      category: "Dairy & Eggs",
+      quantity: 2,
+      unit: "Pieces",
+      storageLocation: "Fridge Door",
+      expiryDate: "2026-12-05",
+      notes: "Only 2 left",
+    },
+  ];
+
   // ---------- FILTER LOGIC ----------
-  const items = Array.isArray(kitchenItems) ? kitchenItems : [];
+  const rawItems = Array.isArray(kitchenItems) ? kitchenItems : [];
+  const items = rawItems.length > 0 ? rawItems : (!kitchenId ? samplePreviewItems : []);
   const filteredItems = items.filter((item: ItemsTypes) => {
     const pName = (item.productName || "").toLowerCase();
     const cat = (item.category || "").toLowerCase();
@@ -189,56 +253,56 @@ const KitchenItem = () => {
   });
 
   return (
-    <div className="w-full bg-gray-100 min-h-screen relative">
+    <div className="w-full max-w-full bg-slate-50 min-h-screen relative overflow-x-hidden">
       {/* HEADER */}
-      <div className="bg-white py-3.5 border-b border-black/10 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex gap-3 items-center">
-          <div className="bg-green-100 text-2xl p-2 rounded-xl text-green-800 shrink-0">
+      <div className="bg-white py-3 sm:py-4 border-b border-gray-100 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex gap-2.5 sm:gap-3 items-center min-w-0">
+          <div className="bg-emerald-100 text-xl sm:text-2xl p-2 sm:p-2.5 rounded-xl text-emerald-800 shrink-0">
             <FiCodesandbox />
           </div>
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-amber-950">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight truncate">
               Pantry Inventory
             </h1>
-            <p className="text-xs sm:text-sm font-medium opacity-85">
+            <p className="text-xs sm:text-sm font-medium text-gray-500">
               Items in Pantry ({filteredItems.length})
             </p>
           </div>
         </div>
 
         <NavLink
-          className="self-start sm:self-auto bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-xl shadow-xs font-semibold text-sm transition hover-lift text-center"
+          className="self-stretch sm:self-auto bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 active:scale-95 text-white py-2.5 px-4 rounded-xl shadow-xs font-bold text-xs sm:text-sm transition hover-lift text-center"
           to="/additemstokitchen"
         >
           + Restock Item
         </NavLink>
       </div>
 
-      <div className="px-4 sm:px-6 lg:px-8 py-2">
+      <div className="px-3 sm:px-6 lg:px-8 py-2">
         {/* FILTER BOX */}
-        <div className="bg-white my-4 sm:my-6 font-semibold p-4 sm:p-6 rounded-2xl space-y-4 shadow-sm border border-gray-100">
+        <div className="bg-white my-3 sm:my-6 font-semibold p-3.5 sm:p-6 rounded-2xl space-y-3 sm:space-y-4 shadow-2xs border border-gray-100">
           <div className="flex items-center space-x-2 text-slate-800">
-            <CiFilter className="text-2xl text-emerald-600" />
-            <h3 className="text-lg sm:text-xl font-bold">Filter & Search</h3>
+            <CiFilter className="text-xl sm:text-2xl text-emerald-600" />
+            <h3 className="text-base sm:text-lg font-bold">Filter & Search</h3>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
+          <div className="flex flex-col lg:flex-row gap-2.5 sm:gap-4">
             {/* Search */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 flex items-center space-x-2 flex-1 focus-within:border-green-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-green-600 transition">
-              <CiSearch className="text-xl text-gray-500 shrink-0" />
+            <div className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 sm:py-2.5 flex items-center space-x-2 flex-1 focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-emerald-600 transition">
+              <CiSearch className="text-lg sm:text-xl text-gray-500 shrink-0" />
               <input
                 type="text"
-                className="outline-none w-full bg-transparent text-sm font-normal"
-                placeholder="Search products by name or category..."
+                className="outline-none w-full bg-transparent text-xs sm:text-sm font-normal text-gray-800 placeholder-gray-400"
+                placeholder="Search by product name or category..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-3">
               {/* Category Filter */}
               <select
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                className="bg-gray-50 border border-gray-200 rounded-xl px-2.5 sm:px-3 py-2 text-xs sm:text-sm outline-none focus:border-emerald-600 focus:bg-white transition text-gray-700 font-medium truncate"
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
               >
@@ -257,7 +321,7 @@ const KitchenItem = () => {
 
               {/* Unit Filter */}
               <select
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                className="bg-gray-50 border border-gray-200 rounded-xl px-2.5 sm:px-3 py-2 text-xs sm:text-sm outline-none focus:border-emerald-600 focus:bg-white transition text-gray-700 font-medium truncate"
                 value={unitFilter}
                 onChange={(e) => setUnitFilter(e.target.value)}
               >
@@ -318,8 +382,8 @@ const KitchenItem = () => {
       {/* FINISH / CONSUME OR REMOVE MODAL                                          */}
       {/* ========================================================================= */}
       {itemToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 border border-gray-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-fadeIn overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 sm:space-y-5 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center border-b border-gray-100 pb-3">
               <div className="flex items-center gap-2.5">
                 <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl shadow-xs">
@@ -407,8 +471,8 @@ const KitchenItem = () => {
       {/* EDIT ITEM POPUP MODAL                                                     */}
       {/* ========================================================================= */}
       {itemToEdit && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 overflow-y-auto animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-gray-100 my-8">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-3 sm:p-4 overflow-y-auto animate-fadeIn">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center pb-3 border-b border-gray-100">
               <div className="flex items-center gap-2.5">
                 <div className="bg-blue-100 text-blue-600 p-2 rounded-lg text-lg">

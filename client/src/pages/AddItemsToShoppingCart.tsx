@@ -31,6 +31,60 @@ import type { ShoppingItem, ShoppingItemInput } from "../types/KitchenTypes";
 
 export type shoppingItemTypes = ShoppingItemInput;
 
+// Fallback preview items for unauthenticated preview / testing
+const PREVIEW_SHOPPING_ITEMS: ShoppingItem[] = [
+  {
+    _id: "demo-item-1",
+    name: "Farm Fresh Milk",
+    neededQuantity: 2,
+    unit: "liters",
+    isBought: false,
+    notes: "Prefer whole milk, check manufacturing date",
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    kitchenId: "demo-kitchen",
+  },
+  {
+    _id: "demo-item-2",
+    name: "Baby Spinach & Red Tomatoes",
+    neededQuantity: 1,
+    unit: "kg",
+    isBought: true,
+    notes: "Organic salad leaves from local farm",
+    createdAt: new Date(Date.now() - 3600000 * 18).toISOString(),
+    kitchenId: "demo-kitchen",
+  },
+  {
+    _id: "demo-item-3",
+    name: "Whole Wheat Bread",
+    neededQuantity: 2,
+    unit: "package",
+    isBought: false,
+    notes: "Multigrain or brown loaf",
+    createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
+    kitchenId: "demo-kitchen",
+  },
+  {
+    _id: "demo-item-4",
+    name: "Greek Plain Yogurt",
+    neededQuantity: 3,
+    unit: "cups",
+    isBought: true,
+    notes: "High protein, unsweetened",
+    createdAt: new Date(Date.now() - 3600000 * 72).toISOString(),
+    kitchenId: "demo-kitchen",
+  },
+  {
+    _id: "demo-item-5",
+    name: "Extra Virgin Olive Oil",
+    neededQuantity: 1,
+    unit: "bottles",
+    isBought: false,
+    notes: "Cold pressed 500ml",
+    createdAt: new Date(Date.now() - 3600000 * 96).toISOString(),
+    kitchenId: "demo-kitchen",
+  },
+];
+
 const AddItemsToShoppingCart = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { kitchenId, userId, isAuthenticated } = useSelector(
@@ -306,10 +360,20 @@ const AddItemsToShoppingCart = () => {
     }
   };
 
+  // Fallback to preview mock items for testing when empty/unauthenticated
+  const effectiveItems = useMemo(() => {
+    if (Array.isArray(shoppingItems) && shoppingItems.length > 0) {
+      return shoppingItems;
+    }
+    if (!kitchenId) {
+      return PREVIEW_SHOPPING_ITEMS;
+    }
+    return [];
+  }, [shoppingItems, kitchenId]);
+
   // Filtered and searched shopping items
   const filteredItems = useMemo(() => {
-    const items = Array.isArray(shoppingItems) ? shoppingItems : [];
-    return items.filter((item: ShoppingItem) => {
+    return effectiveItems.filter((item: ShoppingItem) => {
       const matchesSearch =
         !searchTerm.trim() ||
         item.name.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
@@ -322,12 +386,12 @@ const AddItemsToShoppingCart = () => {
 
       return matchesSearch && matchesStatus;
     });
-  }, [shoppingItems, searchTerm, filterStatus]);
+  }, [effectiveItems, searchTerm, filterStatus]);
 
   // Counts
-  const totalCount = shoppingItems.length;
-  const pendingCount = shoppingItems.filter((i) => !i.isBought).length;
-  const boughtCount = shoppingItems.filter((i) => i.isBought).length;
+  const totalCount = effectiveItems.length;
+  const pendingCount = effectiveItems.filter((i) => !i.isBought).length;
+  const boughtCount = effectiveItems.filter((i) => i.isBought).length;
 
   // Format date helper
   const formatDate = (dateStr?: string) => {
@@ -526,66 +590,63 @@ const AddItemsToShoppingCart = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+        <div className="grid grid-cols-2 sm:flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
           <button
             type="button"
             onClick={handleDownloadPDF}
-            className="flex items-center gap-2 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-black py-2 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm shadow-2xs transition cursor-pointer hover-lift"
+            className="flex items-center justify-center gap-2 bg-white border border-gray-300 hover:border-gray-400 active:scale-95 text-gray-700 hover:text-black py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm shadow-2xs transition cursor-pointer"
             title="Download Market List as PDF"
           >
-            <FaFilePdf className="text-red-500 text-base" />
-            Download PDF
+            <FaFilePdf className="text-red-500 text-base shrink-0" />
+            <span>Download PDF</span>
           </button>
 
           <button
             type="button"
             onClick={() => setShowAddForm((prev) => !prev)}
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm shadow-xs transition cursor-pointer hover-lift"
+            className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 active:scale-95 text-white py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm shadow-xs transition cursor-pointer"
           >
-            {showAddForm ? <FiX className="text-base" /> : <FiPlus className="text-base" />}
-            {showAddForm ? "Close Form" : "+ Add Item"}
+            {showAddForm ? <FiX className="text-base shrink-0" /> : <FiPlus className="text-base shrink-0" />}
+            <span>{showAddForm ? "Close Form" : "+ Add Item"}</span>
           </button>
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        {/* Quick Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                Total Needed Items
+      <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6 pb-24 sm:pb-12">
+        {/* Quick Stats Cards: 3-column compact grid, no clipped labels */}
+        <div className="grid grid-cols-3 gap-2.5 sm:gap-4 lg:gap-5">
+          <div className="bg-white p-3 sm:p-4 lg:p-5 rounded-xl shadow-2xs border border-gray-100 flex items-center justify-between">
+            <div className="min-w-0">
+              <p className="text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Total Items
               </p>
-              <h3 className="text-2xl font-bold text-gray-800 mt-1">{totalCount}</h3>
-              <p className="text-xs text-gray-400 mt-0.5">In your market list</p>
+              <h3 className="text-lg sm:text-2xl font-bold text-gray-800 mt-0.5 sm:mt-1">{totalCount}</h3>
             </div>
-            <div className="bg-blue-50 text-blue-600 p-3 rounded-full text-xl">
+            <div className="bg-blue-50 text-blue-600 p-2 sm:p-2.5 lg:p-3 rounded-full text-base sm:text-lg lg:text-xl shrink-0">
               <FaCartPlus />
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-semibold text-orange-600 uppercase tracking-wider">
-                To Buy (Pending)
+          <div className="bg-white p-3 sm:p-4 lg:p-5 rounded-xl shadow-2xs border border-gray-100 flex items-center justify-between">
+            <div className="min-w-0">
+              <p className="text-[10px] sm:text-xs font-semibold text-orange-600 uppercase tracking-wider">
+                To Buy
               </p>
-              <h3 className="text-2xl font-bold text-orange-600 mt-1">{pendingCount}</h3>
-              <p className="text-xs text-gray-400 mt-0.5">Still need to purchase</p>
+              <h3 className="text-lg sm:text-2xl font-bold text-orange-600 mt-0.5 sm:mt-1">{pendingCount}</h3>
             </div>
-            <div className="bg-orange-50 text-orange-600 p-3 rounded-full text-xl">
+            <div className="bg-orange-50 text-orange-600 p-2 sm:p-2.5 lg:p-3 rounded-full text-base sm:text-lg lg:text-xl shrink-0">
               <FiCircle />
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center justify-between">
-            <div>
-              <p className="text-xs font-semibold text-green-600 uppercase tracking-wider">
-                Purchased (Bought)
+          <div className="bg-white p-3 sm:p-4 lg:p-5 rounded-xl shadow-2xs border border-gray-100 flex items-center justify-between">
+            <div className="min-w-0">
+              <p className="text-[10px] sm:text-xs font-semibold text-green-600 uppercase tracking-wider">
+                Purchased
               </p>
-              <h3 className="text-2xl font-bold text-green-600 mt-1">{boughtCount}</h3>
-              <p className="text-xs text-gray-400 mt-0.5">Completed items</p>
+              <h3 className="text-lg sm:text-2xl font-bold text-green-600 mt-0.5 sm:mt-1">{boughtCount}</h3>
             </div>
-            <div className="bg-green-50 text-green-600 p-3 rounded-full text-xl">
+            <div className="bg-green-50 text-green-600 p-2 sm:p-2.5 lg:p-3 rounded-full text-base sm:text-lg lg:text-xl shrink-0">
               <FiCheckCircle />
             </div>
           </div>
@@ -730,27 +791,27 @@ const AddItemsToShoppingCart = () => {
         )}
 
         {/* Filter and Search Bar */}
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-white p-3.5 sm:p-4 rounded-xl shadow-2xs border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
           {/* Search */}
-          <div className="relative flex-1 max-w-md">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-base" />
+          <div className="relative flex-1 w-full md:max-w-md">
+            <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-base pointer-events-none" />
             <input
               type="text"
               placeholder="Search shopping items..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-green-600 focus:bg-white transition"
+              className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-green-600 focus:bg-white transition"
             />
           </div>
 
           {/* Status Tabs */}
-          <div className="flex items-center bg-gray-100 p-1 rounded-lg">
+          <div className="flex items-center bg-gray-100 p-1 rounded-xl w-full md:w-auto">
             <button
               type="button"
               onClick={() => setFilterStatus("all")}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition cursor-pointer ${
+              className={`flex-1 md:flex-initial text-center px-3 py-2 text-xs font-semibold rounded-lg transition active:scale-95 cursor-pointer ${
                 filterStatus === "all"
-                  ? "bg-white text-gray-800 shadow-sm"
+                  ? "bg-white text-gray-800 shadow-2xs"
                   : "text-gray-500 hover:text-gray-800"
               }`}
             >
@@ -759,9 +820,9 @@ const AddItemsToShoppingCart = () => {
             <button
               type="button"
               onClick={() => setFilterStatus("pending")}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition cursor-pointer ${
+              className={`flex-1 md:flex-initial text-center px-3 py-2 text-xs font-semibold rounded-lg transition active:scale-95 cursor-pointer ${
                 filterStatus === "pending"
-                  ? "bg-white text-orange-600 shadow-sm"
+                  ? "bg-white text-orange-600 shadow-2xs"
                   : "text-gray-500 hover:text-orange-600"
               }`}
             >
@@ -770,9 +831,9 @@ const AddItemsToShoppingCart = () => {
             <button
               type="button"
               onClick={() => setFilterStatus("bought")}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition cursor-pointer ${
+              className={`flex-1 md:flex-initial text-center px-3 py-2 text-xs font-semibold rounded-lg transition active:scale-95 cursor-pointer ${
                 filterStatus === "bought"
-                  ? "bg-white text-green-600 shadow-sm"
+                  ? "bg-white text-green-600 shadow-2xs"
                   : "text-gray-500 hover:text-green-600"
               }`}
             >
@@ -813,16 +874,16 @@ const AddItemsToShoppingCart = () => {
               {filteredItems.map((item) => (
                 <div
                   key={item._id}
-                  className={`p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 transition hover:bg-gray-50 ${
-                    item.isBought ? "bg-gray-50/60 opacity-80" : "bg-white"
+                  className={`p-3.5 sm:p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 transition hover:bg-gray-50 ${
+                    item.isBought ? "bg-gray-50/60 opacity-85" : "bg-white"
                   }`}
                 >
                   {/* Left: Checkbox & Name */}
-                  <div className="flex items-center gap-3.5 flex-1 min-w-0">
+                  <div className="flex items-start sm:items-center gap-3 sm:gap-3.5 flex-1 min-w-0">
                     <button
                       type="button"
                       onClick={() => handleToggleBought(item._id)}
-                      className={`text-xl transition p-1 rounded-full cursor-pointer shrink-0 ${
+                      className={`text-2xl transition p-1 rounded-full cursor-pointer shrink-0 active:scale-90 ${
                         item.isBought
                           ? "text-green-600 hover:text-green-700"
                           : "text-gray-300 hover:text-green-500"
@@ -836,7 +897,7 @@ const AddItemsToShoppingCart = () => {
                       )}
                     </button>
 
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 pt-0.5 sm:pt-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span
                           className={`font-semibold text-sm sm:text-base transition break-words ${
@@ -860,7 +921,7 @@ const AddItemsToShoppingCart = () => {
                       </div>
 
                       {item.notes && (
-                        <p className="text-xs text-gray-500 mt-0.5 truncate">
+                        <p className="text-xs text-gray-500 mt-1 line-clamp-2 sm:truncate">
                           Note: {item.notes}
                         </p>
                       )}
@@ -868,18 +929,18 @@ const AddItemsToShoppingCart = () => {
                   </div>
 
                   {/* Right: Actions, Quantity, Timestamp & Delete */}
-                  <div className="flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 pl-9 sm:pl-0 shrink-0 flex-wrap">
+                  <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-2.5 pl-10 sm:pl-0 shrink-0">
                     {/* Restock to Pantry Action (Available on purchased items) */}
                     {item.isBought && (
                       <button
                         type="button"
                         onClick={() => openRestockModal(item)}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/90 px-3 py-1.5 rounded-xl transition shadow-2xs cursor-pointer hover-lift"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 active:scale-95 border border-emerald-200/90 px-2.5 sm:px-3 py-1.5 rounded-xl transition shadow-2xs cursor-pointer hover-lift"
                         title="Add this purchased grocery into kitchen inventory"
                       >
-                        <FiBox className="text-sm text-emerald-600" />
-                        <span className="hidden sm:inline">Restock to Pantry</span>
-                        <span className="sm:hidden">Restock</span>
+                        <FiBox className="text-sm text-emerald-600 shrink-0" />
+                        <span>Restock</span>
+                        <span className="hidden xl:inline">to Pantry</span>
                       </button>
                     )}
 
@@ -887,30 +948,32 @@ const AddItemsToShoppingCart = () => {
                       {item.neededQuantity} {item.unit}
                     </div>
 
-                    <div className="hidden md:flex items-center gap-1 text-xs text-gray-400 whitespace-nowrap">
+                    <div className="hidden lg:flex items-center gap-1 text-xs text-gray-400 whitespace-nowrap">
                       <FiClock className="text-xs" />
                       <span>{formatDate(item.createdAt)}</span>
                     </div>
 
-                    {/* Edit action */}
-                    <button
-                      type="button"
-                      onClick={() => handleOpenEditModal(item)}
-                      className="text-gray-400 hover:text-blue-600 p-1.5 sm:p-2 rounded-lg hover:bg-blue-50 transition cursor-pointer"
-                      title="Edit shopping item"
-                    >
-                      <FiEdit3 className="text-base" />
-                    </button>
+                    <div className="flex items-center gap-1">
+                      {/* Edit action */}
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEditModal(item)}
+                        className="text-gray-400 hover:text-blue-600 active:scale-90 p-2 rounded-xl hover:bg-blue-50 transition cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+                        title="Edit shopping item"
+                      >
+                        <FiEdit3 className="text-base" />
+                      </button>
 
-                    {/* Delete action */}
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteItem(item._id, item.name)}
-                      className="text-gray-400 hover:text-red-500 p-1.5 sm:p-2 rounded-lg hover:bg-red-50 transition cursor-pointer"
-                      title="Delete item"
-                    >
-                      <FiTrash2 className="text-base" />
-                    </button>
+                      {/* Delete action */}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteItem(item._id, item.name)}
+                        className="text-gray-400 hover:text-red-500 active:scale-90 p-2 rounded-xl hover:bg-red-50 transition cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+                        title="Delete item"
+                      >
+                        <FiTrash2 className="text-base" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -922,7 +985,7 @@ const AddItemsToShoppingCart = () => {
       {/* Restock to Pantry Modal */}
       {restockModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-gray-100 space-y-5 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-7 shadow-2xl border border-gray-100 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
             {/* Modal Header */}
             <div className="flex items-start justify-between border-b border-gray-100 pb-4">
               <div className="flex items-center gap-3">
@@ -1042,7 +1105,7 @@ const AddItemsToShoppingCart = () => {
                 </div>
 
                 {/* Quick preset buttons */}
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {[
                     { label: "+3 Days", days: 3 },
                     { label: "+7 Days", days: 7 },
@@ -1118,7 +1181,7 @@ const AddItemsToShoppingCart = () => {
       {/* Edit Shopping Item Modal */}
       {editModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-gray-100 space-y-5">
+          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-7 shadow-2xl border border-gray-100 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
             {/* Modal Header */}
             <div className="flex items-start justify-between border-b border-gray-100 pb-4">
               <div className="flex items-center gap-3">
