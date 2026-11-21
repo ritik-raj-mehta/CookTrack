@@ -16,7 +16,7 @@ const ItemLogSchema = new mongoose.Schema(
       required: true,
       index: true
     },
-    estimatedCost: { type: Number, default: 3.5 }, // Estimated price per unit
+    estimatedCost: { type: Number, default: 150 }, // Estimated price per unit in INR (₹)
     notes: { type: String, default: '' },
     loggedAt: { type: Date, default: Date.now, index: true }
   },

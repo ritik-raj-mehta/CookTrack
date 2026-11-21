@@ -816,7 +816,7 @@ const getKitchenAnalytics = async (req, res) => {
     let totalCostWasted = 0;
 
     const wastedCategoryMap = {};
-    const DEFAULT_UNIT_COST = 3.5;
+    const DEFAULT_UNIT_COST = 150; // Average ₹150 per grocery item/pack in India
 
     logs.forEach((log) => {
       const qty = Number(log.quantity) || 1;
@@ -972,7 +972,7 @@ const getKitchenAnalytics = async (req, res) => {
 
 const logItemAction = async (req, res) => {
   const { kitchenId, itemId } = req.params;
-  const { action, quantityUsed = 1, estimatedCost = 3.5, notes = '' } = req.body;
+  const { action, quantityUsed = 1, estimatedCost = 150, notes = '' } = req.body;
 
   if (!['consumed', 'wasted'].includes(action)) {
     return res.status(400).json({
@@ -1004,7 +1004,7 @@ const logItemAction = async (req, res) => {
       quantity: qtyToDeduct,
       unit: item.unit || 'Pieces',
       action,
-      estimatedCost: Number(estimatedCost) || 3.5,
+      estimatedCost: Number(estimatedCost) || 150,
       notes: notes || `Item marked as ${action}`
     });
 

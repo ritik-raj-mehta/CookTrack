@@ -7,12 +7,11 @@ import {
   FiAlertTriangle,
   FiArrowUpRight,
   FiCheckCircle,
-  FiDollarSign,
   FiPieChart,
   FiRefreshCw,
   FiTrendingUp,
 } from "react-icons/fi";
-import { FaLeaf } from "react-icons/fa6";
+import { FaIndianRupeeSign, FaLeaf } from "react-icons/fa6";
 import { IoSparklesOutline } from "react-icons/io5";
 import type { AppDispatch, RootState } from "../stores/store";
 import { fetchKitchenAnalytics } from "../stores/slices/KitchenSlice";
@@ -116,7 +115,7 @@ const KitchenInsights: React.FC = () => {
                 </p>
                 <div className="flex items-baseline gap-1 mt-1.5">
                   <span className="text-3xl font-extrabold text-emerald-600 tracking-tight">
-                    ${stats?.moneySaved ?? 0}
+                    ₹{stats?.moneySaved ?? 0}
                   </span>
                   <span className="text-xs font-semibold text-emerald-700">saved</span>
                 </div>
@@ -125,12 +124,12 @@ const KitchenInsights: React.FC = () => {
                 </p>
               </div>
               <div className="bg-emerald-50 text-emerald-600 text-2xl p-3 rounded-2xl shadow-2xs">
-                <FiDollarSign />
+                <FaIndianRupeeSign />
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between text-xs">
               <span className="text-gray-500 font-medium">Lost to Waste:</span>
-              <span className="font-bold text-red-500">${stats?.moneyWasted ?? 0}</span>
+              <span className="font-bold text-red-500">₹{stats?.moneyWasted ?? 0}</span>
             </div>
           </div>
 
@@ -229,7 +228,7 @@ const KitchenInsights: React.FC = () => {
                 </p>
                 <div className="flex items-baseline gap-1 mt-1.5">
                   <span className="text-3xl font-extrabold text-amber-600">
-                    ${health?.atRiskValue ?? 0}
+                    ₹{health?.atRiskValue ?? 0}
                   </span>
                   <span className="text-xs font-semibold text-gray-400">potential loss</span>
                 </div>
@@ -365,11 +364,11 @@ const KitchenInsights: React.FC = () => {
               <span className="flex items-center gap-1.5">
                 <FiCheckCircle className="text-emerald-600" />
                 <span>
-                  <strong>Tip:</strong> Consuming items within 3 days of expiration saves up to $45/month on grocery waste.
+                  <strong>Tip:</strong> Consuming items within 3 days of expiration saves up to ₹2,500/month on grocery waste.
                 </span>
               </span>
               <span className="font-semibold text-emerald-800 shrink-0">
-                Total Saved: ${stats?.moneySaved ?? 0}
+                Total Saved: ₹{stats?.moneySaved ?? 0}
               </span>
             </div>
           </div>
