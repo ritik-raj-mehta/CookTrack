@@ -3,7 +3,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import { FaCartPlus, FaHome } from "react-icons/fa";
-import { FiCodesandbox } from "react-icons/fi";
+import { FiActivity, FiCodesandbox } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { LuChefHat } from "react-icons/lu";
@@ -24,6 +24,7 @@ const NavBar: React.FC = () => {
     "/additemstokitchen": "3",
     "/additemstoshoppingcart": "4",
     "/kitchenmembers": "5",
+    "/insights": "6",
   };
 
   const selectedKey = pathToKey[location.pathname] || "1";
@@ -118,6 +119,11 @@ const NavBar: React.FC = () => {
                   key: "5",
                   icon: <FaPeopleGroup className="text-lg text-indigo-600" />,
                   label: <NavLink to="/kitchenmembers">Kitchen Crew</NavLink>,
+                },
+                {
+                  key: "6",
+                  icon: <FiActivity className="text-lg text-teal-600" />,
+                  label: <NavLink to="/insights">Insights</NavLink>,
                 },
               ]}
             />

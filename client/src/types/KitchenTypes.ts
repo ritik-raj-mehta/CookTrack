@@ -72,3 +72,61 @@ export type KitchenData = {
   kitchenItemIds?: KitchenItem[];
   kitchenShoppingItemIds?: ShoppingItem[];
 };
+
+export type MonthlyTrend = {
+  month: string;
+  year: number;
+  consumed: number;
+  wasted: number;
+  restocked: number;
+  saved: number;
+};
+
+export type CategoryStat = {
+  category: string;
+  count: number;
+  percentage?: number;
+};
+
+export type StorageStat = {
+  location: string;
+  count: number;
+  percentage?: number;
+};
+
+export type ActivityLog = {
+  _id: string;
+  productName: string;
+  category: string;
+  quantity: number;
+  unit: string;
+  action: 'consumed' | 'wasted' | 'restocked';
+  userName: string;
+  loggedAt: string;
+};
+
+export type AnalyticsData = {
+  inventoryHealth: {
+    totalProducts: number;
+    totalUnits: number;
+    freshCount: number;
+    expiringSoonCount: number;
+    expiredCount: number;
+    atRiskValue: number;
+  };
+  wasteStats: {
+    totalConsumed: number;
+    totalWasted: number;
+    totalRestocked: number;
+    consumedRatio: number;
+    moneySaved: number;
+    moneyWasted: number;
+    ecoScore: string;
+    ecoLabel: string;
+  };
+  monthlyTrends: MonthlyTrend[];
+  topWastedCategories: CategoryStat[];
+  categoryDistribution: CategoryStat[];
+  storageDistribution: StorageStat[];
+  recentActivity: ActivityLog[];
+};

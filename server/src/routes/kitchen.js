@@ -40,4 +40,7 @@ router.delete('/removeMember/:kitchenId/:targetUserId', verifyKitchenAccess, kit
 
 router.patch('/makeAdmin/:kitchenId/:targetUserId', verifyKitchenAccess, kitchenCtrl.makeMemberAdmin);
 
+router.get('/analytics/:kitchenId', verifyKitchenAccess, kitchenCtrl.getKitchenAnalytics);
+router.post('/item-action/:kitchenId/:itemId', verifyKitchenAccess, kitchenCtrl.logItemAction);
+
 export default router;

@@ -2,28 +2,32 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import apiClient from "../../services/api";
 import type { RootState } from "../store";
-import type { ItemsTypes, KitchenData, KitchenMember, ShoppingItem, ShoppingItemInput } from "../../types/KitchenTypes";
+import type { AnalyticsData, ItemsTypes, KitchenData, KitchenMember, ShoppingItem, ShoppingItemInput } from "../../types/KitchenTypes";
 
 const KITCHEN_API = `/api/kitchen`;
 
 export type KitchenStateType = {
   loading: boolean;
+  analyticsLoading: boolean;
   message: string | null;
   error: string | null;
   kitchenData: KitchenData | null;
   kitchenItems: ItemsTypes[];
   shoppingItems: ShoppingItem[];
   members: KitchenMember[];
+  analyticsData: AnalyticsData | null;
 };
 
 const initialState: KitchenStateType = {
   loading: false,
+  analyticsLoading: false,
   message: null,
   error: null,
   kitchenData: null,
   kitchenItems: [],
   shoppingItems: [],
   members: [],
+  analyticsData: null,
 };
 
 export const fetchKitchenData = createAsyncThunk(
@@ -334,6 +338,57 @@ export const makeMemberAdmin = createAsyncThunk(
   }
 );
 
+export const fetchKitchenAnalytics = createAsyncThunk(
+  "kitchen/fetchAnalytics",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) return rejectWithValue("Kitchen ID missing");
+      const res = await apiClient.get(`${KITCHEN_API}/analytics/${kitchenId}`);
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to fetch analytics");
+    }
+  }
+);
+
+export const logItemAction = createAsyncThunk(
+  "kitchen/logItemAction",
+  async (
+    payload: {
+      itemId: string;
+      action: "consumed" | "wasted";
+      quantityUsed?: number;
+      estimatedCost?: number;
+      notes?: string;
+    },
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    try {
+      const state = getState() as RootState;
+      const { kitchenId } = state.auth;
+      if (!kitchenId) return rejectWithValue("Kitchen ID missing");
+      const res = await apiClient.post(
+        `${KITCHEN_API}/item-action/${kitchenId}/${payload.itemId}`,
+        {
+          action: payload.action,
+          quantityUsed: payload.quantityUsed || 1,
+          estimatedCost: payload.estimatedCost,
+          notes: payload.notes,
+        }
+      );
+      dispatch(fetchAllKitchenItemsByKitchenId());
+      dispatch(fetchKitchenAnalytics());
+      return res.data;
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      return rejectWithValue(err.response?.data?.message || "Failed to log item action");
+    }
+  }
+);
+
 export const kitchenSlice = createSlice({
   name: "kitchen",
   initialState,
@@ -349,6 +404,7 @@ export const kitchenSlice = createSlice({
       state.kitchenItems = [];
       state.shoppingItems = [];
       state.members = [];
+      state.analyticsData = null;
       state.message = null;
       state.error = null;
     },
@@ -584,6 +640,32 @@ export const kitchenSlice = createSlice({
         state.message = action.payload?.message || "Member removed successfully";
       })
       .addCase(removeMemberFromKitchen.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || action.error.message || null;
+      })
+
+      // fetch kitchen analytics
+      .addCase(fetchKitchenAnalytics.pending, (state) => {
+        state.analyticsLoading = true;
+      })
+      .addCase(fetchKitchenAnalytics.fulfilled, (state, action) => {
+        state.analyticsLoading = false;
+        state.analyticsData = action.payload?.analytics || null;
+      })
+      .addCase(fetchKitchenAnalytics.rejected, (state, action) => {
+        state.analyticsLoading = false;
+        state.error = (action.payload as string) || action.error.message || null;
+      })
+
+      // log item action
+      .addCase(logItemAction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logItemAction.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload?.message || "Action recorded successfully";
+      })
+      .addCase(logItemAction.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || action.error.message || null;
       });

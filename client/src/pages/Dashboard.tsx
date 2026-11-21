@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineRise } from "react-icons/ai";
 import { FaCartPlus, FaStore } from "react-icons/fa";
-import { FiAlertTriangle, FiCheck, FiCodesandbox, FiCopy, FiPlus } from "react-icons/fi";
+import { FiAlertTriangle, FiCheck, FiCodesandbox, FiCopy, FiPlus, FiTrendingUp } from "react-icons/fi";
 import { SlCalender } from "react-icons/sl";
 import type { AppDispatch, RootState } from "../stores/store";
 import { fetchKitchenData } from "../stores/slices/KitchenSlice";
@@ -216,6 +216,13 @@ const Dashboard = () => {
               className="inline-flex items-center gap-2 bg-white hover:bg-blue-50/70 border border-blue-200 text-blue-800 font-semibold py-2.5 px-5 rounded-xl text-sm transition shadow-2xs hover-lift"
             >
               <FaCartPlus className="text-base text-blue-600" /> Market List
+            </Link>
+
+            <Link
+              to="/insights"
+              className="inline-flex items-center gap-2 bg-white hover:bg-teal-50/70 border border-teal-200 text-teal-800 font-semibold py-2.5 px-5 rounded-xl text-sm transition shadow-2xs hover-lift"
+            >
+              <FiTrendingUp className="text-base text-teal-600" /> Kitchen Insights
             </Link>
           </div>
         </div>

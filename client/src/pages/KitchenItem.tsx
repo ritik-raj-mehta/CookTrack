@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CiFilter, CiSearch } from "react-icons/ci";
-import { FiAlertTriangle, FiCodesandbox, FiEdit3, FiX } from "react-icons/fi";
-import { MdDeleteOutline } from "react-icons/md";
+import { FiCodesandbox, FiEdit3, FiX } from "react-icons/fi";
 import type { AppDispatch, RootState } from "../stores/store";
 import {
   addItemsToShoppingCart,
   deleteKitchenItem,
   fetchAllKitchenItemsByKitchenId,
   fetchShoppingItems,
+  logItemAction,
   updateKitchenItem,
 } from "../stores/slices/KitchenSlice";
 import ItemCard from "../components/ItemCard";
@@ -73,7 +73,7 @@ const KitchenItem = () => {
     setItemToDelete(item);
   };
 
-  // Confirm Delete Action
+  // Confirm Delete Action (Silently removes item without logging)
   const handleConfirmDelete = async () => {
     if (!itemToDelete?._id) return;
     setIsDeleting(true);
@@ -82,6 +82,32 @@ const KitchenItem = () => {
       setItemToDelete(null);
     } catch (err) {
       console.error("Failed to delete item:", err);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  // Handle logging item as consumed or wasted
+  const handleLogConsumption = async (action: "consumed" | "wasted") => {
+    if (!itemToDelete?._id) return;
+    setIsDeleting(true);
+    try {
+      await dispatch(
+        logItemAction({
+          itemId: itemToDelete._id,
+          action,
+          quantityUsed: itemToDelete.quantity || 1,
+        })
+      ).unwrap();
+      setShoppingNotification(
+        action === "consumed"
+          ? `🍽️ Logged "${itemToDelete.productName}" as consumed! Savings tracked.`
+          : `🗑️ Logged "${itemToDelete.productName}" as spoiled to help reduce future waste.`
+      );
+      setTimeout(() => setShoppingNotification(null), 4000);
+      setItemToDelete(null);
+    } catch (err) {
+      console.error("Failed to log action:", err);
     } finally {
       setIsDeleting(false);
     }
@@ -289,46 +315,89 @@ const KitchenItem = () => {
       </div>
 
       {/* ========================================================================= */}
-      {/* DELETE CONFIRMATION POPUP MODAL                                           */}
+      {/* FINISH / CONSUME OR REMOVE MODAL                                          */}
       {/* ========================================================================= */}
       {itemToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-gray-100">
-            <div className="w-14 h-14 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
-              <FiAlertTriangle />
-            </div>
-
-            <div className="text-center space-y-1">
-              <h3 className="text-xl font-bold text-gray-900">Delete Product</h3>
-              <p className="text-sm text-gray-600 px-2">
-                Are you sure you want to remove{" "}
-                <span className="font-semibold text-gray-900">"{itemToDelete.productName}"</span>{" "}
-                from your kitchen inventory?
-              </p>
-            </div>
-
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-800">
-              This action cannot be undone and will permanently remove this item from your kitchen.
-            </div>
-
-            <div className="flex items-center gap-3 pt-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fadeIn">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 border border-gray-100">
+            <div className="flex justify-between items-center border-b border-gray-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl shadow-xs">
+                  🍽️
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Finish or Remove Item</h3>
+                  <p className="text-xs text-gray-500">Track food usage for kitchen insights</p>
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={() => setItemToDelete(null)}
-                disabled={isDeleting}
-                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
+                className="text-gray-400 hover:text-gray-600 text-xl cursor-pointer p-1 rounded-lg hover:bg-gray-100 transition"
               >
-                Cancel
+                <FiX />
               </button>
+            </div>
+
+            <div className="bg-slate-50 border border-gray-200/80 rounded-xl p-3.5 text-xs text-gray-700">
+              <p>
+                How was <strong className="text-gray-900 font-semibold">"{itemToDelete.productName}"</strong>{" "}
+                ({itemToDelete.quantity} {itemToDelete.unit}) used?
+              </p>
+            </div>
+
+            <div className="space-y-2.5">
+              {/* Option 1: Consumed */}
               <button
                 type="button"
-                onClick={handleConfirmDelete}
                 disabled={isDeleting}
-                className="flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
+                onClick={() => handleLogConsumption("consumed")}
+                className="w-full py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm flex items-center justify-between shadow-xs transition hover-lift cursor-pointer disabled:opacity-50"
               >
-                <MdDeleteOutline className="text-lg" />
-                {isDeleting ? "Deleting..." : "Yes, Delete"}
+                <span className="flex items-center gap-2">
+                  <span>🍽️</span>
+                  <span>Used Up / Consumed</span>
+                </span>
+                <span className="text-[11px] font-normal bg-emerald-600/60 px-2 py-0.5 rounded-md">
+                  +Savings &amp; Eco Score
+                </span>
               </button>
+
+              {/* Option 2: Spoiled / Wasted */}
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => handleLogConsumption("wasted")}
+                className="w-full py-3 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 font-bold text-xs sm:text-sm flex items-center justify-between transition hover-lift cursor-pointer disabled:opacity-50"
+              >
+                <span className="flex items-center gap-2">
+                  <span>🗑️</span>
+                  <span>Expired / Spoiled</span>
+                </span>
+                <span className="text-[11px] font-medium text-amber-800">
+                  Track food waste
+                </span>
+              </button>
+
+              {/* Option 3: Delete silently */}
+              <div className="pt-2 flex items-center justify-between">
+                <button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={handleConfirmDelete}
+                  className="text-xs text-gray-400 hover:text-red-600 font-semibold transition cursor-pointer"
+                >
+                  Just remove without logging
+                </button>
+                <button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={() => setItemToDelete(null)}
+                  className="text-xs text-gray-500 hover:text-gray-800 font-bold transition cursor-pointer px-3 py-1.5 rounded-lg hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         </div>

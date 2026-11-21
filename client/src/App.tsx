@@ -16,6 +16,7 @@ const AddItemsToKitchen = lazy(() => import("./pages/AddItemsToKitchen"));
 const KitchenItem = lazy(() => import("./pages/KitchenItem"));
 const KitchenMembers = lazy(() => import("./pages/KitchenMembers"));
 const AddItemsToShoppingCart = lazy(() => import("./pages/AddItemsToShoppingCart"));
+const KitchenInsights = lazy(() => import("./pages/KitchenInsights"));
 
 const PageLoader = () => (
   <div className="flex min-h-[60vh] h-full w-full items-center justify-center p-8">
@@ -92,6 +93,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <AddItemsToShoppingCart />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/insights"
+            element={
+              <ProtectedRoute>
+                <KitchenInsights />
               </ProtectedRoute>
             }
           />

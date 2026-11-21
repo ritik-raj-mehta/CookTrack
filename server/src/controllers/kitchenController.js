@@ -3,6 +3,7 @@ import Kitchen from '../models/Kitchen.js';
 import KitchenItem from '../models/KitchenItem.js';
 import ShoppingItem from '../models/ShoppingItem.js';
 import User from '../models/User.js';
+import ItemLog from '../models/ItemLog.js';
 
 const normalizePhone = (str) => {
   if (!str) return '';
@@ -83,6 +84,20 @@ const addItemsToKitchen = async (req, res) => {
     kitchen.kitchenItemIds.push(item._id);
     kitchen.updatedAt = new Date();
     await kitchen.save();
+
+    // Log restocked event asynchronously
+    ItemLog.create({
+      kitchenId,
+      userId: req.user?.id || null,
+      userName: req.user?.userName || 'Crew Member',
+      itemId: item._id,
+      productName: item.productName,
+      category: item.category,
+      quantity: item.quantity,
+      unit: item.unit,
+      action: 'restocked',
+      notes: 'Restocked into Pantry'
+    }).catch((e) => console.error('Restock log error:', e));
 
     return res.json({
       isSuccess: true,
@@ -742,6 +757,297 @@ const makeMemberAdmin = async (req, res) => {
   }
 };
 
+const getKitchenAnalytics = async (req, res) => {
+  const { kitchenId } = req.params;
+
+  try {
+    // 1. Fetch live items from KitchenItem (.lean())
+    const currentItems = await KitchenItem.find({ kitchenId }).lean();
+
+    const now = new Date();
+    let totalStockUnits = 0;
+    let freshItemsCount = 0;
+    let expiringSoonCount = 0; // <= 7 days
+    let expiredCount = 0;
+
+    const categoryMap = {};
+    const locationMap = {};
+
+    currentItems.forEach((item) => {
+      const qty = Number(item.quantity) || 0;
+      totalStockUnits += qty;
+
+      const cat = item.category || 'Pantry Items';
+      categoryMap[cat] = (categoryMap[cat] || 0) + 1;
+
+      const loc = item.storageLocation || 'Pantry';
+      locationMap[loc] = (locationMap[loc] || 0) + 1;
+
+      if (item.expiryDate) {
+        const expDate = new Date(item.expiryDate);
+        if (!isNaN(expDate.getTime())) {
+          const diffMs = expDate.getTime() - now.getTime();
+          const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+          if (diffDays < 0) {
+            expiredCount += 1;
+          } else if (diffDays <= 7) {
+            expiringSoonCount += 1;
+          } else {
+            freshItemsCount += 1;
+          }
+        } else {
+          freshItemsCount += 1;
+        }
+      } else {
+        freshItemsCount += 1;
+      }
+    });
+
+    // 2. Fetch ItemLogs for this kitchen
+    const logs = await ItemLog.find({ kitchenId })
+      .sort({ loggedAt: -1 })
+      .limit(500)
+      .lean();
+
+    let totalConsumed = 0;
+    let totalWasted = 0;
+    let totalRestocked = 0;
+    let totalCostSaved = 0;
+    let totalCostWasted = 0;
+
+    const wastedCategoryMap = {};
+    const DEFAULT_UNIT_COST = 3.5;
+
+    logs.forEach((log) => {
+      const qty = Number(log.quantity) || 1;
+      const unitCost = Number(log.estimatedCost) || DEFAULT_UNIT_COST;
+
+      if (log.action === 'consumed') {
+        totalConsumed += qty;
+        totalCostSaved += qty * unitCost;
+      } else if (log.action === 'wasted') {
+        totalWasted += qty;
+        totalCostWasted += qty * unitCost;
+        const cat = log.category || 'Pantry Items';
+        wastedCategoryMap[cat] = (wastedCategoryMap[cat] || 0) + qty;
+      } else if (log.action === 'restocked') {
+        totalRestocked += qty;
+      }
+    });
+
+    // Ratio & Eco Score
+    const totalActivity = totalConsumed + totalWasted;
+    let consumedRatio = 100;
+    if (totalActivity > 0) {
+      consumedRatio = Math.round((totalConsumed / totalActivity) * 100);
+    } else if (currentItems.length > 0) {
+      consumedRatio = expiredCount === 0
+        ? 100
+        : Math.round(((currentItems.length - expiredCount) / currentItems.length) * 100);
+    }
+
+    let ecoScore = 'A';
+    let ecoLabel = 'Great Kitchen Flow';
+    if (consumedRatio >= 90) {
+      ecoScore = 'A+';
+      ecoLabel = 'Eco Champion: Minimal Waste';
+    } else if (consumedRatio >= 80) {
+      ecoScore = 'A';
+      ecoLabel = 'Great Kitchen Flow';
+    } else if (consumedRatio >= 65) {
+      ecoScore = 'B';
+      ecoLabel = 'Moderate Waste: Room to Improve';
+    } else {
+      ecoScore = 'C';
+      ecoLabel = 'High Waste Alert';
+    }
+
+    // 3. Past 6 Months Trend
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthlyTrends = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const mName = monthNames[d.getMonth()];
+      const y = d.getFullYear();
+
+      const monthLogs = logs.filter((log) => {
+        const lDate = new Date(log.loggedAt || log.createdAt);
+        return lDate.getFullYear() === y && lDate.getMonth() === d.getMonth();
+      });
+
+      let mConsumed = 0;
+      let mWasted = 0;
+      let mRestocked = 0;
+
+      monthLogs.forEach((l) => {
+        const q = Number(l.quantity) || 1;
+        if (l.action === 'consumed') mConsumed += q;
+        else if (l.action === 'wasted') mWasted += q;
+        else if (l.action === 'restocked') mRestocked += q;
+      });
+
+      monthlyTrends.push({
+        month: mName,
+        year: y,
+        consumed: mConsumed,
+        wasted: mWasted,
+        restocked: mRestocked,
+        saved: Math.round(mConsumed * DEFAULT_UNIT_COST),
+      });
+    }
+
+    // Top wasted categories
+    const topWastedCategories = Object.entries(wastedCategoryMap)
+      .map(([category, count]) => ({ category, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+
+    // Current category distribution
+    const categoryDistribution = Object.entries(categoryMap)
+      .map(([category, count]) => ({
+        category,
+        count,
+        percentage: currentItems.length > 0 ? Math.round((count / currentItems.length) * 100) : 0
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    // Storage distribution
+    const storageDistribution = Object.entries(locationMap)
+      .map(([location, count]) => ({
+        location,
+        count,
+        percentage: currentItems.length > 0 ? Math.round((count / currentItems.length) * 100) : 0
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    // Recent activity list
+    const recentActivity = logs.slice(0, 15).map((l) => ({
+      _id: l._id,
+      productName: l.productName,
+      category: l.category,
+      quantity: l.quantity,
+      unit: l.unit,
+      action: l.action,
+      userName: l.userName || 'Crew Member',
+      loggedAt: l.loggedAt || l.createdAt
+    }));
+
+    return res.status(200).json({
+      isSuccess: true,
+      analytics: {
+        inventoryHealth: {
+          totalProducts: currentItems.length,
+          totalUnits: totalStockUnits,
+          freshCount: freshItemsCount,
+          expiringSoonCount,
+          expiredCount,
+          atRiskValue: Math.round((expiringSoonCount + expiredCount) * DEFAULT_UNIT_COST)
+        },
+        wasteStats: {
+          totalConsumed,
+          totalWasted,
+          totalRestocked,
+          consumedRatio,
+          moneySaved: Math.round(totalCostSaved),
+          moneyWasted: Math.round(totalCostWasted),
+          ecoScore,
+          ecoLabel
+        },
+        monthlyTrends,
+        topWastedCategories,
+        categoryDistribution,
+        storageDistribution,
+        recentActivity
+      }
+    });
+  } catch (err) {
+    console.error('Analytics Error:', err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Failed to retrieve analytics: ' + err.message
+    });
+  }
+};
+
+const logItemAction = async (req, res) => {
+  const { kitchenId, itemId } = req.params;
+  const { action, quantityUsed = 1, estimatedCost = 3.5, notes = '' } = req.body;
+
+  if (!['consumed', 'wasted'].includes(action)) {
+    return res.status(400).json({
+      isSuccess: false,
+      message: "Action must be either 'consumed' or 'wasted'."
+    });
+  }
+
+  try {
+    const item = await KitchenItem.findOne({ _id: itemId, kitchenId });
+    if (!item) {
+      return res.status(404).json({
+        isSuccess: false,
+        message: 'Kitchen item not found.'
+      });
+    }
+
+    const qtyToDeduct = Math.max(1, Number(quantityUsed) || 1);
+    const remainingQty = Math.max(0, (Number(item.quantity) || 1) - qtyToDeduct);
+
+    // Log the activity
+    const newLog = await ItemLog.create({
+      kitchenId,
+      userId: req.user?.id || null,
+      userName: req.user?.userName || 'Crew Member',
+      itemId: item._id,
+      productName: item.productName,
+      category: item.category || 'Pantry Items',
+      quantity: qtyToDeduct,
+      unit: item.unit || 'Pieces',
+      action,
+      estimatedCost: Number(estimatedCost) || 3.5,
+      notes: notes || `Item marked as ${action}`
+    });
+
+    if (remainingQty <= 0) {
+      await KitchenItem.findByIdAndDelete(itemId);
+      await Kitchen.findOneAndUpdate(
+        { kitchenId },
+        {
+          $pull: { kitchenItemIds: item._id },
+          $set: { updatedAt: new Date() }
+        }
+      );
+
+      return res.status(200).json({
+        isSuccess: true,
+        message: `Marked "${item.productName}" as ${action}. Item finished!`,
+        action,
+        remainingQuantity: 0,
+        itemRemoved: true,
+        log: newLog
+      });
+    } else {
+      item.quantity = remainingQty;
+      await item.save();
+
+      return res.status(200).json({
+        isSuccess: true,
+        message: `Marked ${qtyToDeduct} ${item.unit} of "${item.productName}" as ${action}. (${remainingQty} left)`,
+        action,
+        remainingQuantity: remainingQty,
+        itemRemoved: false,
+        log: newLog
+      });
+    }
+  } catch (err) {
+    console.error('Log Item Action Error:', err);
+    return res.status(500).json({
+      isSuccess: false,
+      message: 'Failed to record action: ' + err.message
+    });
+  }
+};
+
 export default {
   addItemsToKitchen,
   addShoppingItemsToKitchen,
@@ -757,5 +1063,7 @@ export default {
   leaveKitchen,
   deleteWholeKitchen,
   removeMemberFromKitchen,
-  makeMemberAdmin
+  makeMemberAdmin,
+  getKitchenAnalytics,
+  logItemAction
 };

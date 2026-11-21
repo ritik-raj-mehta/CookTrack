@@ -136,6 +136,7 @@ CookTrack Mern/
 │   │   │   ├── KitchenItem.tsx           # Pantry: stock view, filters & search
 │   │   │   ├── AddItemsToKitchen.tsx     # Restock: add new pantry items
 │   │   │   ├── AddItemsToShoppingCart.tsx# Market List: collaborative shopping & PDF export
+│   │   │   ├── KitchenInsights.tsx       # Insights: food waste analytics, money saved & trends
 │   │   │   └── KitchenMembers.tsx        # Kitchen Crew: team management & permissions
 │   │   ├── stores/
 │   │   │   ├── store.tsx                 # Redux store & persist configuration
