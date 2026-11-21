@@ -83,7 +83,7 @@ const Dashboard = () => {
       <div className="bg-white py-4 border-b border-gray-100 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight">
-            {kitchenData?.kitchenName || "Kitchen Dashboard"}
+            {kitchenData?.kitchenName ? `${kitchenData.kitchenName} Hub` : "Kitchen Hub"}
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
             Welcome back! Here's a live overview of your kitchen inventory.
@@ -201,21 +201,21 @@ const Dashboard = () => {
               to="/additemstokitchen"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 py-2.5 px-5 rounded-xl text-white font-semibold text-sm shadow-sm transition hover-lift"
             >
-              <FiPlus className="text-base" /> Add New Items
+              <FiPlus className="text-base" /> Restock Pantry
             </Link>
 
             <Link
               to="/kitchenitems"
               className="inline-flex items-center gap-2 bg-white hover:bg-amber-50/70 border border-amber-300 text-amber-900 font-semibold py-2.5 px-5 rounded-xl text-sm transition shadow-2xs hover-lift"
             >
-              <FaStore className="text-base text-amber-600" /> View All Products
+              <FaStore className="text-base text-amber-600" /> View Pantry
             </Link>
 
             <Link
               to="/additemstoshoppingcart"
               className="inline-flex items-center gap-2 bg-white hover:bg-blue-50/70 border border-blue-200 text-blue-800 font-semibold py-2.5 px-5 rounded-xl text-sm transition shadow-2xs hover-lift"
             >
-              <FaCartPlus className="text-base text-blue-600" /> Shopping List
+              <FaCartPlus className="text-base text-blue-600" /> Market List
             </Link>
           </div>
         </div>

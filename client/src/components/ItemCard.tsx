@@ -172,7 +172,7 @@ const ItemCard = ({
                     </span>
                     {isInShoppingList ? (
                       <span className="text-emerald-700 font-bold flex items-center gap-1">
-                        <FiCheck className="text-xs stroke-3" /> In Shopping List
+                        <FiCheck className="text-xs stroke-3" /> In Market List
                       </span>
                     ) : (
                       <span className="text-amber-600/90 font-medium">Auto-add to cart</span>
@@ -184,13 +184,13 @@ const ItemCard = ({
                       <div className="flex-1 py-2 px-3 rounded-xl bg-emerald-50 border border-emerald-200/90 text-emerald-800 flex items-center justify-center gap-1.5 text-xs font-bold shadow-2xs">
                         <FiCheckCircle className="text-emerald-600 text-sm shrink-0" />
                         <span className="truncate">
-                          In Shopping List ({targetCartItem?.neededQuantity} {targetCartItem?.unit})
+                          In Market List ({targetCartItem?.neededQuantity} {targetCartItem?.unit})
                         </span>
                       </div>
                       <NavLink
                         to="/additemstoshoppingcart"
                         className="py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-2xs transition hover-lift whitespace-nowrap"
-                        title="View and manage in shopping list"
+                        title="View and manage in market list"
                       >
                         View Cart →
                       </NavLink>
@@ -209,12 +209,12 @@ const ItemCard = ({
                       {addedIds[itemId] ? (
                         <>
                           <FiCheck className="text-sm stroke-3" />
-                          <span>Added to Shopping List!</span>
+                          <span>Added to Market List!</span>
                         </>
                       ) : (
                         <>
                           <FaCartPlus className="text-sm" />
-                          <span>{addingIds[itemId] ? "Adding..." : "Add to Shopping List"}</span>
+                          <span>{addingIds[itemId] ? "Adding..." : "Add to Market List"}</span>
                         </>
                       )}
                     </button>

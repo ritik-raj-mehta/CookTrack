@@ -132,11 +132,11 @@ CookTrack Mern/
 │   │   │   ├── SignIn.tsx                # User login page
 │   │   │   ├── SignUp.tsx                # Kitchen creation & admin signup
 │   │   │   ├── RegisterToKitchen.tsx     # Join existing kitchen via code
-│   │   │   ├── Dashboard.tsx             # Inventory metrics & recent items
-│   │   │   ├── KitchenItem.tsx           # Full inventory view, filters & search
-│   │   │   ├── AddItemsToKitchen.tsx     # Add new pantry item form
-│   │   │   ├── AddItemsToShoppingCart.tsx# Collaborative grocery list & PDF export
-│   │   │   └── KitchenMembers.tsx        # Member management & permissions
+│   │   │   ├── Dashboard.tsx             # Kitchen Hub: metrics & recent items
+│   │   │   ├── KitchenItem.tsx           # Pantry: stock view, filters & search
+│   │   │   ├── AddItemsToKitchen.tsx     # Restock: add new pantry items
+│   │   │   ├── AddItemsToShoppingCart.tsx# Market List: collaborative shopping & PDF export
+│   │   │   └── KitchenMembers.tsx        # Kitchen Crew: team management & permissions
 │   │   ├── stores/
 │   │   │   ├── store.tsx                 # Redux store & persist configuration
 │   │   │   └── slices/

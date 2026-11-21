@@ -142,7 +142,7 @@ const AddItemsToShoppingCart = () => {
       if (removeFromList && restockModal.item?._id) {
         await dispatch(deleteShoppingItem(restockModal.item._id));
         setFormSuccess(
-          `Restocked "${restockModal.productName}" into pantry inventory and cleared from shopping list!`
+          `Restocked "${restockModal.productName}" into pantry inventory and cleared from market list!`
         );
       } else {
         setFormSuccess(
@@ -349,7 +349,7 @@ const AddItemsToShoppingCart = () => {
   // Generate and download PDF
   const handleDownloadPDF = () => {
     if (shoppingItems.length === 0) {
-      alert("Your shopping list is empty. Add some items first before downloading!");
+      alert("Your market list is empty. Add some items first before downloading!");
       return;
     }
 
@@ -371,7 +371,7 @@ const AddItemsToShoppingCart = () => {
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(18);
-    doc.text("CookTrack - Shopping List", margin, 17);
+    doc.text("CookTrack - Market List", margin, 17);
 
     // Generation Date
     const today = new Date().toLocaleDateString(undefined, {
@@ -504,7 +504,7 @@ const AddItemsToShoppingCart = () => {
     }
 
     const safeKitchen = (kitchenData?.kitchenName || "Kitchen").replace(/[^a-zA-Z0-9]/g, "_");
-    doc.save(`${safeKitchen}_Shopping_List_${new Date().toISOString().slice(0, 10)}.pdf`);
+    doc.save(`${safeKitchen}_Market_List_${new Date().toISOString().slice(0, 10)}.pdf`);
   };
 
   return (
@@ -517,10 +517,10 @@ const AddItemsToShoppingCart = () => {
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-amber-950">
-              Shopping List
+              Market List
             </h1>
             <p className="text-xs sm:text-sm font-medium opacity-80">
-              Manage items needed for {kitchenData?.kitchenName || "your kitchen"}
+              Manage items needed for {kitchenData?.kitchenName || "your kitchen"}'s market run
             </p>
           </div>
         </div>
@@ -531,7 +531,7 @@ const AddItemsToShoppingCart = () => {
             type="button"
             onClick={handleDownloadPDF}
             className="flex items-center gap-2 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-black py-2 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm shadow-2xs transition cursor-pointer hover-lift"
-            title="Download Shopping List as PDF"
+            title="Download Market List as PDF"
           >
             <FaFilePdf className="text-red-500 text-base" />
             Download PDF
@@ -557,7 +557,7 @@ const AddItemsToShoppingCart = () => {
                 Total Needed Items
               </p>
               <h3 className="text-2xl font-bold text-gray-800 mt-1">{totalCount}</h3>
-              <p className="text-xs text-gray-400 mt-0.5">In your shopping cart</p>
+              <p className="text-xs text-gray-400 mt-0.5">In your market list</p>
             </div>
             <div className="bg-blue-50 text-blue-600 p-3 rounded-full text-xl">
               <FaCartPlus />
@@ -596,7 +596,7 @@ const AddItemsToShoppingCart = () => {
           <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 transition-all">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h3 className="text-xl font-bold text-gray-800">Add New Shopping Item</h3>
+                <h3 className="text-xl font-bold text-gray-800">Add New Market Item</h3>
                 <p className="text-xs text-gray-500">
                   Specify details about the item needed for the kitchen
                 </p>
@@ -790,8 +790,8 @@ const AddItemsToShoppingCart = () => {
               </div>
               <h3 className="text-lg font-bold text-gray-800">
                 {searchTerm || filterStatus !== "all"
-                  ? "No matching shopping items found"
-                  : "Your shopping list is empty"}
+                  ? "No matching market items found"
+                  : "Your market list is empty"}
               </h3>
               <p className="text-sm text-gray-500 max-w-sm mx-auto mt-1">
                 {searchTerm || filterStatus !== "all"
@@ -1127,10 +1127,10 @@ const AddItemsToShoppingCart = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold font-serif text-gray-900 tracking-tight">
-                    Edit Shopping Item
+                    Edit Market Item
                   </h3>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Update item details in your shopping list
+                    Update item details in your market list
                   </p>
                 </div>
               </div>

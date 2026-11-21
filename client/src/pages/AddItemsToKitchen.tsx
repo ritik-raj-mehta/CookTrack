@@ -80,10 +80,10 @@ const AddItemsToKitchen = () => {
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight">
-              Add New Product
+              Restock Pantry
             </h1>
             <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
-              Stock items and track expiry in your kitchen inventory
+              Stock items and track expiry in your kitchen pantry
             </p>
           </div>
         </div>
@@ -277,7 +277,7 @@ const AddItemsToKitchen = () => {
               disabled={loading}
               className="w-full sm:flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 cursor-pointer hover-lift"
             >
-              {loading ? "Adding Product..." : "Add Product to Inventory"}
+              {loading ? "Restocking..." : "Restock Pantry Item"}
             </button>
             <button
               type="button"

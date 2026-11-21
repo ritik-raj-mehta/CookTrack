@@ -214,10 +214,10 @@ const KitchenMembers = () => {
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight">
-              Kitchen Members
+              Kitchen Crew
             </h1>
             <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
-              People who have access to {kitchenData?.kitchenName || "this kitchen"}
+              People collaborating in {kitchenData?.kitchenName || "this kitchen"}
             </p>
           </div>
         </div>
@@ -304,14 +304,14 @@ const KitchenMembers = () => {
         <div className="bg-white rounded-2xl shadow-xs border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100 flex justify-between items-center">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">Members List</h2>
+              <h2 className="text-lg font-bold text-gray-900">Crew Members</h2>
               <p className="text-xs text-gray-500 mt-0.5">
                 Active participants with inventory permissions ({members.length})
               </p>
             </div>
             {loading && (
               <span className="text-xs font-semibold text-emerald-600 animate-pulse">
-                Refreshing members...
+                Refreshing crew...
               </span>
             )}
           </div>

@@ -45,7 +45,7 @@ const Header = () => {
               to="/dashboard"
               className="bg-emerald-50 border border-emerald-300 text-emerald-800 font-semibold py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl text-xs sm:text-sm hover:bg-emerald-100 transition shadow-xs hover-lift"
             >
-              Dashboard
+              Kitchen Hub
             </NavLink>
           )}
           <button

@@ -61,14 +61,14 @@ const Home = () => {
                   to="/dashboard"
                   className="flex items-center justify-center gap-2.5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold py-3.5 px-7 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover-lift group"
                 >
-                  <span>Go to Dashboard</span>
+                  <span>Go to Kitchen Hub</span>
                   <FaArrowRightLong className="group-hover:translate-x-1.5 transition-transform duration-200" />
                 </Link>
                 <Link
                   to="/kitchenitems"
                   className="flex items-center justify-center gap-2 bg-white hover:bg-emerald-50 border border-emerald-300/80 text-emerald-900 font-bold py-3.5 px-6 rounded-xl shadow-xs hover:shadow-md transition-all duration-300 hover-lift"
                 >
-                  View Pantry Inventory
+                  View Pantry
                 </Link>
               </div>
             ) : (

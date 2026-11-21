@@ -36,7 +36,7 @@ const KitchenItem = () => {
           notes: `Restock needed for ${item.productName} (${item.category || "Pantry"})`,
         })
       ).unwrap();
-      setShoppingNotification(`Added "${item.productName}" to shopping list!`);
+      setShoppingNotification(`Added "${item.productName}" to market list!`);
       setTimeout(() => setShoppingNotification(null), 3500);
     } catch (err) {
       console.error("Failed to add to shopping list:", err);
@@ -172,10 +172,10 @@ const KitchenItem = () => {
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-amber-950">
-              My Kitchen Items
+              Pantry Inventory
             </h1>
             <p className="text-xs sm:text-sm font-medium opacity-85">
-              Items in Kitchen Inventory ({filteredItems.length})
+              Items in Pantry ({filteredItems.length})
             </p>
           </div>
         </div>
@@ -184,7 +184,7 @@ const KitchenItem = () => {
           className="self-start sm:self-auto bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-xl shadow-xs font-semibold text-sm transition hover-lift text-center"
           to="/additemstokitchen"
         >
-          + Add Product
+          + Restock Item
         </NavLink>
       </div>
 

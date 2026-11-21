@@ -97,27 +97,27 @@ const NavBar: React.FC = () => {
                 {
                   key: "1",
                   icon: <FaHome className="text-lg text-emerald-600" />,
-                  label: <NavLink to="/dashboard">Dashboard</NavLink>,
+                  label: <NavLink to="/dashboard">Kitchen Hub</NavLink>,
                 },
                 {
                   key: "2",
                   icon: <FiCodesandbox className="text-lg text-amber-600" />,
-                  label: <NavLink to="/kitchenitems">My Items</NavLink>,
+                  label: <NavLink to="/kitchenitems">Pantry</NavLink>,
                 },
                 {
                   key: "3",
                   icon: <IoMdAdd className="text-lg text-green-600" />,
-                  label: <NavLink to="/additemstokitchen">Add Items</NavLink>,
+                  label: <NavLink to="/additemstokitchen">Restock</NavLink>,
                 },
                 {
                   key: "4",
                   icon: <FaCartPlus className="text-lg text-blue-600" />,
-                  label: <NavLink to="/additemstoshoppingcart">Shopping List</NavLink>,
+                  label: <NavLink to="/additemstoshoppingcart">Market List</NavLink>,
                 },
                 {
                   key: "5",
                   icon: <FaPeopleGroup className="text-lg text-indigo-600" />,
-                  label: <NavLink to="/kitchenmembers">Members</NavLink>,
+                  label: <NavLink to="/kitchenmembers">Kitchen Crew</NavLink>,
                 },
               ]}
             />
