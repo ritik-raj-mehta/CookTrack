@@ -266,6 +266,8 @@ CookTrack Mern/
 | `DELETE` | `/api/kitchen/removeMember/:kitchenId/:targetUserId` | **Yes (Admin)** | Removes member (requires Admin password + phone) |
 | `DELETE` | `/api/kitchen/deleteKitchen/:kitchenId` | **Yes (Admin)** | Deletes entire kitchen (requires Admin password + phone) |
 | `POST` | `/api/kitchen/leave/:kitchenId` | **Yes** | Member exits kitchen (requires user password) |
+| `GET` | `/api/kitchen/analytics/:kitchenId` | **Yes** | Aggregated food waste, financial impact, and 6-month trends |
+| `POST` | `/api/kitchen/item-action/:kitchenId/:itemId` | **Yes** | Logs item consumption (🍽️) or food waste (🗑️) |
 
 ---
 
@@ -289,9 +291,12 @@ Create a `.env` file in the `server` directory:
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/CookTrack
+# MongoDB Atlas Connection String or local instance
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/CookTrack?retryWrites=true&w=majority
 JWT_SECRET=your_jwt_super_secret_key_change_me
-JWT_EXPIRES_MINUTES=1440
+JWT_REFRESH_SECRET=your_jwt_refresh_secret_key_change_me
+JWT_ACCESS_EXPIRES_MINUTES=15
+JWT_REFRESH_EXPIRES_DAYS=7
 CLIENT_URL=http://localhost:5173
 
 # Email OTP settings (Gmail App Password)
