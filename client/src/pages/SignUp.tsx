@@ -37,6 +37,8 @@ const SignUp = () => {
   const [localError, setLocalError] = useState<string | null>(null);
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [devOtp, setDevOtp] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(clearError());
@@ -69,10 +71,12 @@ const SignUp = () => {
     }
 
     try {
-      const res = await dispatch(register(inputData)).unwrap();
+      const res = (await dispatch(register(inputData)).unwrap()) as any;
       if (res?.requiresOtp) {
         setShowOtpModal(true);
         if (res.previewUrl) setPreviewUrl(res.previewUrl);
+        if (res.devOtp) setDevOtp(res.devOtp);
+        if (res.warning) setWarning(res.warning);
       } else {
         navigate("/dashboard");
       }
@@ -91,6 +95,8 @@ const SignUp = () => {
         <OtpVerificationModal
           email={inputData.userEmail.trim()}
           previewUrl={previewUrl}
+          devOtp={devOtp}
+          warning={warning}
           onBack={() => setShowOtpModal(false)}
         />
       )}

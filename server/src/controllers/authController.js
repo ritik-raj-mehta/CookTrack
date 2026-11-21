@@ -125,19 +125,25 @@ const registerUser = async (req, res) => {
       expiresAt,
     });
 
-    // Send email using nodemailer
+    // Send email using emailService (supports Resend HTTP API, Brevo, and SMTP with fast timeout)
     let emailResult = null;
     try {
       emailResult = await sendOtpEmail(cleanEmail, otpCode, userName);
     } catch (emailErr) {
-      console.error('[authController] Failed to send email via nodemailer:', emailErr);
+      console.error('[authController] Failed to send email via emailService:', emailErr);
     }
+
+    const emailSent = emailResult && emailResult.success;
 
     return res.json({
       isSuccess: true,
       requiresOtp: true,
       email: cleanEmail,
-      message: 'Verification code sent to your email. Please verify to complete signup.',
+      message: emailSent
+        ? 'Verification code sent to your email. Please check your inbox (and spam folder) to complete signup.'
+        : 'Verification code generated! Please enter the code below to complete signup.',
+      devOtp: emailResult?.devOtp || null,
+      warning: emailResult?.warning || null,
       previewUrl: emailResult?.previewUrl || null,
     });
   } catch (err) {
@@ -208,20 +214,26 @@ const registerToKitchen = async (req, res) => {
       expiresAt,
     });
 
-    // Send email using nodemailer
+    // Send email using emailService (supports Resend HTTP API, Brevo, and SMTP with fast timeout)
     let emailResult = null;
     try {
       emailResult = await sendOtpEmail(cleanEmail, otpCode, userName);
     } catch (emailErr) {
-      console.error('[authController] Failed to send email via nodemailer:', emailErr);
+      console.error('[authController] Failed to send email via emailService:', emailErr);
     }
+
+    const emailSent = emailResult && emailResult.success;
 
     return res.json({
       isSuccess: true,
       requiresOtp: true,
       email: cleanEmail,
       kitchenId: cleanKitchenId,
-      message: 'Verification code sent to your email. Please verify to join kitchen.',
+      message: emailSent
+        ? 'Verification code sent to your email. Please check your inbox (and spam folder) to join kitchen.'
+        : 'Verification code generated! Please enter the code below to join kitchen.',
+      devOtp: emailResult?.devOtp || null,
+      warning: emailResult?.warning || null,
       previewUrl: emailResult?.previewUrl || null,
     });
   } catch (err) {
@@ -422,9 +434,15 @@ const resendOtp = async (req, res) => {
       console.error('[authController] Failed to resend email:', emailErr);
     }
 
+    const emailSent = emailResult && emailResult.success;
+
     return res.json({
       isSuccess: true,
-      message: 'A new verification code has been sent to your email.',
+      message: emailSent
+        ? 'A new verification code has been sent to your email.'
+        : 'A new verification code has been generated.',
+      devOtp: emailResult?.devOtp || null,
+      warning: emailResult?.warning || null,
       previewUrl: emailResult?.previewUrl || null,
     });
   } catch (err) {

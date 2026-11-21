@@ -8,9 +8,17 @@ type OtpModalProps = {
   email: string;
   onBack: () => void;
   previewUrl?: string | null;
+  devOtp?: string | null;
+  warning?: string | null;
 };
 
-const OtpVerificationModal: React.FC<OtpModalProps> = ({ email, onBack, previewUrl }) => {
+const OtpVerificationModal: React.FC<OtpModalProps> = ({
+  email,
+  onBack,
+  previewUrl,
+  devOtp,
+  warning,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error, message } = useSelector(
     (state: RootState) => state.auth
@@ -20,6 +28,16 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({ email, onBack, previewU
   const [localError, setLocalError] = useState<string | null>(null);
   const [resendCooldown, setResendCooldown] = useState(60);
   const [resendSuccess, setResendSuccess] = useState<string | null>(null);
+  const [currentDevOtp, setCurrentDevOtp] = useState<string | null>(devOtp || null);
+  const [currentWarning, setCurrentWarning] = useState<string | null>(warning || null);
+
+  useEffect(() => {
+    if (devOtp) setCurrentDevOtp(devOtp);
+  }, [devOtp]);
+
+  useEffect(() => {
+    if (warning) setCurrentWarning(warning);
+  }, [warning]);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -88,8 +106,14 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({ email, onBack, previewU
     setResendSuccess(null);
 
     try {
-      const res = await dispatch(resendOtp(email)).unwrap();
+      const res = (await dispatch(resendOtp(email)).unwrap()) as any;
       setResendSuccess(res?.message || "New verification code sent!");
+      if (res?.devOtp) {
+        setCurrentDevOtp(res.devOtp);
+      }
+      if (res?.warning) {
+        setCurrentWarning(res.warning);
+      }
       setResendCooldown(60);
       setOtp(["", "", "", "", "", ""]);
       document.getElementById("otp-input-0")?.focus();
@@ -115,6 +139,37 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({ email, onBack, previewU
             <strong className="text-gray-900 font-semibold">{email}</strong>
           </p>
         </div>
+
+        {/* Direct verification fallback if cloud host blocked outbound SMTP */}
+        {currentDevOtp && (
+          <div className="bg-amber-50/90 border border-amber-200/90 p-4 rounded-2xl text-center space-y-2 animate-fadeIn shadow-xs">
+            <div className="flex items-center justify-center gap-1.5 text-amber-900 text-xs font-bold uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+              <span>Verification Code (Direct Access)</span>
+            </div>
+            <div className="flex items-center justify-center gap-2.5 pt-1">
+              <span className="font-mono text-2xl font-black tracking-widest text-emerald-800 bg-white px-4 py-1.5 rounded-xl border border-amber-300 shadow-inner">
+                {currentDevOtp}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  const digits = currentDevOtp.slice(0, 6).split("");
+                  const padded = [...digits, "", "", "", "", ""].slice(0, 6);
+                  setOtp(padded);
+                  setLocalError(null);
+                  document.getElementById("otp-input-5")?.focus();
+                }}
+                className="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-xl transition shadow-sm cursor-pointer active:scale-95"
+              >
+                Auto-fill Code
+              </button>
+            </div>
+            <p className="text-[11px] text-amber-800/90 leading-tight">
+              {currentWarning || "Render Free Tier blocks outbound SMTP. Enter the code above or configure RESEND_API_KEY."}
+            </p>
+          </div>
+        )}
 
         {/* Development preview link if available */}
         {previewUrl && (
