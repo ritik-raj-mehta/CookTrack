@@ -85,10 +85,19 @@ const allowedOrigins = Array.from(new Set([...DEFAULT_ALLOWED, ...envClient]));
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow non-browser tools (like Postman or server-to-server) with no origin
+    // Allow non-browser tools (like Postman, curl, or server-to-server) with no origin
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    const cleanOrigin = origin.replace(/\/$/, '');
+    const isVercelDomain =
+      cleanOrigin.endsWith('.vercel.app') ||
+      cleanOrigin === 'https://cook-track-six.vercel.app';
+
+    if (
+      allowedOrigins.indexOf(origin) !== -1 ||
+      allowedOrigins.indexOf(cleanOrigin) !== -1 ||
+      isVercelDomain
+    ) {
       callback(null, true);
     } else {
       console.warn('CORS blocked origin:', origin);
