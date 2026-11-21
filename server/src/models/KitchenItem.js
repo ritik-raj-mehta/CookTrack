@@ -14,4 +14,7 @@ const KitchenItemSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+KitchenItemSchema.index({ kitchenId: 1, createdAt: -1 });
+KitchenItemSchema.index({ kitchenId: 1, expiryDate: 1 });
+
 export default mongoose.model('KitchenItem', KitchenItemSchema);

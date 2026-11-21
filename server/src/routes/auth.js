@@ -19,6 +19,9 @@ router.post('/resend-otp', authCtrl.resendOtp);
 // Login user
 router.post('/login', authCtrl.loginUser);
 
+// Refresh access token
+router.post('/refresh-token', authCtrl.refreshAccessToken);
+
 // Get logged-in user's profile
 router.get('/me', authMiddleware, authCtrl.getMe);
 

@@ -1,37 +1,41 @@
 import express from 'express';
 import kitchenCtrl from '../controllers/kitchenController.js';
-import authMiddleware from '../middleware/auth.js';
+import { authMiddleware, verifyKitchenAccess } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/kitchen/:kitchenId/:Id', authMiddleware, kitchenCtrl.getKitchen);
+// Apply authMiddleware globally to all kitchen routes
+router.use(authMiddleware);
 
-router.get('/kitchenItems/:kitchenId', authMiddleware, kitchenCtrl.getAllKitchenItemsByKitchenId);
+// Apply verifyKitchenAccess to ensure cross-kitchen authorization
+router.get('/kitchen/:kitchenId/:Id', verifyKitchenAccess, kitchenCtrl.getKitchen);
 
-router.get('/members/:kitchenId', authMiddleware, kitchenCtrl.getKitchenMembers);
+router.get('/kitchenItems/:kitchenId', verifyKitchenAccess, kitchenCtrl.getAllKitchenItemsByKitchenId);
 
-router.post('/addItems/:kitchenId', authMiddleware, kitchenCtrl.addItemsToKitchen);
+router.get('/members/:kitchenId', verifyKitchenAccess, kitchenCtrl.getKitchenMembers);
 
-router.post('/addShoppingItems/:kitchenId', authMiddleware, kitchenCtrl.addShoppingItemsToKitchen);
+router.post('/addItems/:kitchenId', verifyKitchenAccess, kitchenCtrl.addItemsToKitchen);
 
-router.get('/shoppingItems/:kitchenId', authMiddleware, kitchenCtrl.getAllShoppingItemsByKitchenId);
+router.post('/addShoppingItems/:kitchenId', verifyKitchenAccess, kitchenCtrl.addShoppingItemsToKitchen);
 
-router.patch('/shoppingItem/:kitchenId/:itemId/toggle', authMiddleware, kitchenCtrl.toggleShoppingItemBought);
+router.get('/shoppingItems/:kitchenId', verifyKitchenAccess, kitchenCtrl.getAllShoppingItemsByKitchenId);
 
-router.delete('/shoppingItem/:kitchenId/:itemId', authMiddleware, kitchenCtrl.deleteShoppingItem);
+router.patch('/shoppingItem/:kitchenId/:itemId/toggle', verifyKitchenAccess, kitchenCtrl.toggleShoppingItemBought);
 
-router.put('/kitchen/:kitchenId/item/:itemId', authMiddleware, kitchenCtrl.updateKitchenItem);
+router.delete('/shoppingItem/:kitchenId/:itemId', verifyKitchenAccess, kitchenCtrl.deleteShoppingItem);
 
-router.delete('/kitchen/:kitchenId/item/:itemId', authMiddleware, kitchenCtrl.deleteKitchenItem);
+router.put('/kitchen/:kitchenId/item/:itemId', verifyKitchenAccess, kitchenCtrl.updateKitchenItem);
 
-router.post('/leave/:kitchenId', authMiddleware, kitchenCtrl.leaveKitchen);
+router.delete('/kitchen/:kitchenId/item/:itemId', verifyKitchenAccess, kitchenCtrl.deleteKitchenItem);
 
-router.delete('/deleteKitchen/:kitchenId', authMiddleware, kitchenCtrl.deleteWholeKitchen);
-router.post('/deleteKitchen/:kitchenId', authMiddleware, kitchenCtrl.deleteWholeKitchen);
+router.post('/leave/:kitchenId', verifyKitchenAccess, kitchenCtrl.leaveKitchen);
 
-router.post('/removeMember/:kitchenId/:targetUserId', authMiddleware, kitchenCtrl.removeMemberFromKitchen);
-router.delete('/removeMember/:kitchenId/:targetUserId', authMiddleware, kitchenCtrl.removeMemberFromKitchen);
+router.delete('/deleteKitchen/:kitchenId', verifyKitchenAccess, kitchenCtrl.deleteWholeKitchen);
+router.post('/deleteKitchen/:kitchenId', verifyKitchenAccess, kitchenCtrl.deleteWholeKitchen);
 
-router.patch('/makeAdmin/:kitchenId/:targetUserId', authMiddleware, kitchenCtrl.makeMemberAdmin);
+router.post('/removeMember/:kitchenId/:targetUserId', verifyKitchenAccess, kitchenCtrl.removeMemberFromKitchen);
+router.delete('/removeMember/:kitchenId/:targetUserId', verifyKitchenAccess, kitchenCtrl.removeMemberFromKitchen);
+
+router.patch('/makeAdmin/:kitchenId/:targetUserId', verifyKitchenAccess, kitchenCtrl.makeMemberAdmin);
 
 export default router;

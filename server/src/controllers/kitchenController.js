@@ -56,8 +56,8 @@ const verifyAdminCredentials = async (adminUser, password, phoneNumber) => {
 };
 
 const addItemsToKitchen = async (req, res) => {
-  const { kitchenId } = req.params; // if your route uses :KitchenId
-  const body = req.body;
+  const { kitchenId } = req.params;
+  const body = req.body || {};
 
   try {
     const kitchen = await Kitchen.findOne({ kitchenId: kitchenId });
@@ -67,7 +67,17 @@ const addItemsToKitchen = async (req, res) => {
         .json({ isSuccess: false, message: 'Kitchen not exists.' });
     }
 
-    const item = new KitchenItem({ ...body, kitchenId: kitchenId });
+    const { productName, category, quantity, unit, storageLocation, expiryDate, notes } = body;
+    const item = new KitchenItem({
+      kitchenId,
+      productName: String(productName || '').trim(),
+      category: category ? String(category).trim() : 'Pantry Items',
+      quantity: Number(quantity) || 0,
+      unit: unit ? String(unit).trim() : 'pcs',
+      storageLocation: storageLocation ? String(storageLocation).trim() : 'Pantry',
+      expiryDate: expiryDate ? String(expiryDate).trim() : '',
+      notes: notes ? String(notes).trim() : ''
+    });
     await item.save();
 
     kitchen.kitchenItemIds.push(item._id);
@@ -89,7 +99,7 @@ const addItemsToKitchen = async (req, res) => {
 
 const addShoppingItemsToKitchen = async (req, res) => {
   const { kitchenId } = req.params;
-  const body = req.body;
+  const body = req.body || {};
 
   try {
     const kitchen = await Kitchen.findOne({ kitchenId: kitchenId });
@@ -100,7 +110,15 @@ const addShoppingItemsToKitchen = async (req, res) => {
       });
     }
 
-    const shopItem = new ShoppingItem({ ...body, kitchenId: kitchenId });
+    const { name, neededQuantity, unit, notes } = body;
+    const shopItem = new ShoppingItem({
+      kitchenId,
+      name: String(name || '').trim(),
+      neededQuantity: Number(neededQuantity) || 1,
+      unit: unit ? String(unit).trim() : 'pcs',
+      notes: notes ? String(notes).trim() : '',
+      isBought: false
+    });
     await shopItem.save();
 
     kitchen.kitchenShoppingItemIds.push(shopItem._id);
@@ -125,7 +143,7 @@ const getKitchen = async (req, res) => {
   const { kitchenId, Id } = req.params;
 
   try {
-    const user = await User.findById(Id);
+    const user = await User.findById(Id).lean();
     if (!user) {
       return res
         .status(404)
@@ -141,7 +159,8 @@ const getKitchen = async (req, res) => {
 
     const kitchen = await Kitchen.findOne({ kitchenId: kitchenId })
       .populate('kitchenItemIds')
-      .populate('kitchenShoppingItemIds');
+      .populate('kitchenShoppingItemIds')
+      .lean();
 
     return res.json({
       isSuccess: true,
@@ -161,7 +180,9 @@ const getAllKitchenItemsByKitchenId = async (req, res) => {
   const { kitchenId } = req.params;
 
   try {
-    const data = await KitchenItem.find({ kitchenId: kitchenId });
+    const data = await KitchenItem.find({ kitchenId: kitchenId })
+      .sort({ createdAt: -1 })
+      .lean();
 
     return res.json({
       isSuccess: true,
@@ -181,7 +202,7 @@ const getKitchenMembers = async (req, res) => {
   const { kitchenId } = req.params;
 
   try {
-    const kitchen = await Kitchen.findOne({ kitchenId: kitchenId });
+    const kitchen = await Kitchen.findOne({ kitchenId: kitchenId }).lean();
     if (!kitchen) {
       return res
         .status(404)
@@ -191,7 +212,7 @@ const getKitchenMembers = async (req, res) => {
     const members = await User.find(
       { kitchenId: kitchenId },
       'userName userEmail role phoneNumber createdAt'
-    );
+    ).lean();
 
     return res.json({
       isSuccess: true,
@@ -289,7 +310,9 @@ const getAllShoppingItemsByKitchenId = async (req, res) => {
   const { kitchenId } = req.params;
 
   try {
-    const data = await ShoppingItem.find({ kitchenId: kitchenId }).sort({ createdAt: -1 });
+    const data = await ShoppingItem.find({ kitchenId: kitchenId })
+      .sort({ createdAt: -1 })
+      .lean();
 
     return res.json({
       isSuccess: true,

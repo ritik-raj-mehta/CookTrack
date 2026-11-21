@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
+import apiClient from "../../services/api";
 import { REHYDRATE } from "redux-persist";
 import type { SignUpType } from "../../pages/SignUp";
 import type { FormDataType } from "../../pages/SignIn";
@@ -131,9 +132,7 @@ export const getMe = createAsyncThunk(
   "auth/getMe",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${API}/me`, {
-        withCredentials: true,
-      });
+      const res = await apiClient.get(`/api/auth/me`);
       return res.data;
     } catch {
       return rejectWithValue("Session expired");
@@ -146,9 +145,7 @@ export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.post(`${API}/logout`, {}, {
-        withCredentials: true,
-      });
+      const res = await apiClient.post(`/api/auth/logout`, {});
       return res.data;
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;

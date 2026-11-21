@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import apiClient from "../../services/api";
 import type { RootState } from "../store";
 import type { ItemsTypes, KitchenData, KitchenMember, ShoppingItem, ShoppingItemInput } from "../../types/KitchenTypes";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
-const KITCHEN_API = `${API_BASE}/api/kitchen`;
+const KITCHEN_API = `/api/kitchen`;
 
 export type KitchenStateType = {
   loading: boolean;
@@ -35,12 +35,8 @@ export const fetchKitchenData = createAsyncThunk(
       if (!kitchenId || !userId) {
         return rejectWithValue("Kitchen or User ID missing");
       }
-      const res = await axios.get(
-        `${KITCHEN_API}/kitchen/${kitchenId}/${userId}`,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
+      const res = await apiClient.get(
+        `${KITCHEN_API}/kitchen/${kitchenId}/${userId}`
       );
       return res.data;
     } catch (error) {
@@ -59,12 +55,8 @@ export const fetchAllKitchenItemsByKitchenId = createAsyncThunk(
       if (!kitchenId) {
         return rejectWithValue("Kitchen ID missing");
       }
-      const res = await axios.get(
-        `${KITCHEN_API}/kitchenItems/${kitchenId}`,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
+      const res = await apiClient.get(
+        `${KITCHEN_API}/kitchenItems/${kitchenId}`
       );
       return res.data;
     } catch (error) {
@@ -84,13 +76,9 @@ export const addKitchenItems = createAsyncThunk(
         return rejectWithValue("Kitchen ID missing");
       }
 
-      const res = await axios.post(
+      const res = await apiClient.post(
         `${KITCHEN_API}/addItems/${kitchenId}`,
-        data,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
+        data
       );
       return res.data;
     } catch (error) {
@@ -110,13 +98,9 @@ export const addItemsToShoppingCart = createAsyncThunk(
         return rejectWithValue("Kitchen ID missing");
       }
 
-      const res = await axios.post(
+      const res = await apiClient.post(
         `${KITCHEN_API}/addShoppingItems/${kitchenId}`,
-        data,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
+        data
       );
       return res.data;
     } catch (error) {
@@ -135,9 +119,8 @@ export const fetchShoppingItems = createAsyncThunk(
       if (!kitchenId) {
         return rejectWithValue("Kitchen ID missing");
       }
-      const res = await axios.get(
-        `${KITCHEN_API}/shoppingItems/${kitchenId}`,
-        { withCredentials: true }
+      const res = await apiClient.get(
+        `${KITCHEN_API}/shoppingItems/${kitchenId}`
       );
       return res.data;
     } catch (error) {
@@ -156,10 +139,8 @@ export const toggleShoppingItemBought = createAsyncThunk(
       if (!kitchenId) {
         return rejectWithValue("Kitchen ID missing");
       }
-      const res = await axios.patch(
-        `${KITCHEN_API}/shoppingItem/${kitchenId}/${itemId}/toggle`,
-        {},
-        { withCredentials: true }
+      const res = await apiClient.patch(
+        `${KITCHEN_API}/shoppingItem/${kitchenId}/${itemId}/toggle`
       );
       return res.data;
     } catch (error) {
@@ -178,9 +159,8 @@ export const deleteShoppingItem = createAsyncThunk(
       if (!kitchenId) {
         return rejectWithValue("Kitchen ID missing");
       }
-      const res = await axios.delete(
-        `${KITCHEN_API}/shoppingItem/${kitchenId}/${itemId}`,
-        { withCredentials: true }
+      const res = await apiClient.delete(
+        `${KITCHEN_API}/shoppingItem/${kitchenId}/${itemId}`
       );
       return { ...res.data, itemId };
     } catch (error) {
@@ -196,9 +176,8 @@ export const deleteKitchenItem = createAsyncThunk(
     try {
       const state = getState() as RootState;
       const { kitchenId } = state.auth;
-      const res = await axios.delete(
-        `${KITCHEN_API}/kitchen/${kitchenId}/item/${itemId}`,
-        { withCredentials: true }
+      const res = await apiClient.delete(
+        `${KITCHEN_API}/kitchen/${kitchenId}/item/${itemId}`
       );
       return { ...res.data, itemId };
     } catch (error) {
@@ -220,10 +199,9 @@ export const updateKitchenItem = createAsyncThunk(
       if (!kitchenId) {
         return rejectWithValue("Kitchen ID missing");
       }
-      const res = await axios.put(
+      const res = await apiClient.put(
         `${KITCHEN_API}/kitchen/${kitchenId}/item/${itemId}`,
-        data,
-        { withCredentials: true }
+        data
       );
       return res.data;
     } catch (error) {
@@ -242,9 +220,8 @@ export const fetchKitchenMembers = createAsyncThunk(
       if (!kitchenId) {
         return rejectWithValue("Kitchen ID missing");
       }
-      const res = await axios.get(
-        `${KITCHEN_API}/members/${kitchenId}`,
-        { withCredentials: true }
+      const res = await apiClient.get(
+        `${KITCHEN_API}/members/${kitchenId}`
       );
       return res.data;
     } catch (error) {
@@ -261,10 +238,9 @@ export const leaveKitchen = createAsyncThunk(
       const state = getState() as RootState;
       const { kitchenId } = state.auth;
       if (!kitchenId) return rejectWithValue("Kitchen ID missing");
-      const res = await axios.post(
+      const res = await apiClient.post(
         `${KITCHEN_API}/leave/${kitchenId}`,
-        { password },
-        { withCredentials: true }
+        { password }
       );
       return res.data;
     } catch (error) {
@@ -284,10 +260,9 @@ export const deleteWholeKitchen = createAsyncThunk(
       const state = getState() as RootState;
       const { kitchenId } = state.auth;
       if (!kitchenId) return rejectWithValue("Kitchen ID missing");
-      const res = await axios.post(
+      const res = await apiClient.post(
         `${KITCHEN_API}/deleteKitchen/${kitchenId}`,
-        credentials,
-        { withCredentials: true }
+        credentials
       );
       return res.data;
     } catch (error) {
@@ -307,10 +282,9 @@ export const removeMemberFromKitchen = createAsyncThunk(
       const state = getState() as RootState;
       const { kitchenId } = state.auth;
       if (!kitchenId) return rejectWithValue("Kitchen ID missing");
-      const res = await axios.post(
+      const res = await apiClient.post(
         `${KITCHEN_API}/removeMember/${kitchenId}/${payload.targetUserId}`,
-        { password: payload.password, phoneNumber: payload.phoneNumber },
-        { withCredentials: true }
+        { password: payload.password, phoneNumber: payload.phoneNumber }
       );
       return res.data;
     } catch (error) {
@@ -327,10 +301,8 @@ export const makeMemberAdmin = createAsyncThunk(
       const state = getState() as RootState;
       const { kitchenId } = state.auth;
       if (!kitchenId) return rejectWithValue("Kitchen ID missing");
-      const res = await axios.patch(
-        `${KITCHEN_API}/makeAdmin/${kitchenId}/${targetUserId}`,
-        {},
-        { withCredentials: true }
+      const res = await apiClient.patch(
+        `${KITCHEN_API}/makeAdmin/${kitchenId}/${targetUserId}`
       );
       return res.data;
     } catch (error) {

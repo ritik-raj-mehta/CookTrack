@@ -13,6 +13,10 @@ const OtpSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    attempts: {
+      type: Number,
+      default: 0,
+    },
     // Store temporary signup payload so user and kitchen are only created after OTP verification
     signupData: {
       userName: { type: String, required: true },

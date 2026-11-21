@@ -19,8 +19,12 @@ const UserSchema = new mongoose.Schema({
   role: { type: String, default: 'User' },
   kitchenId: { type: String, default: () => generateKitchenCode(6) },
   kitchenName: { type: String },
-  phoneNumber: { type: String, required: true }
+  phoneNumber: { type: String, required: true },
+  refreshToken: { type: String, default: null }
 }, { timestamps: true });
+
+UserSchema.index({ kitchenId: 1 });
+UserSchema.index({ userEmail: 1 });
 
 export { generateKitchenCode };
 export default mongoose.model('User', UserSchema);

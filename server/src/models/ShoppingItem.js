@@ -12,4 +12,6 @@ const ShoppingItemSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+ShoppingItemSchema.index({ kitchenId: 1, createdAt: -1 });
+
 export default mongoose.model('ShoppingItem', ShoppingItemSchema);

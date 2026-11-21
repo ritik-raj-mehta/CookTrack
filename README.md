@@ -243,7 +243,8 @@ CookTrack Mern/
 | `POST` | `/api/auth/registerToKitchen` | No | Initiates Member signup to join kitchen & emails OTP |
 | `POST` | `/api/auth/verify-otp` | No | Verifies OTP code, provisions account & returns JWT |
 | `POST` | `/api/auth/resend-otp` | No | Generates & re-sends a new OTP code |
-| `POST` | `/api/auth/login` | No | Validates credentials & sets HTTP-only cookie |
+| `POST` | `/api/auth/login` | No | Validates credentials, sets Access + Refresh cookies |
+| `POST` | `/api/auth/refresh-token` | No (Cookie) | Refreshes short-lived Access Token using Refresh Token |
 | `GET` | `/api/auth/me` | **Yes** | Validates current session and returns user profile |
 | `POST` | `/api/auth/logout` | No | Clears authentication cookie |
 
