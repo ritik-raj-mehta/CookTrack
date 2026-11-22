@@ -481,11 +481,17 @@ const loginUser = async (req, res) => {
   const { userEmail, userPassword } = req.body;
 
   try {
-    const user = await User.findOne({ userEmail });
+    const cleanEmail = String(userEmail || '').trim().toLowerCase();
+    const user = await User.findOne({
+      $or: [
+        { userEmail: cleanEmail },
+        { userEmail: new RegExp(`^${cleanEmail}$`, 'i') }
+      ]
+    });
     if (!user) {
       return res
         .status(404)
-        .json({ isSuccess: false, message: 'No document found' });
+        .json({ isSuccess: false, message: 'No account found with this email address. Please sign up or check your credentials.' });
     }
 
     const isPasswordValid = await bcrypt.compare(

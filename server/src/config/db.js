@@ -2,6 +2,9 @@ import mongoose from 'mongoose';
 
 const connectDB = async (mongoUri) => {
   const uri = mongoUri || process.env.MONGO_URI || 'mongodb://localhost:27017/CookTrack';
+  if (!mongoUri && !process.env.MONGO_URI) {
+    console.warn('⚠️ WARNING: MONGO_URI is not set in server/.env! Falling back to local MongoDB.');
+  }
   try {
     const conn = await mongoose.connect(uri, {
       maxPoolSize: 10,

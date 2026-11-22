@@ -26,7 +26,6 @@ const UserSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 UserSchema.index({ kitchenId: 1 });
-UserSchema.index({ userEmail: 1 });
 
 export { generateKitchenCode };
 export default mongoose.model('User', UserSchema);
