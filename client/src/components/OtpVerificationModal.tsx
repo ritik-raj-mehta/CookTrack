@@ -29,8 +29,9 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
   const [currentDevOtp, setCurrentDevOtp] = useState<string | null>(devOtp || null);
   const [currentWarning, setCurrentWarning] = useState<string | null>(warning || null);
 
+  const isDev = import.meta.env.DEV;
   const isAdminEmail = email.trim().toLowerCase() === "ritikmehta9835@gmail.com";
-  const showAdminAutoFill = Boolean(currentDevOtp && isAdminEmail);
+  const showAdminAutoFill = Boolean(isDev && currentDevOtp && isAdminEmail);
 
   useEffect(() => {
     if (devOtp) setCurrentDevOtp(devOtp);
