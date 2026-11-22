@@ -399,11 +399,10 @@ const Home = () => {
             <button
               type="button"
               onClick={() => setActiveTab("pantry")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === "pantry"
-                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${activeTab === "pantry"
+                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
+                }`}
             >
               <FiCodesandbox />
               <span>Pantry Inventory</span>
@@ -412,11 +411,10 @@ const Home = () => {
             <button
               type="button"
               onClick={() => setActiveTab("shopping")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === "shopping"
-                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${activeTab === "shopping"
+                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
+                }`}
             >
               <FiShoppingCart />
               <span>Shared Shopping List & PDF</span>
@@ -425,11 +423,10 @@ const Home = () => {
             <button
               type="button"
               onClick={() => setActiveTab("insights")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === "insights"
-                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${activeTab === "insights"
+                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
+                }`}
             >
               <FiActivity />
               <span>Kitchen Insights & KPIs</span>
@@ -438,11 +435,10 @@ const Home = () => {
             <button
               type="button"
               onClick={() => setActiveTab("crew")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
-                activeTab === "crew"
-                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
-              }`}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${activeTab === "crew"
+                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
+                }`}
             >
               <FaPeopleGroup />
               <span>Kitchen Crew Management</span>
@@ -707,11 +703,10 @@ const Home = () => {
                     key={num}
                     type="button"
                     onClick={() => setFamilySize(num)}
-                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl font-black text-sm sm:text-base transition-all cursor-pointer ${
-                      familySize === num
-                        ? "bg-gradient-to-tr from-emerald-500 to-green-400 text-white shadow-lg shadow-emerald-500/30 scale-105"
-                        : "bg-white/5 hover:bg-white/15 text-gray-300 border border-white/10"
-                    }`}
+                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl font-black text-sm sm:text-base transition-all cursor-pointer ${familySize === num
+                      ? "bg-gradient-to-tr from-emerald-500 to-green-400 text-white shadow-lg shadow-emerald-500/30 scale-105"
+                      : "bg-white/5 hover:bg-white/15 text-gray-300 border border-white/10"
+                      }`}
                   >
                     {num === 6 ? "6+" : num}
                   </button>
@@ -788,9 +783,8 @@ const Home = () => {
                 >
                   <span>{faq.q}</span>
                   <FiChevronDown
-                    className={`text-lg text-emerald-600 shrink-0 transition-transform duration-200 ${
-                      openFaq === idx ? "rotate-180" : ""
-                    }`}
+                    className={`text-lg text-emerald-600 shrink-0 transition-transform duration-200 ${openFaq === idx ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
