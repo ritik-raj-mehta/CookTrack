@@ -208,18 +208,18 @@ const KitchenMembers = () => {
   };
 
   return (
-    <div className="w-full bg-slate-50 min-h-screen relative">
+    <div className="w-full bg-slate-50 dark:bg-slate-950 min-h-screen relative transition-colors">
       {/* Top Header */}
-      <div className="bg-white py-4 border-b border-gray-100 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-slate-900 py-4 border-b border-gray-100 dark:border-slate-800 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors">
         <div className="flex gap-3.5 items-center">
           <div className="bg-gradient-to-tr from-amber-500 to-orange-400 text-2xl p-2 sm:p-2.5 rounded-2xl text-white shadow-xs shrink-0">
             <FaPeopleGroup />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 dark:text-white tracking-tight">
               Kitchen Crew
             </h1>
-            <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 font-medium mt-0.5">
               People collaborating in {kitchenData?.kitchenName || "this kitchen"}
             </p>
           </div>
@@ -228,9 +228,9 @@ const KitchenMembers = () => {
         {/* Actions in Header */}
         <div className="flex items-center gap-3 w-full sm:w-auto">
           {effectiveKitchenId && (
-            <div className="flex items-center justify-between sm:justify-start gap-2 bg-amber-50/80 border border-amber-200/90 px-3.5 py-1.5 rounded-xl shadow-2xs w-full sm:w-auto">
-              <span className="text-xs font-semibold text-amber-900">Invite Code:</span>
-              <span className="font-mono font-bold text-amber-800 text-xs sm:text-sm tracking-wider">
+            <div className="flex items-center justify-between sm:justify-start gap-2 bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200/90 dark:border-amber-800/60 px-3.5 py-1.5 rounded-xl shadow-2xs w-full sm:w-auto">
+              <span className="text-xs font-semibold text-amber-900 dark:text-amber-300">Invite Code:</span>
+              <span className="font-mono font-bold text-amber-800 dark:text-amber-400 text-xs sm:text-sm tracking-wider">
                 {effectiveKitchenId}
               </span>
               <button
@@ -250,15 +250,15 @@ const KitchenMembers = () => {
       <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-5xl animate-fadeIn space-y-6 pb-24 sm:pb-12">
         {/* Alerts */}
         {actionSuccess && (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm p-4 rounded-xl flex items-center justify-between shadow-2xs animate-fadeIn">
+          <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-sm p-4 rounded-xl flex items-center justify-between shadow-2xs animate-fadeIn">
             <div className="flex items-center gap-2">
-              <FiCheck className="text-base text-emerald-600" />
+              <FiCheck className="text-base text-emerald-600 dark:text-emerald-400" />
               <span>{actionSuccess}</span>
             </div>
             <button
               type="button"
               onClick={() => setActionSuccess(null)}
-              className="text-emerald-700 font-bold ml-2 cursor-pointer"
+              className="text-emerald-700 dark:text-emerald-400 font-bold ml-2 cursor-pointer"
             >
               <FiX />
             </button>
@@ -266,12 +266,12 @@ const KitchenMembers = () => {
         )}
 
         {(actionError || error) && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm p-4 rounded-xl flex items-center justify-between shadow-2xs animate-fadeIn">
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm p-4 rounded-xl flex items-center justify-between shadow-2xs animate-fadeIn">
             <span>{actionError || error}</span>
             <button
               type="button"
               onClick={() => setActionError(null)}
-              className="text-red-700 font-bold ml-2 cursor-pointer"
+              className="text-red-700 dark:text-red-400 font-bold ml-2 cursor-pointer"
             >
               <FiX />
             </button>
@@ -279,15 +279,15 @@ const KitchenMembers = () => {
         )}
 
         {/* Invite Banner Card */}
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50/60 border border-amber-200/70 rounded-2xl p-4 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50/60 dark:from-slate-900 dark:to-amber-950/30 border border-amber-200/70 dark:border-amber-900/50 rounded-2xl p-4 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors">
           <div>
-            <h3 className="text-base font-bold text-amber-950 flex items-center gap-2">
+            <h3 className="text-base font-bold text-amber-950 dark:text-amber-300 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-500"></span>
               Invite Family & Roommates
             </h3>
-            <p className="text-xs sm:text-sm text-amber-900/80 mt-1 max-w-2xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-amber-900/80 dark:text-slate-300 mt-1 max-w-2xl leading-relaxed">
               Share your kitchen invite code{" "}
-              <strong className="font-mono bg-white/70 px-2 py-0.5 rounded border border-amber-200 text-amber-950">
+              <strong className="font-mono bg-white/70 dark:bg-slate-800 px-2 py-0.5 rounded border border-amber-200 dark:border-slate-700 text-amber-950 dark:text-amber-400">
                 {effectiveKitchenId}
               </strong>
               . Others can join by choosing "Join Existing Kitchen" during signup.
@@ -304,27 +304,27 @@ const KitchenMembers = () => {
         </div>
 
         {/* Members List Container */}
-        <div className="bg-white rounded-2xl shadow-xs border border-gray-100 overflow-hidden">
-          <div className="p-4 sm:p-6 border-b border-gray-100 flex justify-between items-center">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xs border border-gray-100 dark:border-slate-800 overflow-hidden transition-colors">
+          <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center">
             <div>
-              <h2 className="text-lg font-bold text-gray-900">Crew Members</h2>
-              <p className="text-xs text-gray-500 mt-0.5">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Crew Members</h2>
+              <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
                 Active participants with inventory permissions ({effectiveMembers.length})
               </p>
             </div>
             {loading && (
-              <span className="text-xs font-semibold text-emerald-600 animate-pulse">
+              <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 animate-pulse">
                 Refreshing crew...
               </span>
             )}
           </div>
 
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-gray-100 dark:divide-slate-800">
             {effectiveMembers.length === 0 && !loading ? (
-              <div className="p-12 text-center text-gray-500 space-y-2">
-                <FiUser className="text-3xl text-gray-300 mx-auto" />
+              <div className="p-12 text-center text-gray-500 dark:text-slate-400 space-y-2">
+                <FiUser className="text-3xl text-gray-300 dark:text-slate-600 mx-auto" />
                 <p className="text-sm font-medium">No members found for this kitchen.</p>
-                <p className="text-xs text-gray-400">Share your invite code to get started.</p>
+                <p className="text-xs text-gray-400 dark:text-slate-500">Share your invite code to get started.</p>
               </div>
             ) : (
               effectiveMembers.map((member) => {
@@ -334,7 +334,7 @@ const KitchenMembers = () => {
                 return (
                   <div
                     key={member._id}
-                    className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 hover:bg-gray-50/70 transition duration-150"
+                    className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 hover:bg-gray-50/70 dark:hover:bg-slate-800/60 transition duration-150"
                   >
                     <div className="flex items-center gap-3.5 min-w-0">
                       <div
@@ -346,33 +346,33 @@ const KitchenMembers = () => {
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <h4 className="font-bold text-gray-900 text-sm leading-tight truncate">
+                          <h4 className="font-bold text-gray-900 dark:text-white text-sm leading-tight truncate">
                             {member.userName}
                           </h4>
                           {isCurrentUser && (
-                            <span className="text-[10px] bg-gray-100 text-gray-600 font-semibold px-2 py-0.5 rounded-full shrink-0">
+                            <span className="text-[10px] bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 font-semibold px-2 py-0.5 rounded-full shrink-0">
                               You
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-gray-500 flex items-center gap-1.5 mt-0.5 truncate">
-                          <FiMail className="text-gray-400 text-xs shrink-0" />
+                        <p className="text-xs text-gray-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5 truncate">
+                          <FiMail className="text-gray-400 dark:text-slate-500 text-xs shrink-0" />
                           <span className="truncate">{member.userEmail}</span>
                         </p>
                       </div>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3 self-start sm:self-auto text-xs pl-13 sm:pl-0">
-                      <span className="text-gray-400 hidden lg:flex items-center gap-1.5">
-                        <FiCalendar className="text-gray-400" />
+                      <span className="text-gray-400 dark:text-slate-500 hidden lg:flex items-center gap-1.5">
+                        <FiCalendar className="text-gray-400 dark:text-slate-500" />
                         <span>Joined {new Date(member.createdAt).toLocaleDateString()}</span>
                       </span>
 
                       <span
                         className={`px-2.5 sm:px-3 py-1 rounded-full font-semibold flex items-center gap-1.5 shadow-2xs ${
                           isMemberAdmin
-                            ? "bg-amber-100 text-amber-800 border border-amber-200/80"
-                            : "bg-emerald-100 text-emerald-800 border border-emerald-200/80"
+                            ? "bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/60"
+                            : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60"
                         }`}
                       >
                         <FiShield className="text-xs" />
@@ -384,10 +384,10 @@ const KitchenMembers = () => {
                         <button
                           type="button"
                           onClick={() => setMemberToPromote(member)}
-                          className="flex items-center gap-1 bg-amber-50 hover:bg-amber-100 active:scale-95 text-amber-800 border border-amber-300/80 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer shadow-2xs"
+                          className="flex items-center gap-1 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/50 active:scale-95 text-amber-800 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800/60 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer shadow-2xs"
                           title={`Make ${member.userName} a Kitchen Admin`}
                         >
-                          <FiShield className="text-xs text-amber-700" />
+                          <FiShield className="text-xs text-amber-700 dark:text-amber-400" />
                           <span>Make Admin</span>
                         </button>
                       )}
@@ -402,10 +402,10 @@ const KitchenMembers = () => {
                             setRemovePhone("");
                             setRemoveModalError(null);
                           }}
-                          className="flex items-center gap-1 bg-red-50 hover:bg-red-100 active:scale-95 text-red-700 border border-red-200/80 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer shadow-2xs"
+                          className="flex items-center gap-1 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-900/50 active:scale-95 text-red-700 dark:text-red-400 border border-red-200/80 dark:border-red-900/60 px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer shadow-2xs"
                           title={`Remove ${member.userName} from this kitchen`}
                         >
-                          <FiUserX className="text-xs text-red-600" />
+                          <FiUserX className="text-xs text-red-600 dark:text-red-400" />
                           <span>Remove</span>
                         </button>
                       )}
@@ -419,14 +419,14 @@ const KitchenMembers = () => {
 
         {/* Danger Zone: Delete Kitchen (Kitchen Admin Only) */}
         {isCurrentUserAdmin && (
-          <div className="bg-red-50/60 border border-red-200 rounded-2xl p-6 shadow-xs space-y-4">
+          <div className="bg-red-50/60 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 rounded-2xl p-6 shadow-xs space-y-4 transition-colors">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h3 className="text-base font-bold text-red-950 flex items-center gap-2">
-                  <FiAlertTriangle className="text-red-600 text-lg" />
+                <h3 className="text-base font-bold text-red-950 dark:text-red-300 flex items-center gap-2">
+                  <FiAlertTriangle className="text-red-600 dark:text-red-400 text-lg" />
                   Danger Zone: Delete Entire Kitchen
                 </h3>
-                <p className="text-xs sm:text-sm text-red-800/80 mt-1 max-w-xl leading-relaxed">
+                <p className="text-xs sm:text-sm text-red-800/80 dark:text-slate-300 mt-1 max-w-xl leading-relaxed">
                   Permanently delete this kitchen, all inventory products, shopping lists, and disconnect
                   all members. This action is irreversible.
                 </p>
@@ -450,14 +450,14 @@ const KitchenMembers = () => {
         )}
 
         {/* Exit Kitchen Card (Below Delete Kitchen) */}
-        <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-6 shadow-xs space-y-4">
+        <div className="bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 rounded-2xl p-6 shadow-xs space-y-4 transition-colors">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h3 className="text-base font-bold text-amber-950 flex items-center gap-2">
-                <FiLogOut className="text-amber-600 text-lg" />
+              <h3 className="text-base font-bold text-amber-950 dark:text-amber-300 flex items-center gap-2">
+                <FiLogOut className="text-amber-600 dark:text-amber-400 text-lg" />
                 Exit Kitchen
               </h3>
-              <p className="text-xs sm:text-sm text-amber-800/80 mt-1 max-w-xl leading-relaxed">
+              <p className="text-xs sm:text-sm text-amber-800/80 dark:text-slate-300 mt-1 max-w-xl leading-relaxed">
                 Leave this kitchen and permanently remove your account data from the database. You will be able to sign up fresh whenever you return.
               </p>
             </div>
@@ -484,38 +484,38 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {showLeaveModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
-            <div className="w-14 h-14 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto my-auto overscroll-contain transition-colors">
+            <div className="w-14 h-14 bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiLogOut />
             </div>
 
             <div className="text-center space-y-1">
-              <h3 className="text-xl font-bold text-gray-900">Exit Kitchen & Delete Account?</h3>
-              <p className="text-sm text-gray-600 px-2 leading-relaxed">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Exit Kitchen & Delete Account?</h3>
+              <p className="text-sm text-gray-600 dark:text-slate-300 px-2 leading-relaxed">
                 Are you sure you want to exit{" "}
-                <span className="font-semibold text-gray-900">
+                <span className="font-semibold text-gray-900 dark:text-white">
                   "{kitchenData?.kitchenName || "this kitchen"}"
                 </span>
                 ? Your entire account, login credentials, and Gmail record will be permanently deleted from the database so you can sign up completely fresh anytime.
               </p>
             </div>
 
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 leading-relaxed font-medium">
+            <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 rounded-xl p-3 text-xs text-amber-800 dark:text-amber-300 leading-relaxed font-medium">
               Notice: Your login data will be completely wiped from the system. You will be logged out immediately.
             </div>
 
             {/* Password Verification Field */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                <FiLock className="text-amber-600" />
+            <div className="bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <FiLock className="text-amber-600 dark:text-amber-400" />
                 Security Verification
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Please enter your login password to confirm exiting this kitchen and deleting your account.
               </p>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
                   Your Password
                 </label>
                 <div className="relative">
@@ -527,12 +527,12 @@ const KitchenMembers = () => {
                       setLeaveModalError(null);
                     }}
                     placeholder="Enter your login password"
-                    className="w-full text-xs px-3 py-2 pr-9 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white"
+                    className="w-full text-xs px-3 py-2 pr-9 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
                   />
                   <button
                     type="button"
                     onClick={() => setShowLeavePassword(!showLeavePassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 cursor-pointer"
                   >
                     {showLeavePassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
                   </button>
@@ -540,7 +540,7 @@ const KitchenMembers = () => {
               </div>
 
               {leaveModalError && (
-                <div className="bg-red-100 border border-red-200 text-red-700 text-xs p-2.5 rounded-lg font-medium flex items-center gap-1.5 animate-fadeIn">
+                <div className="bg-red-100 dark:bg-red-950/60 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-xs p-2.5 rounded-lg font-medium flex items-center gap-1.5 animate-fadeIn">
                   <FiAlertTriangle className="shrink-0" />
                   <span>{leaveModalError}</span>
                 </div>
@@ -556,7 +556,7 @@ const KitchenMembers = () => {
                   setLeaveModalError(null);
                 }}
                 disabled={isLeaving}
-                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
+                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-300 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -579,38 +579,38 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {showDeleteKitchenModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
-            <div className="w-14 h-14 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto my-auto overscroll-contain transition-colors">
+            <div className="w-14 h-14 bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiAlertTriangle />
             </div>
 
             <div className="text-center space-y-1">
-              <h3 className="text-xl font-bold text-gray-900">Permanently Delete Kitchen & All Accounts?</h3>
-              <p className="text-sm text-gray-600 px-2 leading-relaxed">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Permanently Delete Kitchen & All Accounts?</h3>
+              <p className="text-sm text-gray-600 dark:text-slate-300 px-2 leading-relaxed">
                 This will permanently delete{" "}
-                <span className="font-semibold text-gray-900">
+                <span className="font-semibold text-gray-900 dark:text-white">
                   "{kitchenData?.kitchenName || "the kitchen"}"
                 </span>
                 , all pantry inventory items, shopping lists, and completely delete all member and admin accounts from the database so everyone can sign up fresh.
               </p>
             </div>
 
-            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-800 leading-relaxed font-medium">
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-xl p-3 text-xs text-red-800 dark:text-red-300 leading-relaxed font-medium">
               Warning: This action cannot be undone. All stored kitchen data, login credentials, and Gmail records will be permanently wiped.
             </div>
 
             {/* Admin Security Verification Inputs */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                <FiLock className="text-emerald-600" />
+            <div className="bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <FiLock className="text-emerald-600 dark:text-emerald-400" />
                 Admin Security Verification
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Please enter your Admin password and registered mobile number to authorize kitchen deletion.
               </p>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
                   Admin Password
                 </label>
                 <div className="relative">
@@ -622,12 +622,12 @@ const KitchenMembers = () => {
                       setDeleteModalError(null);
                     }}
                     placeholder="Enter your login password"
-                    className="w-full text-xs px-3 py-2 pr-9 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+                    className="w-full text-xs px-3 py-2 pr-9 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
                   />
                   <button
                     type="button"
                     onClick={() => setShowDeletePassword(!showDeletePassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 cursor-pointer"
                   >
                     {showDeletePassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
                   </button>
@@ -635,8 +635,8 @@ const KitchenMembers = () => {
               </div>
 
               <div>
-                <label className="text-xs font-medium text-slate-700 mb-1 flex items-center gap-1.5">
-                  <FiPhone className="text-slate-400 text-xs" />
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                  <FiPhone className="text-slate-400 dark:text-slate-500 text-xs" />
                   <span>Registered Mobile Number</span>
                 </label>
                 <div className="relative">
@@ -648,13 +648,13 @@ const KitchenMembers = () => {
                       setDeleteModalError(null);
                     }}
                     placeholder="Enter registered mobile number"
-                    className="w-full text-xs px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+                    className="w-full text-xs px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
 
               {deleteModalError && (
-                <div className="bg-red-100 border border-red-200 text-red-700 text-xs p-2.5 rounded-lg font-medium flex items-center gap-1.5">
+                <div className="bg-red-100 dark:bg-red-950/60 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-xs p-2.5 rounded-lg font-medium flex items-center gap-1.5">
                   <FiAlertTriangle className="shrink-0" />
                   <span>{deleteModalError}</span>
                 </div>
@@ -671,7 +671,7 @@ const KitchenMembers = () => {
                   setDeleteModalError(null);
                 }}
                 disabled={isDeletingKitchen}
-                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
+                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-300 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -694,36 +694,36 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {memberToRemove && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
-            <div className="w-14 h-14 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto my-auto overscroll-contain transition-colors">
+            <div className="w-14 h-14 bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiUserX />
             </div>
 
             <div className="text-center space-y-1">
-              <h3 className="text-xl font-bold text-gray-900">Remove Member & Delete Account?</h3>
-              <p className="text-sm text-gray-600 px-2 leading-relaxed">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Remove Member & Delete Account?</h3>
+              <p className="text-sm text-gray-600 dark:text-slate-300 px-2 leading-relaxed">
                 Are you sure you want to remove{" "}
-                <span className="font-semibold text-gray-900">"{memberToRemove.userName}"</span>{" "}
+                <span className="font-semibold text-gray-900 dark:text-white">"{memberToRemove.userName}"</span>{" "}
                 ({memberToRemove.userEmail}) from this kitchen?
               </p>
             </div>
 
-            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-800 leading-relaxed font-medium">
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 rounded-xl p-3 text-xs text-red-800 dark:text-red-300 leading-relaxed font-medium">
               Notice: This member's entire account, login credentials, and Gmail record will be completely deleted from the database. When they return, they will need to sign up fresh.
             </div>
 
             {/* Admin Security Verification Inputs */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                <FiLock className="text-emerald-600" />
+            <div className="bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl p-4 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <FiLock className="text-emerald-600 dark:text-emerald-400" />
                 Admin Security Verification
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 To authorize removing this member, please verify your Kitchen Admin password and registered mobile number.
               </p>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
                   Admin Password
                 </label>
                 <div className="relative">
@@ -735,12 +735,12 @@ const KitchenMembers = () => {
                       setRemoveModalError(null);
                     }}
                     placeholder="Enter your login password"
-                    className="w-full text-xs px-3 py-2 pr-9 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+                    className="w-full text-xs px-3 py-2 pr-9 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
                   />
                   <button
                     type="button"
                     onClick={() => setShowRemovePassword(!showRemovePassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 cursor-pointer"
                   >
                     {showRemovePassword ? <FiEyeOff size={14} /> : <FiEye size={14} />}
                   </button>
@@ -748,8 +748,8 @@ const KitchenMembers = () => {
               </div>
 
               <div>
-                <label className="text-xs font-medium text-slate-700 mb-1 flex items-center gap-1.5">
-                  <FiPhone className="text-slate-400 text-xs" />
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                  <FiPhone className="text-slate-400 dark:text-slate-500 text-xs" />
                   <span>Registered Mobile Number</span>
                 </label>
                 <div className="relative">
@@ -761,13 +761,13 @@ const KitchenMembers = () => {
                       setRemoveModalError(null);
                     }}
                     placeholder="Enter registered mobile number"
-                    className="w-full text-xs px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+                    className="w-full text-xs px-3 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
 
               {removeModalError && (
-                <div className="bg-red-100 border border-red-200 text-red-700 text-xs p-2.5 rounded-lg font-medium flex items-center gap-1.5">
+                <div className="bg-red-100 dark:bg-red-950/60 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-xs p-2.5 rounded-lg font-medium flex items-center gap-1.5">
                   <FiAlertTriangle className="shrink-0" />
                   <span>{removeModalError}</span>
                 </div>
@@ -784,7 +784,7 @@ const KitchenMembers = () => {
                   setRemoveModalError(null);
                 }}
                 disabled={isRemovingMember}
-                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
+                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-300 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -807,21 +807,21 @@ const KitchenMembers = () => {
       {/* ========================================================================= */}
       {memberToPromote && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
-            <div className="w-14 h-14 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 border border-gray-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto my-auto overscroll-contain transition-colors">
+            <div className="w-14 h-14 bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 rounded-full flex items-center justify-center text-2xl mx-auto shadow-inner">
               <FiShield />
             </div>
 
             <div className="text-center space-y-1">
-              <h3 className="text-xl font-bold text-gray-900">Make Kitchen Admin?</h3>
-              <p className="text-sm text-gray-600 px-2 leading-relaxed">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Make Kitchen Admin?</h3>
+              <p className="text-sm text-gray-600 dark:text-slate-300 px-2 leading-relaxed">
                 Are you sure you want to promote{" "}
-                <span className="font-semibold text-gray-900">"{memberToPromote.userName}"</span> to a
+                <span className="font-semibold text-gray-900 dark:text-white">"{memberToPromote.userName}"</span> to a
                 Kitchen Admin?
               </p>
             </div>
 
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 leading-relaxed font-medium">
+            <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 rounded-xl p-3 text-xs text-amber-800 dark:text-amber-300 leading-relaxed font-medium">
               Kitchen Admins can add, edit, and delete products, invite members, promote other members,
               and manage the kitchen.
             </div>
@@ -831,7 +831,7 @@ const KitchenMembers = () => {
                 type="button"
                 onClick={() => setMemberToPromote(null)}
                 disabled={isPromoting}
-                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
+                className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-300 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
               >
                 Cancel
               </button>

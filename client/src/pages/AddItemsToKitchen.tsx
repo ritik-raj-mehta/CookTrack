@@ -71,18 +71,18 @@ const AddItemsToKitchen = () => {
   };
 
   return (
-    <div className="bg-slate-50 w-full min-h-screen">
+    <div className="bg-slate-50 dark:bg-slate-950 w-full min-h-screen transition-colors">
       {/* Top Header */}
-      <div className="bg-white py-4 border-b border-gray-100 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div className="bg-white dark:bg-slate-900 py-4 border-b border-gray-100 dark:border-slate-800 px-4 sm:px-6 lg:px-8 flex items-center justify-between transition-colors">
         <div className="flex gap-x-3.5 sm:gap-x-4 items-center">
-          <div className="bg-emerald-100 text-emerald-700 text-2xl p-2 sm:p-2.5 rounded-2xl shadow-xs shrink-0">
+          <div className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-2xl p-2 sm:p-2.5 rounded-2xl shadow-xs shrink-0">
             <FiCodesandbox />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 dark:text-white tracking-tight">
               Restock Pantry
             </h1>
-            <p className="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 font-medium mt-0.5">
               Stock items and track expiry in your kitchen pantry
             </p>
           </div>
@@ -93,25 +93,25 @@ const AddItemsToKitchen = () => {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 animate-fadeIn pb-24 sm:pb-12">
         <form
           onSubmit={handleKitchenItemForm}
-          className="bg-white p-5 sm:p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6"
+          className="bg-white dark:bg-slate-900 p-5 sm:p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 space-y-6 transition-colors"
         >
-          <div className="border-b border-gray-100 pb-4">
-            <h3 className="text-xl font-bold text-gray-900">Product Information</h3>
-            <p className="text-xs text-gray-500 mt-0.5">
+          <div className="border-b border-gray-100 dark:border-slate-800 pb-4">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white">Product Information</h3>
+            <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
               Fill in details about the item you want to add to your kitchen.
             </p>
           </div>
 
           {formSuccess && (
-            <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm px-4 py-3 rounded-xl flex items-center justify-between animate-fadeIn">
+            <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-sm px-4 py-3 rounded-xl flex items-center justify-between animate-fadeIn">
               <div className="flex items-center gap-2">
-                <FiCheck className="text-base text-emerald-600" />
+                <FiCheck className="text-base text-emerald-600 dark:text-emerald-400" />
                 <span>{formSuccess}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setFormSuccess(null)}
-                className="text-emerald-700 font-bold ml-2 cursor-pointer"
+                className="text-emerald-700 dark:text-emerald-400 font-bold ml-2 cursor-pointer"
               >
                 <FiX />
               </button>
@@ -119,12 +119,12 @@ const AddItemsToKitchen = () => {
           )}
 
           {formError && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl flex items-center justify-between animate-fadeIn">
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl flex items-center justify-between animate-fadeIn">
               <span>{formError}</span>
               <button
                 type="button"
                 onClick={() => setFormError(null)}
-                className="text-red-700 font-bold ml-2 cursor-pointer"
+                className="text-red-700 dark:text-red-400 font-bold ml-2 cursor-pointer"
               >
                 <FiX />
               </button>
@@ -134,7 +134,7 @@ const AddItemsToKitchen = () => {
           {/* Product Name & Category */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="flex flex-col space-y-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="productName">
+              <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="productName">
                 Product Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -142,7 +142,7 @@ const AddItemsToKitchen = () => {
                 id="productName"
                 name="productName"
                 required
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
                 placeholder="e.g. Basmati Rice, Olive Oil"
                 onChange={handleProductFormData}
                 value={kitchenItems.productName}
@@ -150,13 +150,13 @@ const AddItemsToKitchen = () => {
             </div>
 
             <div className="flex flex-col space-y-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="category">
+              <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="category">
                 Category
               </label>
               <select
                 id="category"
                 name="category"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition cursor-pointer"
+                className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition cursor-pointer"
                 onChange={handleProductFormData}
                 value={kitchenItems.category}
               >
@@ -177,7 +177,7 @@ const AddItemsToKitchen = () => {
           {/* Quantity & Unit */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="flex flex-col space-y-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="quantity">
+              <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="quantity">
                 Quantity
               </label>
               <input
@@ -185,7 +185,7 @@ const AddItemsToKitchen = () => {
                 name="quantity"
                 type="number"
                 min="0"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
                 placeholder="Enter quantity"
                 onChange={handleProductFormData}
                 value={kitchenItems.quantity ?? ""}
@@ -193,13 +193,13 @@ const AddItemsToKitchen = () => {
             </div>
 
             <div className="flex flex-col space-y-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="unit">
+              <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="unit">
                 Unit
               </label>
               <select
                 id="unit"
                 name="unit"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition cursor-pointer"
+                className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition cursor-pointer"
                 onChange={handleProductFormData}
                 value={kitchenItems.unit}
               >
@@ -219,13 +219,13 @@ const AddItemsToKitchen = () => {
           {/* Storage Location & Expiry Date */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="flex flex-col space-y-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="storageLocation">
+              <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="storageLocation">
                 Storage Location
               </label>
               <select
                 id="storageLocation"
                 name="storageLocation"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition cursor-pointer"
+                className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition cursor-pointer"
                 onChange={handleProductFormData}
                 value={kitchenItems.storageLocation}
               >
@@ -240,14 +240,14 @@ const AddItemsToKitchen = () => {
             </div>
 
             <div className="flex flex-col space-y-1.5">
-              <label className="text-sm font-semibold text-gray-700" htmlFor="expiryDate">
+              <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="expiryDate">
                 Expiry Date
               </label>
               <input
                 id="expiryDate"
                 name="expiryDate"
                 type="date"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
                 onChange={handleProductFormData}
                 value={kitchenItems.expiryDate}
               />
@@ -256,14 +256,14 @@ const AddItemsToKitchen = () => {
 
           {/* Notes */}
           <div className="flex flex-col space-y-1.5">
-            <label className="text-sm font-semibold text-gray-700" htmlFor="notes">
+            <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="notes">
               Notes (Optional)
             </label>
             <textarea
               id="notes"
               name="notes"
               rows={3}
-              className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+              className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
               placeholder="Brand preference, batch number, or cooking notes..."
               onChange={handleProductFormData}
               value={kitchenItems.notes}
@@ -281,7 +281,7 @@ const AddItemsToKitchen = () => {
             </button>
             <button
               type="button"
-              className="w-full sm:w-auto py-3 px-6 rounded-xl bg-white hover:bg-gray-100 active:scale-95 border border-gray-200 text-gray-700 font-semibold text-sm transition cursor-pointer"
+              className="w-full sm:w-auto py-3 px-6 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 active:scale-95 border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-200 font-semibold text-sm transition cursor-pointer"
               onClick={() =>
                 setKitchenItems({
                   productName: "",

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../stores/store";
 import { register, clearError, clearMessage } from "../stores/slices/AuthSlice";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-
 import OtpVerificationModal from "../components/OtpVerificationModal";
+import ThemeToggle from "../components/ThemeToggle";
 
 export type SignUpType = {
   userName: string;
@@ -84,10 +84,15 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/40 to-amber-50/30 flex justify-center items-center py-12 px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/40 to-amber-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex justify-center items-center py-12 px-4 relative overflow-hidden transition-colors duration-250">
       {/* Soft ambient decorative background blobs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-300/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-300/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-300/20 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-300/15 dark:bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      {/* Top right Theme Toggle */}
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
 
       {showOtpModal && (
         <OtpVerificationModal
@@ -98,7 +103,7 @@ const SignUp = () => {
         />
       )}
 
-      <div className="relative flex items-center flex-col bg-white p-8 sm:p-10 w-full max-w-xl rounded-3xl shadow-xl border border-gray-100 animate-fadeIn">
+      <div className="relative flex items-center flex-col bg-white dark:bg-slate-900 p-8 sm:p-10 w-full max-w-xl rounded-3xl shadow-xl border border-gray-100 dark:border-slate-800 animate-fadeIn transition-colors">
         <Link
           to="/"
           className="text-3xl bg-gradient-to-tr from-emerald-600 to-green-500 rounded-2xl text-white p-3 mb-4 shadow-md hover:scale-105 transition-transform duration-300"
@@ -106,26 +111,26 @@ const SignUp = () => {
           <LuChefHat />
         </Link>
 
-        <h2 className="text-2xl sm:text-3xl font-bold font-serif text-gray-900 pb-1 text-center">
+        <h2 className="text-2xl sm:text-3xl font-bold font-serif text-gray-900 dark:text-white pb-1 text-center">
           Join CookTrack
         </h2>
-        <p className="text-gray-500 text-xs sm:text-sm pb-6 text-center">
+        <p className="text-gray-500 dark:text-slate-400 text-xs sm:text-sm pb-6 text-center">
           Create your account and set up a smart inventory for your kitchen
         </p>
 
         {/* Feedback alerts */}
         {localError && (
-          <div className="w-full text-red-600 text-xs sm:text-sm bg-red-50 border border-red-200 p-3 rounded-xl mb-4 text-center animate-fadeIn">
+          <div className="w-full text-red-600 dark:text-red-400 text-xs sm:text-sm bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 p-3 rounded-xl mb-4 text-center animate-fadeIn">
             {localError}
           </div>
         )}
         {error && (
-          <div className="w-full text-red-600 text-xs sm:text-sm bg-red-50 border border-red-200 p-3 rounded-xl mb-4 text-center animate-fadeIn">
+          <div className="w-full text-red-600 dark:text-red-400 text-xs sm:text-sm bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 p-3 rounded-xl mb-4 text-center animate-fadeIn">
             {error}
           </div>
         )}
         {message && (
-          <div className="w-full text-emerald-800 text-xs sm:text-sm bg-emerald-50 border border-emerald-200 p-3 rounded-xl mb-4 text-center animate-fadeIn">
+          <div className="w-full text-emerald-800 dark:text-emerald-300 text-xs sm:text-sm bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 p-3 rounded-xl mb-4 text-center animate-fadeIn">
             {message}
           </div>
         )}
@@ -135,14 +140,14 @@ const SignUp = () => {
             {/* Full Name & Email */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col space-y-1.5">
-                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="userName">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-slate-300" htmlFor="userName">
                   Full Name
                 </label>
                 <input
                   id="userName"
                   type="text"
                   required
-                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  className="bg-gray-50/80 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
                   placeholder="e.g. John Doe"
                   name="userName"
                   value={inputData.userName}
@@ -151,14 +156,14 @@ const SignUp = () => {
               </div>
 
               <div className="flex flex-col space-y-1.5">
-                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="userEmail">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-slate-300" htmlFor="userEmail">
                   Email Address
                 </label>
                 <input
                   id="userEmail"
                   type="email"
                   required
-                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  className="bg-gray-50/80 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
                   placeholder="name@example.com"
                   name="userEmail"
                   value={inputData.userEmail}
@@ -170,14 +175,14 @@ const SignUp = () => {
             {/* Password & Confirm */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col space-y-1.5">
-                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="userPassword">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-slate-300" htmlFor="userPassword">
                   Password (8-20 chars)
                 </label>
                 <input
                   id="userPassword"
                   type="password"
                   required
-                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  className="bg-gray-50/80 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
                   placeholder="Create password"
                   name="userPassword"
                   value={inputData.userPassword}
@@ -186,14 +191,14 @@ const SignUp = () => {
               </div>
 
               <div className="flex flex-col space-y-1.5">
-                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="confirmPassword">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-slate-300" htmlFor="confirmPassword">
                   Confirm Password
                 </label>
                 <input
                   id="confirmPassword"
                   type="password"
                   required
-                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  className="bg-gray-50/80 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
                   placeholder="Repeat password"
                   name="confirmPassword"
                   value={confirmPassword}
@@ -208,14 +213,14 @@ const SignUp = () => {
             {/* Kitchen Name & Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col space-y-1.5">
-                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700" htmlFor="kitchenName">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-slate-300" htmlFor="kitchenName">
                   Kitchen Name
                 </label>
                 <input
                   id="kitchenName"
                   type="text"
                   required
-                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  className="bg-gray-50/80 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
                   placeholder="e.g. My Home Kitchen"
                   name="kitchenName"
                   value={inputData.kitchenName}
@@ -224,7 +229,7 @@ const SignUp = () => {
               </div>
 
               <div className="flex flex-col space-y-1.5">
-                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700 flex items-center gap-1" htmlFor="phoneNumber">
+                <label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-slate-300 flex items-center gap-1" htmlFor="phoneNumber">
                   <span>Mobile Number</span>
                   <span className="text-red-500">*</span>
                 </label>
@@ -232,7 +237,7 @@ const SignUp = () => {
                   id="phoneNumber"
                   type="tel"
                   required
-                  className="bg-gray-50/80 border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/10 transition"
+                  className="bg-gray-50/80 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/10 transition"
                   placeholder="e.g. 9876543210"
                   name="phoneNumber"
                   value={inputData.phoneNumber}
@@ -252,16 +257,16 @@ const SignUp = () => {
             </div>
           </form>
 
-          <div className="text-center pt-5 text-xs text-gray-500 border-t border-gray-100 mt-6 space-y-2">
+          <div className="text-center pt-5 text-xs text-gray-500 dark:text-slate-400 border-t border-gray-100 dark:border-slate-800 mt-6 space-y-2">
             <div>
               <span>Already have an account? </span>
-              <Link to="/signin" className="font-bold text-emerald-600 hover:text-emerald-700">
+              <Link to="/signin" className="font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300">
                 Sign In
               </Link>
             </div>
             <div>
               <span>Joining someone else's kitchen? </span>
-              <Link to="/registertokitchen" className="font-bold text-amber-700 hover:text-amber-800">
+              <Link to="/registertokitchen" className="font-bold text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300">
                 Join with Invite Code
               </Link>
             </div>

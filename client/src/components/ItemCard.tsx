@@ -67,20 +67,20 @@ const ItemCard = ({
         const isInShoppingList = Boolean(targetCartItem);
 
         let stockBadge = (
-          <span className="bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-2 sm:px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold tracking-tight whitespace-nowrap">
+          <span className="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 px-2 sm:px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold tracking-tight whitespace-nowrap">
             In Stock
           </span>
         );
 
         if (isOutOfStock) {
           stockBadge = (
-            <span className="bg-rose-50 text-rose-700 border border-rose-200 px-2 sm:px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold tracking-tight animate-pulse whitespace-nowrap">
+            <span className="bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800 px-2 sm:px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold tracking-tight animate-pulse whitespace-nowrap">
               Out of Stock
             </span>
           );
         } else if (isLowStock) {
           stockBadge = (
-            <span className="bg-amber-50 text-amber-700 border border-amber-200 px-2 sm:px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold tracking-tight whitespace-nowrap">
+            <span className="bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 px-2 sm:px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold tracking-tight whitespace-nowrap">
               Low Stock ({k.quantity})
             </span>
           );
@@ -89,22 +89,22 @@ const ItemCard = ({
         return (
           <div
             key={itemId}
-            className={`bg-white rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between border ${
+            className={`bg-white dark:bg-slate-900 rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between border ${
               isOutOfStock
-                ? "border-rose-200/90 bg-gradient-to-b from-rose-50/20 to-white"
+                ? "border-rose-200/90 dark:border-rose-900/60 bg-gradient-to-b from-rose-50/20 dark:from-rose-950/20 to-white dark:to-slate-900"
                 : isLowStock
-                ? "border-amber-200/90 bg-gradient-to-b from-amber-50/20 to-white"
-                : "border-gray-100 hover:border-emerald-200"
+                ? "border-amber-200/90 dark:border-amber-900/60 bg-gradient-to-b from-amber-50/20 dark:from-amber-950/20 to-white dark:to-slate-900"
+                : "border-gray-100 dark:border-slate-800 hover:border-emerald-200 dark:hover:border-emerald-800"
             }`}
           >
             <div>
               {/* Header: Title & Stock Status */}
               <div className="flex justify-between items-start gap-2.5">
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-bold text-base sm:text-lg text-slate-800 break-words leading-snug">
+                  <h3 className="font-bold text-base sm:text-lg text-slate-800 dark:text-white break-words leading-snug">
                     {k.productName}
                   </h3>
-                  <span className="inline-block text-[11px] sm:text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md mt-1 truncate max-w-full">
+                  <span className="inline-block text-[11px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md mt-1 truncate max-w-full">
                     {k.category || "Pantry"}
                   </span>
                 </div>
@@ -112,27 +112,27 @@ const ItemCard = ({
               </div>
 
               {/* Specs: Quantity & Storage Location */}
-              <div className="grid grid-cols-2 gap-2 sm:gap-3 py-2.5 sm:py-3 mt-2 text-xs sm:text-sm bg-slate-50/80 p-2.5 sm:p-3 rounded-xl border border-slate-100">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 py-2.5 sm:py-3 mt-2 text-xs sm:text-sm bg-slate-50/80 dark:bg-slate-800/60 p-2.5 sm:p-3 rounded-xl border border-slate-100 dark:border-slate-800">
                 <div className="min-w-0">
-                  <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">
+                  <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider truncate">
                     Quantity
                   </p>
                   <p
                     className={`font-bold mt-0.5 truncate ${
-                      isLowStock ? "text-amber-700" : "text-slate-800"
+                      isLowStock ? "text-amber-700 dark:text-amber-400" : "text-slate-800 dark:text-slate-200"
                     }`}
                   >
                     <span>{k.quantity} </span>
-                    <span className="text-[11px] sm:text-xs font-medium text-slate-500">{k.unit}</span>
+                    <span className="text-[11px] sm:text-xs font-medium text-slate-500 dark:text-slate-400">{k.unit}</span>
                   </p>
                 </div>
 
                 <div className="min-w-0">
-                  <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">
+                  <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider truncate">
                     Location
                   </p>
-                  <p className="flex items-center gap-1 font-semibold text-slate-700 mt-0.5 truncate">
-                    <IoLocationOutline className="text-emerald-600 text-sm shrink-0" />
+                  <p className="flex items-center gap-1 font-semibold text-slate-700 dark:text-slate-300 mt-0.5 truncate">
+                    <IoLocationOutline className="text-emerald-600 dark:text-emerald-400 text-sm shrink-0" />
                     <span className="truncate">{k.storageLocation || "Pantry"}</span>
                   </p>
                 </div>
@@ -140,16 +140,16 @@ const ItemCard = ({
 
               {/* Expiry Date */}
               <div className="pt-2.5 flex items-center justify-between text-xs">
-                <span className="text-slate-400 font-medium text-[11px] sm:text-xs">Expiry:</span>
+                <span className="text-slate-400 dark:text-slate-500 font-medium text-[11px] sm:text-xs">Expiry:</span>
                 <span
                   className={`flex items-center gap-1.5 font-semibold px-2 py-0.5 rounded-md text-[11px] sm:text-xs ${
                     expiringSoon
-                      ? "text-rose-700 bg-rose-50 border border-rose-200 animate-pulse"
-                      : "text-slate-700"
+                      ? "text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/60 animate-pulse"
+                      : "text-slate-700 dark:text-slate-300"
                   }`}
                 >
                   <FaRegCalendarCheck
-                    className={expiringSoon ? "text-rose-600 shrink-0" : "text-amber-600 shrink-0"}
+                    className={expiringSoon ? "text-rose-600 dark:text-rose-400 shrink-0" : "text-amber-600 dark:text-amber-400 shrink-0"}
                   />
                   <span className="truncate">{k.expiryDate || "No date set"}</span>
                 </span>
@@ -157,32 +157,32 @@ const ItemCard = ({
 
               {/* Notes */}
               {k.notes && (
-                <p className="text-[11px] sm:text-xs text-slate-500 mt-2 bg-slate-50 p-2 rounded-xl italic border border-slate-100 line-clamp-2">
+                <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-2 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-xl italic border border-slate-100 dark:border-slate-800 line-clamp-2">
                   "{k.notes}"
                 </p>
               )}
 
               {/* Low Stock / Out of Stock Refill Callout */}
               {isLowStock && onAddToShoppingList && (
-                <div className="mt-3.5 pt-3 border-t border-dashed border-amber-200/80 space-y-2 animate-fadeIn">
+                <div className="mt-3.5 pt-3 border-t border-dashed border-amber-200/80 dark:border-amber-900/60 space-y-2 animate-fadeIn">
                   <div className="flex items-center justify-between text-[11px]">
-                    <span className="font-semibold text-amber-800 flex items-center gap-1 truncate">
-                      <FiAlertCircle className="text-amber-600 text-xs shrink-0" />
+                    <span className="font-semibold text-amber-800 dark:text-amber-300 flex items-center gap-1 truncate">
+                      <FiAlertCircle className="text-amber-600 dark:text-amber-400 text-xs shrink-0" />
                       <span>{isOutOfStock ? "Out of stock!" : "Refill needed"}</span>
                     </span>
                     {isInShoppingList ? (
-                      <span className="text-emerald-700 font-bold flex items-center gap-1 shrink-0">
+                      <span className="text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 shrink-0">
                         <FiCheck className="text-xs stroke-3" /> In Market List
                       </span>
                     ) : (
-                      <span className="text-amber-600/90 font-medium shrink-0">Auto-add to cart</span>
+                      <span className="text-amber-600/90 dark:text-amber-400/90 font-medium shrink-0">Auto-add to cart</span>
                     )}
                   </div>
 
                   {isInShoppingList ? (
                     <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2">
-                      <div className="flex-1 py-2 px-2.5 rounded-xl bg-emerald-50 border border-emerald-200/90 text-emerald-800 flex items-center justify-center gap-1.5 text-xs font-bold shadow-2xs min-w-0">
-                        <FiCheckCircle className="text-emerald-600 text-sm shrink-0" />
+                      <div className="flex-1 py-2 px-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/90 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 flex items-center justify-center gap-1.5 text-xs font-bold shadow-2xs min-w-0">
+                        <FiCheckCircle className="text-emerald-600 dark:text-emerald-400 text-sm shrink-0" />
                         <span className="truncate">
                           In List ({targetCartItem?.neededQuantity} {targetCartItem?.unit})
                         </span>
@@ -202,8 +202,8 @@ const ItemCard = ({
                       onClick={() => handleAddToList(k, itemId)}
                       className={`w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 text-xs font-bold transition shadow-xs cursor-pointer active:scale-95 min-h-[40px] ${
                         addedIds[itemId]
-                          ? "bg-emerald-600 text-white shadow-emerald-200"
-                          : "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-amber-200/50 hover-lift"
+                          ? "bg-emerald-600 text-white shadow-emerald-200 dark:shadow-none"
+                          : "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-amber-200/50 dark:shadow-none hover-lift"
                       }`}
                     >
                       {addedIds[itemId] ? (
@@ -224,12 +224,12 @@ const ItemCard = ({
             </div>
 
             {/* Bottom Edit & Delete Actions */}
-            <div className="pt-3.5 mt-3 border-t border-gray-100 flex items-center gap-2">
+            <div className="pt-3.5 mt-3 border-t border-gray-100 dark:border-slate-800 flex items-center gap-2">
               {onEdit && (
                 <button
                   type="button"
                   onClick={() => onEdit(k)}
-                  className="flex-1 py-2 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1 text-blue-700 bg-blue-50 hover:bg-blue-100 font-semibold border border-blue-200/80 text-xs sm:text-sm cursor-pointer transition shadow-2xs hover-lift active:scale-95 min-h-[38px]"
+                  className="flex-1 py-2 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1 text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 dark:hover:bg-blue-900/60 font-semibold border border-blue-200/80 dark:border-blue-900/60 text-xs sm:text-sm cursor-pointer transition shadow-2xs hover-lift active:scale-95 min-h-[38px]"
                 >
                   <FiEdit3 className="text-sm shrink-0" />
                   <span>Edit</span>
@@ -239,7 +239,7 @@ const ItemCard = ({
                 <button
                   type="button"
                   onClick={() => onDelete(k)}
-                  className="flex-1 py-2 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1 text-rose-600 bg-rose-50 hover:bg-rose-100 font-semibold border border-rose-200/80 text-xs sm:text-sm cursor-pointer transition shadow-2xs hover-lift active:scale-95 min-h-[38px]"
+                  className="flex-1 py-2 px-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1 text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 dark:hover:bg-rose-900/60 font-semibold border border-rose-200/80 dark:border-rose-900/60 text-xs sm:text-sm cursor-pointer transition shadow-2xs hover-lift active:scale-95 min-h-[38px]"
                   title="Finish, consume, or remove from pantry"
                 >
                   <MdDeleteOutline className="text-base shrink-0" />

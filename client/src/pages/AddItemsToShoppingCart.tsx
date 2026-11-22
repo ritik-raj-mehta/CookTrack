@@ -511,18 +511,18 @@ const AddItemsToShoppingCart = () => {
   };
 
   return (
-    <div className="bg-gray-100 w-full min-h-screen">
+    <div className="bg-slate-50 dark:bg-slate-950 w-full min-h-screen transition-colors">
       {/* Top Header Bar */}
-      <div className="bg-white py-4 border-b border-black/10 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-slate-900 py-4 border-b border-gray-100 dark:border-slate-800 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-colors">
         <div className="flex gap-x-3.5 sm:gap-x-4 items-center">
-          <div className="bg-green-100 text-2xl p-2 sm:p-2.5 rounded-2xl text-green-700 shadow-2xs shrink-0">
+          <div className="bg-green-100 dark:bg-emerald-950/60 text-2xl p-2 sm:p-2.5 rounded-2xl text-green-700 dark:text-emerald-400 shadow-2xs shrink-0">
             <FaCartPlus />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-amber-950">
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-gray-900 dark:text-white">
               Market List
             </h1>
-            <p className="text-xs sm:text-sm font-medium opacity-80">
+            <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-slate-400">
               Manage items needed for {kitchenData?.kitchenName || "your kitchen"}'s market run
             </p>
           </div>
@@ -533,7 +533,7 @@ const AddItemsToShoppingCart = () => {
           <button
             type="button"
             onClick={handleDownloadPDF}
-            className="flex items-center justify-center gap-2 bg-white border border-gray-300 hover:border-gray-400 active:scale-95 text-gray-700 hover:text-black py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm shadow-2xs transition cursor-pointer"
+            className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 hover:border-gray-400 dark:hover:border-slate-600 active:scale-95 text-gray-700 dark:text-slate-200 hover:text-black dark:hover:text-white py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm shadow-2xs transition cursor-pointer"
             title="Download Market List as PDF"
           >
             <FaFilePdf className="text-red-500 text-base shrink-0" />
@@ -554,38 +554,38 @@ const AddItemsToShoppingCart = () => {
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6 pb-24 sm:pb-12">
         {/* Quick Stats Cards: 3-column compact grid, no clipped labels */}
         <div className="grid grid-cols-3 gap-2.5 sm:gap-4 lg:gap-5">
-          <div className="bg-white p-3 sm:p-4 lg:p-5 rounded-xl shadow-2xs border border-gray-100 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-900 p-3 sm:p-4 lg:p-5 rounded-xl shadow-2xs border border-gray-100 dark:border-slate-800 flex items-center justify-between transition-colors">
             <div className="min-w-0">
-              <p className="text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              <p className="text-[10px] sm:text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">
                 Total Items
               </p>
-              <h3 className="text-lg sm:text-2xl font-bold text-gray-800 mt-0.5 sm:mt-1">{totalCount}</h3>
+              <h3 className="text-lg sm:text-2xl font-bold text-gray-800 dark:text-white mt-0.5 sm:mt-1">{totalCount}</h3>
             </div>
-            <div className="bg-blue-50 text-blue-600 p-2 sm:p-2.5 lg:p-3 rounded-full text-base sm:text-lg lg:text-xl shrink-0">
+            <div className="bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 p-2 sm:p-2.5 lg:p-3 rounded-full text-base sm:text-lg lg:text-xl shrink-0">
               <FaCartPlus />
             </div>
           </div>
 
-          <div className="bg-white p-3 sm:p-4 lg:p-5 rounded-xl shadow-2xs border border-gray-100 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-900 p-3 sm:p-4 lg:p-5 rounded-xl shadow-2xs border border-gray-100 dark:border-slate-800 flex items-center justify-between transition-colors">
             <div className="min-w-0">
-              <p className="text-[10px] sm:text-xs font-semibold text-orange-600 uppercase tracking-wider">
+              <p className="text-[10px] sm:text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-wider">
                 To Buy
               </p>
-              <h3 className="text-lg sm:text-2xl font-bold text-orange-600 mt-0.5 sm:mt-1">{pendingCount}</h3>
+              <h3 className="text-lg sm:text-2xl font-bold text-orange-600 dark:text-orange-400 mt-0.5 sm:mt-1">{pendingCount}</h3>
             </div>
-            <div className="bg-orange-50 text-orange-600 p-2 sm:p-2.5 lg:p-3 rounded-full text-base sm:text-lg lg:text-xl shrink-0">
+            <div className="bg-orange-50 dark:bg-orange-950/50 text-orange-600 dark:text-orange-400 p-2 sm:p-2.5 lg:p-3 rounded-full text-base sm:text-lg lg:text-xl shrink-0">
               <FiCircle />
             </div>
           </div>
 
-          <div className="bg-white p-3 sm:p-4 lg:p-5 rounded-xl shadow-2xs border border-gray-100 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-900 p-3 sm:p-4 lg:p-5 rounded-xl shadow-2xs border border-gray-100 dark:border-slate-800 flex items-center justify-between transition-colors">
             <div className="min-w-0">
-              <p className="text-[10px] sm:text-xs font-semibold text-green-600 uppercase tracking-wider">
+              <p className="text-[10px] sm:text-xs font-semibold text-green-600 dark:text-emerald-400 uppercase tracking-wider">
                 Purchased
               </p>
-              <h3 className="text-lg sm:text-2xl font-bold text-green-600 mt-0.5 sm:mt-1">{boughtCount}</h3>
+              <h3 className="text-lg sm:text-2xl font-bold text-green-600 dark:text-emerald-400 mt-0.5 sm:mt-1">{boughtCount}</h3>
             </div>
-            <div className="bg-green-50 text-green-600 p-2 sm:p-2.5 lg:p-3 rounded-full text-base sm:text-lg lg:text-xl shrink-0">
+            <div className="bg-green-50 dark:bg-emerald-950/50 text-green-600 dark:text-emerald-400 p-2 sm:p-2.5 lg:p-3 rounded-full text-base sm:text-lg lg:text-xl shrink-0">
               <FiCheckCircle />
             </div>
           </div>
@@ -593,30 +593,30 @@ const AddItemsToShoppingCart = () => {
 
         {/* Add Item Form (Collapsible Card) */}
         {showAddForm && (
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200 transition-all">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-md border border-gray-200 dark:border-slate-800 transition-all">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h3 className="text-xl font-bold text-gray-800">Add New Market Item</h3>
-                <p className="text-xs text-gray-500">
+                <h3 className="text-xl font-bold text-gray-800 dark:text-white">Add New Market Item</h3>
+                <p className="text-xs text-gray-500 dark:text-slate-400">
                   Specify details about the item needed for the kitchen
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                className="text-gray-400 hover:text-gray-600 text-lg cursor-pointer"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 text-lg cursor-pointer"
               >
                 <FiX />
               </button>
             </div>
 
             {formSuccess && (
-              <div className="mb-4 bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-2.5 rounded-lg flex items-center justify-between">
+              <div className="mb-4 bg-green-50 dark:bg-emerald-950/40 border border-green-200 dark:border-emerald-900/60 text-green-700 dark:text-emerald-300 text-sm px-4 py-2.5 rounded-lg flex items-center justify-between">
                 <span>{formSuccess}</span>
                 <button
                   type="button"
                   onClick={() => setFormSuccess(null)}
-                  className="text-green-700 font-bold ml-2 cursor-pointer"
+                  className="text-green-700 dark:text-emerald-400 font-bold ml-2 cursor-pointer"
                 >
                   &times;
                 </button>
@@ -624,12 +624,12 @@ const AddItemsToShoppingCart = () => {
             )}
 
             {formError && (
-              <div className="mb-4 bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-2.5 rounded-lg flex items-center justify-between">
+              <div className="mb-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-2.5 rounded-lg flex items-center justify-between">
                 <span>{formError}</span>
                 <button
                   type="button"
                   onClick={() => setFormError(null)}
-                  className="text-red-600 font-bold ml-2 cursor-pointer"
+                  className="text-red-600 dark:text-red-400 font-bold ml-2 cursor-pointer"
                 >
                   &times;
                 </button>
@@ -639,7 +639,7 @@ const AddItemsToShoppingCart = () => {
             <form onSubmit={handleAddItemSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex flex-col space-y-1 md:col-span-1">
-                  <label className="text-sm font-semibold text-gray-700" htmlFor="name">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="name">
                     Product Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -647,7 +647,7 @@ const AddItemsToShoppingCart = () => {
                     id="name"
                     name="name"
                     required
-                    className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                     placeholder="e.g. Milk, Eggs, Flour"
                     onChange={handleInputChange}
                     value={formItem.name}
@@ -655,7 +655,7 @@ const AddItemsToShoppingCart = () => {
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold text-gray-700" htmlFor="neededQuantity">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="neededQuantity">
                     Needed Quantity
                   </label>
                   <input
@@ -663,7 +663,7 @@ const AddItemsToShoppingCart = () => {
                     id="neededQuantity"
                     name="neededQuantity"
                     min="1"
-                    className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                     placeholder="Quantity"
                     onChange={handleInputChange}
                     value={formItem.neededQuantity || ""}
@@ -671,13 +671,13 @@ const AddItemsToShoppingCart = () => {
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold text-gray-700" htmlFor="unit">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="unit">
                     Unit
                   </label>
                   <select
                     id="unit"
                     name="unit"
-                    className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                     onChange={handleInputChange}
                     value={formItem.unit}
                   >
@@ -695,14 +695,14 @@ const AddItemsToShoppingCart = () => {
               </div>
 
               <div className="flex flex-col space-y-1">
-                <label className="text-sm font-semibold text-gray-700" htmlFor="notes">
+                <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="notes">
                   Notes (Brand, preference, or store)
                 </label>
                 <textarea
                   id="notes"
                   name="notes"
                   rows={2}
-                  className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                  className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   placeholder="e.g. Whole milk only, organic if possible"
                   onChange={handleInputChange}
                   value={formItem.notes || ""}
@@ -720,7 +720,7 @@ const AddItemsToShoppingCart = () => {
                 <button
                   type="button"
                   onClick={() => setShowAddForm(false)}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold py-2 px-4 rounded-lg transition cursor-pointer"
+                  className="bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-300 text-sm font-semibold py-2 px-4 rounded-lg transition cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -730,28 +730,28 @@ const AddItemsToShoppingCart = () => {
         )}
 
         {/* Filter and Search Bar */}
-        <div className="bg-white p-3.5 sm:p-4 rounded-xl shadow-2xs border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4">
+        <div className="bg-white dark:bg-slate-900 p-3.5 sm:p-4 rounded-xl shadow-2xs border border-gray-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 transition-colors">
           {/* Search */}
           <div className="relative flex-1 w-full md:max-w-md">
-            <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-base pointer-events-none" />
+            <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 text-base pointer-events-none" />
             <input
               type="text"
               placeholder="Search shopping items..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-green-600 focus:bg-white transition"
+              className="w-full pl-10 pr-4 py-2.5 text-sm bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
             />
           </div>
 
           {/* Status Tabs */}
-          <div className="flex items-center bg-gray-100 p-1 rounded-xl w-full md:w-auto">
+          <div className="flex items-center bg-gray-100 dark:bg-slate-800 p-1 rounded-xl w-full md:w-auto transition-colors">
             <button
               type="button"
               onClick={() => setFilterStatus("all")}
               className={`flex-1 md:flex-initial text-center px-3 py-2 text-xs font-semibold rounded-lg transition active:scale-95 cursor-pointer ${
                 filterStatus === "all"
-                  ? "bg-white text-gray-800 shadow-2xs"
-                  : "text-gray-500 hover:text-gray-800"
+                  ? "bg-white dark:bg-slate-700 text-gray-800 dark:text-white shadow-2xs"
+                  : "text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-white"
               }`}
             >
               All ({totalCount})
@@ -761,8 +761,8 @@ const AddItemsToShoppingCart = () => {
               onClick={() => setFilterStatus("pending")}
               className={`flex-1 md:flex-initial text-center px-3 py-2 text-xs font-semibold rounded-lg transition active:scale-95 cursor-pointer ${
                 filterStatus === "pending"
-                  ? "bg-white text-orange-600 shadow-2xs"
-                  : "text-gray-500 hover:text-orange-600"
+                  ? "bg-white dark:bg-slate-700 text-orange-600 dark:text-orange-400 shadow-2xs"
+                  : "text-gray-500 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400"
               }`}
             >
               To Buy ({pendingCount})
@@ -772,8 +772,8 @@ const AddItemsToShoppingCart = () => {
               onClick={() => setFilterStatus("bought")}
               className={`flex-1 md:flex-initial text-center px-3 py-2 text-xs font-semibold rounded-lg transition active:scale-95 cursor-pointer ${
                 filterStatus === "bought"
-                  ? "bg-white text-green-600 shadow-2xs"
-                  : "text-gray-500 hover:text-green-600"
+                  ? "bg-white dark:bg-slate-700 text-green-600 dark:text-emerald-400 shadow-2xs"
+                  : "text-gray-500 dark:text-slate-400 hover:text-green-600 dark:hover:text-emerald-400"
               }`}
             >
               Purchased ({boughtCount})
@@ -782,18 +782,18 @@ const AddItemsToShoppingCart = () => {
         </div>
 
         {/* Shopping Items List */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden transition-colors">
           {filteredItems.length === 0 ? (
             <div className="text-center py-16 px-4">
-              <div className="bg-amber-50 text-amber-700 w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4">
+              <div className="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4">
                 <FaCartPlus />
               </div>
-              <h3 className="text-lg font-bold text-gray-800">
+              <h3 className="text-lg font-bold text-gray-800 dark:text-white">
                 {searchTerm || filterStatus !== "all"
                   ? "No matching market items found"
                   : "Your market list is empty"}
               </h3>
-              <p className="text-sm text-gray-500 max-w-sm mx-auto mt-1">
+              <p className="text-sm text-gray-500 dark:text-slate-400 max-w-sm mx-auto mt-1">
                 {searchTerm || filterStatus !== "all"
                   ? "Try adjusting your search terms or filter to see more items."
                   : "Keep track of groceries, pantry essentials, and kitchen ingredients you need to buy."}
@@ -809,12 +809,12 @@ const AddItemsToShoppingCart = () => {
               )}
             </div>
           ) : (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-gray-100 dark:divide-slate-800">
               {filteredItems.map((item) => (
                 <div
                   key={item._id}
-                  className={`p-3.5 sm:p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 transition hover:bg-gray-50 ${
-                    item.isBought ? "bg-gray-50/60 opacity-85" : "bg-white"
+                  className={`p-3.5 sm:p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 transition hover:bg-gray-50 dark:hover:bg-slate-800/60 ${
+                    item.isBought ? "bg-gray-50/60 dark:bg-slate-800/40 opacity-85" : "bg-white dark:bg-slate-900"
                   }`}
                 >
                   {/* Left: Checkbox & Name */}
@@ -824,13 +824,13 @@ const AddItemsToShoppingCart = () => {
                       onClick={() => handleToggleBought(item._id)}
                       className={`text-2xl transition p-1 rounded-full cursor-pointer shrink-0 active:scale-90 ${
                         item.isBought
-                          ? "text-green-600 hover:text-green-700"
-                          : "text-gray-300 hover:text-green-500"
+                          ? "text-green-600 dark:text-emerald-400 hover:text-green-700"
+                          : "text-gray-300 dark:text-slate-600 hover:text-green-500 dark:hover:text-emerald-400"
                       }`}
                       title={item.isBought ? "Mark as needed" : "Mark as bought"}
                     >
                       {item.isBought ? (
-                        <FiCheckCircle className="fill-green-100 text-green-600" />
+                        <FiCheckCircle className="fill-green-100 dark:fill-emerald-950/60 text-green-600 dark:text-emerald-400" />
                       ) : (
                         <FiCircle />
                       )}
@@ -841,26 +841,26 @@ const AddItemsToShoppingCart = () => {
                         <span
                           className={`font-semibold text-sm sm:text-base transition break-words ${
                             item.isBought
-                              ? "line-through text-gray-400"
-                              : "text-gray-900"
+                              ? "line-through text-gray-400 dark:text-slate-500"
+                              : "text-gray-900 dark:text-white"
                           }`}
                         >
                           {item.name}
                         </span>
 
                         {item.isBought ? (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-green-100 dark:bg-emerald-950/60 text-green-700 dark:text-emerald-400 px-2 py-0.5 rounded-full">
                             <FiCheck className="text-xs" /> Purchased
                           </span>
                         ) : (
-                          <span className="text-[11px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
+                          <span className="text-[11px] font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded-full">
                             To Buy
                           </span>
                         )}
                       </div>
 
                       {item.notes && (
-                        <p className="text-xs text-gray-500 mt-1 line-clamp-2 sm:truncate">
+                        <p className="text-xs text-gray-500 dark:text-slate-400 mt-1 line-clamp-2 sm:truncate">
                           Note: {item.notes}
                         </p>
                       )}
@@ -874,20 +874,20 @@ const AddItemsToShoppingCart = () => {
                       <button
                         type="button"
                         onClick={() => openRestockModal(item)}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 active:scale-95 border border-emerald-200/90 px-2.5 sm:px-3 py-1.5 rounded-xl transition shadow-2xs cursor-pointer hover-lift"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 active:scale-95 border border-emerald-200/90 dark:border-emerald-800/60 px-2.5 sm:px-3 py-1.5 rounded-xl transition shadow-2xs cursor-pointer hover-lift"
                         title="Add this purchased grocery into kitchen inventory"
                       >
-                        <FiBox className="text-sm text-emerald-600 shrink-0" />
+                        <FiBox className="text-sm text-emerald-600 dark:text-emerald-400 shrink-0" />
                         <span>Restock</span>
                         <span className="hidden xl:inline">to Pantry</span>
                       </button>
                     )}
 
-                    <div className="bg-amber-50 border border-amber-200/80 px-2.5 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-semibold text-amber-900 whitespace-nowrap">
+                    <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 px-2.5 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-semibold text-amber-900 dark:text-amber-300 whitespace-nowrap">
                       {item.neededQuantity} {item.unit}
                     </div>
 
-                    <div className="hidden lg:flex items-center gap-1 text-xs text-gray-400 whitespace-nowrap">
+                    <div className="hidden lg:flex items-center gap-1 text-xs text-gray-400 dark:text-slate-500 whitespace-nowrap">
                       <FiClock className="text-xs" />
                       <span>{formatDate(item.createdAt)}</span>
                     </div>
@@ -897,7 +897,7 @@ const AddItemsToShoppingCart = () => {
                       <button
                         type="button"
                         onClick={() => handleOpenEditModal(item)}
-                        className="text-gray-400 hover:text-blue-600 active:scale-90 p-2 rounded-xl hover:bg-blue-50 transition cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+                        className="text-gray-400 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 active:scale-90 p-2 rounded-xl hover:bg-blue-50 dark:hover:bg-slate-800 transition cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
                         title="Edit shopping item"
                       >
                         <FiEdit3 className="text-base" />
@@ -907,7 +907,7 @@ const AddItemsToShoppingCart = () => {
                       <button
                         type="button"
                         onClick={() => handleDeleteItem(item._id, item.name)}
-                        className="text-gray-400 hover:text-red-500 active:scale-90 p-2 rounded-xl hover:bg-red-50 transition cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+                        className="text-gray-400 hover:text-red-500 dark:text-slate-400 dark:hover:text-red-400 active:scale-90 p-2 rounded-xl hover:bg-red-50 dark:hover:bg-slate-800 transition cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
                         title="Delete item"
                       >
                         <FiTrash2 className="text-base" />
@@ -924,26 +924,26 @@ const AddItemsToShoppingCart = () => {
       {/* Restock to Pantry Modal */}
       {restockModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-7 shadow-2xl border border-gray-100 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-5 sm:p-7 shadow-2xl border border-gray-100 dark:border-slate-800 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto my-auto overscroll-contain transition-colors">
             {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-gray-100 pb-4">
+            <div className="flex items-start justify-between border-b border-gray-100 dark:border-slate-800 pb-4">
               <div className="flex items-center gap-3">
-                <div className="bg-emerald-100 text-emerald-700 p-2.5 rounded-xl text-xl shadow-xs">
+                <div className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 p-2.5 rounded-xl text-xl shadow-xs">
                   <FiBox />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold font-serif text-gray-900 tracking-tight">
+                  <h3 className="text-xl font-bold font-serif text-gray-900 dark:text-white tracking-tight">
                     Add Back to Pantry?
                   </h3>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    Stock <span className="font-semibold text-gray-800">"{restockModal.productName}"</span> into your kitchen inventory
+                  <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
+                    Stock <span className="font-semibold text-gray-800 dark:text-slate-200">"{restockModal.productName}"</span> into your kitchen inventory
                   </p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setRestockModal((prev) => ({ ...prev, isOpen: false }))}
-                className="text-gray-400 hover:text-gray-600 text-xl cursor-pointer p-1 rounded-lg hover:bg-gray-100 transition"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 text-xl cursor-pointer p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition"
                 title="Close"
               >
                 <FiX />
@@ -955,22 +955,22 @@ const AddItemsToShoppingCart = () => {
               {/* Product Name & Category */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div className="flex flex-col space-y-1">
-                  <label className="text-xs font-semibold text-gray-700">Product Name</label>
+                  <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">Product Name</label>
                   <input
                     type="text"
                     required
                     value={restockModal.productName}
                     onChange={(e) => setRestockModal((p) => ({ ...p, productName: e.target.value }))}
-                    className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   />
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-xs font-semibold text-gray-700">Category</label>
+                  <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">Category</label>
                   <select
                     value={restockModal.category}
                     onChange={(e) => setRestockModal((p) => ({ ...p, category: e.target.value }))}
-                    className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   >
                     <option value="Fruits & Vegetable">Fruits & Vegetable</option>
                     <option value="Dairy & Eggs">Dairy & Eggs</option>
@@ -989,23 +989,23 @@ const AddItemsToShoppingCart = () => {
               {/* Quantity, Unit & Storage Location */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="flex flex-col space-y-1">
-                  <label className="text-xs font-semibold text-gray-700">Quantity</label>
+                  <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">Quantity</label>
                   <input
                     type="number"
                     min="1"
                     required
                     value={restockModal.quantity}
                     onChange={(e) => setRestockModal((p) => ({ ...p, quantity: Number(e.target.value) || 1 }))}
-                    className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   />
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-xs font-semibold text-gray-700">Unit</label>
+                  <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">Unit</label>
                   <select
                     value={restockModal.unit}
                     onChange={(e) => setRestockModal((p) => ({ ...p, unit: e.target.value }))}
-                    className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   >
                     <option value="Pieces">Pieces</option>
                     <option value="kg">kg</option>
@@ -1020,11 +1020,11 @@ const AddItemsToShoppingCart = () => {
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-xs font-semibold text-gray-700">Location</label>
+                  <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">Location</label>
                   <select
                     value={restockModal.storageLocation}
                     onChange={(e) => setRestockModal((p) => ({ ...p, storageLocation: e.target.value }))}
-                    className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   >
                     <option value="Pantry">Pantry</option>
                     <option value="Refrigerator">Refrigerator</option>
@@ -1034,13 +1034,13 @@ const AddItemsToShoppingCart = () => {
               </div>
 
               {/* Expiry Date Section with Presets */}
-              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-100 space-y-2.5">
+              <div className="bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-gray-800 flex items-center gap-1.5">
-                    <FiCalendar className="text-emerald-600" />
+                  <label className="text-xs font-bold text-gray-800 dark:text-slate-200 flex items-center gap-1.5">
+                    <FiCalendar className="text-emerald-600 dark:text-emerald-400" />
                     Expiry Date
                   </label>
-                  <span className="text-[11px] text-gray-400">Quick presets:</span>
+                  <span className="text-[11px] text-gray-400 dark:text-slate-500">Quick presets:</span>
                 </div>
 
                 {/* Quick preset buttons */}
@@ -1055,7 +1055,7 @@ const AddItemsToShoppingCart = () => {
                       key={preset.label}
                       type="button"
                       onClick={() => setRestockModal((p) => ({ ...p, expiryDate: getFutureDate(preset.days) }))}
-                      className="py-1 px-2 text-xs font-semibold rounded-lg bg-white hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 text-gray-700 hover:text-emerald-800 transition shadow-2xs cursor-pointer"
+                      className="py-1 px-2 text-xs font-semibold rounded-lg bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-slate-600 border border-gray-200 dark:border-slate-600 hover:border-emerald-300 text-gray-700 dark:text-slate-200 hover:text-emerald-800 dark:hover:text-emerald-400 transition shadow-2xs cursor-pointer"
                     >
                       {preset.label}
                     </button>
@@ -1067,24 +1067,24 @@ const AddItemsToShoppingCart = () => {
                   required
                   value={restockModal.expiryDate}
                   onChange={(e) => setRestockModal((p) => ({ ...p, expiryDate: e.target.value }))}
-                  className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-emerald-600 transition"
+                  className="w-full bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 transition"
                 />
               </div>
 
               {/* Notes (Optional) */}
               <div className="flex flex-col space-y-1">
-                <label className="text-xs font-semibold text-gray-700">Notes (Optional)</label>
+                <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">Notes (Optional)</label>
                 <input
                   type="text"
                   value={restockModal.notes}
                   placeholder="e.g. Crisp and fresh, stored in veggie bin"
                   onChange={(e) => setRestockModal((p) => ({ ...p, notes: e.target.value }))}
-                  className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-emerald-600 focus:bg-white transition"
+                  className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 transition"
                 />
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
+              <div className="pt-3 border-t border-gray-100 dark:border-slate-800 flex flex-col gap-2">
                 <button
                   type="button"
                   disabled={isRestocking}
@@ -1100,14 +1100,14 @@ const AddItemsToShoppingCart = () => {
                     type="button"
                     disabled={isRestocking}
                     onClick={() => handleRestockSubmit(false)}
-                    className="py-2 px-3 rounded-xl text-emerald-800 bg-emerald-50 hover:bg-emerald-100 font-semibold text-xs border border-emerald-200 transition cursor-pointer disabled:opacity-50"
+                    className="py-2 px-3 rounded-xl text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 font-semibold text-xs border border-emerald-200 dark:border-emerald-800/60 transition cursor-pointer disabled:opacity-50"
                   >
                     Add to Pantry & Keep in List
                   </button>
                   <button
                     type="button"
                     onClick={() => setRestockModal((prev) => ({ ...prev, isOpen: false }))}
-                    className="py-2 px-3 rounded-xl text-gray-600 bg-gray-100 hover:bg-gray-200 font-semibold text-xs transition cursor-pointer"
+                    className="py-2 px-3 rounded-xl text-gray-600 dark:text-slate-300 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 font-semibold text-xs transition cursor-pointer"
                   >
                     Skip (Just Mark as Bought)
                   </button>
@@ -1120,18 +1120,18 @@ const AddItemsToShoppingCart = () => {
       {/* Edit Shopping Item Modal */}
       {editModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-md w-full p-5 sm:p-7 shadow-2xl border border-gray-100 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto my-auto overscroll-contain">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-5 sm:p-7 shadow-2xl border border-gray-100 dark:border-slate-800 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto my-auto overscroll-contain transition-colors">
             {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-gray-100 pb-4">
+            <div className="flex items-start justify-between border-b border-gray-100 dark:border-slate-800 pb-4">
               <div className="flex items-center gap-3">
-                <div className="bg-blue-100 text-blue-700 p-2.5 rounded-xl text-xl shadow-xs">
+                <div className="bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 p-2.5 rounded-xl text-xl shadow-xs">
                   <FiEdit3 />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold font-serif text-gray-900 tracking-tight">
+                  <h3 className="text-xl font-bold font-serif text-gray-900 dark:text-white tracking-tight">
                     Edit Market Item
                   </h3>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
                     Update item details in your market list
                   </p>
                 </div>
@@ -1139,7 +1139,7 @@ const AddItemsToShoppingCart = () => {
               <button
                 type="button"
                 onClick={() => setEditModal((prev) => ({ ...prev, isOpen: false }))}
-                className="text-gray-400 hover:text-gray-600 text-xl cursor-pointer p-1 rounded-lg hover:bg-gray-100 transition"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 text-xl cursor-pointer p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition"
                 title="Close"
               >
                 <FiX />
@@ -1147,7 +1147,7 @@ const AddItemsToShoppingCart = () => {
             </div>
 
             {editItemError && (
-              <div className="bg-red-50 border border-red-200 text-red-600 text-xs px-3.5 py-2.5 rounded-xl">
+              <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 text-xs px-3.5 py-2.5 rounded-xl">
                 {editItemError}
               </div>
             )}
@@ -1155,7 +1155,7 @@ const AddItemsToShoppingCart = () => {
             {/* Modal Form */}
             <form onSubmit={handleSaveEditItem} className="space-y-4">
               <div className="flex flex-col space-y-1">
-                <label className="text-xs font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">
                   Product Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -1163,30 +1163,30 @@ const AddItemsToShoppingCart = () => {
                   required
                   value={editModal.name}
                   onChange={(e) => setEditModal((p) => ({ ...p, name: e.target.value }))}
-                  className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-600 focus:bg-white transition"
+                  className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   placeholder="e.g. Milk, Olive Oil"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col space-y-1">
-                  <label className="text-xs font-semibold text-gray-700">Needed Quantity</label>
+                  <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">Needed Quantity</label>
                   <input
                     type="number"
                     min="1"
                     required
                     value={editModal.neededQuantity}
                     onChange={(e) => setEditModal((p) => ({ ...p, neededQuantity: Number(e.target.value) || 1 }))}
-                    className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   />
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-xs font-semibold text-gray-700">Unit</label>
+                  <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">Unit</label>
                   <select
                     value={editModal.unit}
                     onChange={(e) => setEditModal((p) => ({ ...p, unit: e.target.value }))}
-                    className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   >
                     <option value="Pieces">Pieces</option>
                     <option value="kg">kg</option>
@@ -1202,22 +1202,22 @@ const AddItemsToShoppingCart = () => {
               </div>
 
               <div className="flex flex-col space-y-1">
-                <label className="text-xs font-semibold text-gray-700">Notes (Optional)</label>
+                <label className="text-xs font-semibold text-gray-700 dark:text-slate-300">Notes (Optional)</label>
                 <textarea
                   rows={2}
                   value={editModal.notes}
                   onChange={(e) => setEditModal((p) => ({ ...p, notes: e.target.value }))}
-                  className="bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-600 focus:bg-white transition"
+                  className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-xl px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   placeholder="e.g. Brand, store, or special instructions"
                 />
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-2.5">
+              <div className="pt-3 border-t border-gray-100 dark:border-slate-800 flex items-center justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setEditModal((prev) => ({ ...prev, isOpen: false }))}
-                  className="py-2.5 px-4 rounded-xl text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 font-semibold text-xs sm:text-sm transition cursor-pointer"
+                  className="py-2.5 px-4 rounded-xl text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 font-semibold text-xs sm:text-sm transition cursor-pointer"
                 >
                   Cancel
                 </button>

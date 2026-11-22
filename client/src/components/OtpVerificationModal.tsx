@@ -126,31 +126,31 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-gray-100 space-y-6">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-gray-100 dark:border-slate-800 space-y-6 transition-colors">
         {/* Header Icon */}
         <div className="text-center">
-          <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-3xl mx-auto shadow-sm">
+          <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 rounded-2xl flex items-center justify-center text-3xl mx-auto shadow-sm">
             <FiMail />
           </div>
-          <h3 className="text-2xl font-bold font-serif text-gray-900 mt-4">
+          <h3 className="text-2xl font-bold font-serif text-gray-900 dark:text-white mt-4">
             Verify Your Email
           </h3>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1 leading-relaxed">
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-slate-400 mt-1 leading-relaxed">
             We've sent a 6-digit confirmation code to:
             <br />
-            <strong className="text-gray-900 font-semibold">{email}</strong>
+            <strong className="text-gray-900 dark:text-emerald-400 font-semibold">{email}</strong>
           </p>
         </div>
 
         {/* Direct verification auto-fill: strictly local and only for Admin */}
         {showAdminAutoFill && (
-          <div className="bg-amber-50/90 border border-amber-200/90 p-4 rounded-2xl text-center space-y-2 animate-fadeIn shadow-xs">
-            <div className="flex items-center justify-center gap-1.5 text-amber-900 text-xs font-bold uppercase tracking-wider">
+          <div className="bg-amber-50/90 dark:bg-amber-950/40 border border-amber-200/90 dark:border-amber-800 p-4 rounded-2xl text-center space-y-2 animate-fadeIn shadow-xs">
+            <div className="flex items-center justify-center gap-1.5 text-amber-900 dark:text-amber-300 text-xs font-bold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
               <span>Admin Local Direct Access</span>
             </div>
             <div className="flex items-center justify-center gap-2.5 pt-1">
-              <span className="font-mono text-2xl font-black tracking-widest text-emerald-800 bg-white px-4 py-1.5 rounded-xl border border-amber-300 shadow-inner">
+              <span className="font-mono text-2xl font-black tracking-widest text-emerald-800 dark:text-emerald-300 bg-white dark:bg-slate-800 px-4 py-1.5 rounded-xl border border-amber-300 dark:border-amber-700 shadow-inner">
                 {currentDevOtp}
               </span>
               <button
@@ -167,7 +167,7 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
                 Auto-fill Code
               </button>
             </div>
-            <p className="text-[11px] text-amber-800/90 leading-tight">
+            <p className="text-[11px] text-amber-800/90 dark:text-amber-300/80 leading-tight">
               {currentWarning || "Local Development Mode: Auto-fill active exclusively for Administrator."}
             </p>
           </div>
@@ -175,23 +175,23 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
 
         {/* Feedback Messages */}
         {localError && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm p-3 rounded-xl text-center font-medium animate-fadeIn">
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 text-xs sm:text-sm p-3 rounded-xl text-center font-medium animate-fadeIn">
             {localError}
           </div>
         )}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm p-3 rounded-xl text-center font-medium animate-fadeIn">
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 text-xs sm:text-sm p-3 rounded-xl text-center font-medium animate-fadeIn">
             {error}
           </div>
         )}
         {resendSuccess && (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm p-3 rounded-xl text-center font-medium flex items-center justify-center gap-1.5 animate-fadeIn">
-            <FiCheck className="text-emerald-600" />
+          <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-xs sm:text-sm p-3 rounded-xl text-center font-medium flex items-center justify-center gap-1.5 animate-fadeIn">
+            <FiCheck className="text-emerald-600 dark:text-emerald-400" />
             <span>{resendSuccess}</span>
           </div>
         )}
         {message && !resendSuccess && (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm p-3 rounded-xl text-center font-medium animate-fadeIn">
+          <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 text-xs sm:text-sm p-3 rounded-xl text-center font-medium animate-fadeIn">
             {message}
           </div>
         )}
@@ -209,7 +209,7 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
                 value={digit}
                 onChange={(e) => handleOtpChange(idx, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(idx, e)}
-                className="w-11 h-13 sm:w-12 sm:h-14 text-center text-xl sm:text-2xl font-bold bg-gray-50 border-2 border-gray-200 rounded-xl outline-none focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 transition"
+                className="w-11 h-13 sm:w-12 sm:h-14 text-center text-xl sm:text-2xl font-bold bg-gray-50 dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-xl outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-emerald-500/20 transition"
               />
             ))}
           </div>
@@ -224,11 +224,11 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
         </form>
 
         {/* Resend and Back actions */}
-        <div className="space-y-3 pt-2 text-center border-t border-gray-100">
-          <p className="text-xs text-gray-500">
+        <div className="space-y-3 pt-2 text-center border-t border-gray-100 dark:border-slate-800">
+          <p className="text-xs text-gray-500 dark:text-slate-400">
             Didn't receive the email?{" "}
             {resendCooldown > 0 ? (
-              <span className="font-semibold text-gray-700">
+              <span className="font-semibold text-gray-700 dark:text-slate-300">
                 Resend in {resendCooldown}s
               </span>
             ) : (
@@ -236,7 +236,7 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
                 type="button"
                 onClick={handleResend}
                 disabled={loading}
-                className="font-bold text-emerald-600 hover:text-emerald-700 hover:underline cursor-pointer inline-flex items-center gap-1"
+                className="font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline cursor-pointer inline-flex items-center gap-1"
               >
                 <FiRefreshCw className="text-xs" /> Resend Code
               </button>
@@ -246,7 +246,7 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
           <button
             type="button"
             onClick={onBack}
-            className="text-xs text-gray-400 hover:text-gray-700 transition flex items-center justify-center gap-1 mx-auto cursor-pointer font-medium"
+            className="text-xs text-gray-400 dark:text-slate-500 hover:text-gray-700 dark:hover:text-slate-300 transition flex items-center justify-center gap-1 mx-auto cursor-pointer font-medium"
           >
             <FiArrowLeft /> Back to Signup Form
           </button>

@@ -46,6 +46,7 @@ import {
   FiUserCheck,
   FiLayers,
 } from "react-icons/fi";
+import ThemeToggle from "../../components/ThemeToggle";
 
 const SuperAdminDashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -231,6 +232,8 @@ const SuperAdminDashboard = () => {
 
         {/* User Info & Quick Links */}
         <div className="flex items-center gap-3">
+          <ThemeToggle />
+
           <div className="text-right hidden md:block">
             <p className="text-xs font-semibold text-white">{user?.username || "Ritik Mehta"}</p>
             <p className="text-[11px] font-mono text-amber-400/90">{user?.email || "Super Administrator"}</p>

@@ -70,7 +70,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50/40 via-white to-slate-50 overflow-x-hidden w-full max-w-full text-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-emerald-50/40 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-x-hidden w-full max-w-full text-gray-800 dark:text-slate-100 transition-colors duration-250">
       {/* ----------------- SECTION 1: HEADER & HERO ----------------- */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-20">
         <Header />
@@ -79,44 +79,44 @@ const Home = () => {
           {/* Left Column: Hero Copy & CTA */}
           <div className="lg:col-span-7 space-y-6 sm:space-y-8 animate-fadeIn">
             {/* Tagline Badge */}
-            <div className="inline-flex items-center gap-2 bg-emerald-100/80 border border-emerald-200/90 text-emerald-800 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-xs">
+            <div className="inline-flex items-center gap-2 bg-emerald-100/80 dark:bg-emerald-950/70 border border-emerald-200/90 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-xs">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span>Collaborative Kitchen & Pantry System</span>
             </div>
 
             {/* Headline */}
             <div className="space-y-3 sm:space-y-4">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.12]">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-[1.12]">
                 Your Kitchen,{" "}
                 <span className="bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 bg-clip-text text-transparent">
                   Organized
                 </span>
                 <br />
-                <span className="text-2xl sm:text-4xl lg:text-5xl font-bold text-gray-800">
+                <span className="text-2xl sm:text-4xl lg:text-5xl font-bold text-gray-800 dark:text-slate-200">
                   Zero Waste. Shared Effort.
                 </span>
               </h1>
-              <p className="text-sm sm:text-lg text-gray-600 max-w-xl font-normal leading-relaxed pt-1">
+              <p className="text-sm sm:text-lg text-gray-600 dark:text-slate-300 max-w-xl font-normal leading-relaxed pt-1">
                 Track pantry supplies across <strong>Fridge, Freezer, and Pantry</strong> zones.
                 Collaborate on a real-time grocery list with family, get automated expiry radar alerts, and export PDF shopping checklists in 1 click.
               </p>
             </div>
 
             {/* Impact Metrics Ribbon */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 grid grid-cols-3 gap-2 sm:gap-4 w-full">
-              <div className="text-center border-r border-gray-100 last:border-0 pr-2">
-                <p className="text-xl sm:text-3xl font-black text-emerald-600">40%</p>
-                <p className="text-[11px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wider mt-0.5">Less Waste</p>
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-4 sm:p-5 grid grid-cols-3 gap-2 sm:gap-4 w-full">
+              <div className="text-center border-r border-gray-100 dark:border-slate-800 last:border-0 pr-2">
+                <p className="text-xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400">40%</p>
+                <p className="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 font-semibold uppercase tracking-wider mt-0.5">Less Waste</p>
               </div>
 
-              <div className="text-center border-r border-gray-100 last:border-0 px-2">
-                <p className="text-xl sm:text-3xl font-black text-emerald-600">2.5x</p>
-                <p className="text-[11px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wider mt-0.5">Faster Shopping</p>
+              <div className="text-center border-r border-gray-100 dark:border-slate-800 last:border-0 px-2">
+                <p className="text-xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400">2.5x</p>
+                <p className="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 font-semibold uppercase tracking-wider mt-0.5">Faster Shopping</p>
               </div>
 
               <div className="text-center pl-2">
-                <p className="text-xl sm:text-3xl font-black text-emerald-600">₹4.8k+</p>
-                <p className="text-[11px] sm:text-xs text-gray-500 font-semibold uppercase tracking-wider mt-0.5">Saved Monthly</p>
+                <p className="text-xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400">₹4.8k+</p>
+                <p className="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 font-semibold uppercase tracking-wider mt-0.5">Saved Monthly</p>
               </div>
             </div>
 
@@ -132,9 +132,9 @@ const Home = () => {
                 </Link>
                 <Link
                   to="/kitchenitems"
-                  className="flex items-center justify-center gap-2 bg-white hover:bg-emerald-50 active:scale-95 border border-emerald-300 text-emerald-900 font-bold py-3.5 px-6 rounded-xl shadow-xs hover:shadow-md transition-all duration-300 w-full sm:w-auto text-sm sm:text-base"
+                  className="flex items-center justify-center gap-2 bg-white dark:bg-slate-900 hover:bg-emerald-50 dark:hover:bg-slate-800 active:scale-95 border border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-300 font-bold py-3.5 px-6 rounded-xl shadow-xs hover:shadow-md transition-all duration-300 w-full sm:w-auto text-sm sm:text-base"
                 >
-                  <FiCodesandbox className="text-emerald-600 text-lg" />
+                  <FiCodesandbox className="text-emerald-600 dark:text-emerald-400 text-lg" />
                   <span>View Pantry Inventory</span>
                 </Link>
               </div>
@@ -149,43 +149,43 @@ const Home = () => {
                 </Link>
                 <Link
                   to="/registertokitchen"
-                  className="flex items-center justify-center gap-2 bg-white hover:bg-amber-50 active:scale-95 border border-amber-300 text-amber-900 font-bold py-3.5 px-6 rounded-xl shadow-xs hover:shadow-md transition-all duration-300 w-full sm:w-auto text-sm sm:text-base"
+                  className="flex items-center justify-center gap-2 bg-white dark:bg-slate-900 hover:bg-amber-50 dark:hover:bg-slate-800 active:scale-95 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-300 font-bold py-3.5 px-6 rounded-xl shadow-xs hover:shadow-md transition-all duration-300 w-full sm:w-auto text-sm sm:text-base"
                 >
-                  <FaPeopleGroup className="text-amber-600 text-lg" />
+                  <FaPeopleGroup className="text-amber-600 dark:text-amber-400 text-lg" />
                   <span>Join with Invite Code</span>
                 </Link>
               </div>
             )}
 
             {/* Quick Capability Highlights */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4 border-t border-gray-100">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4 border-t border-gray-100 dark:border-slate-800">
               <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 text-center sm:text-left">
-                <div className="bg-emerald-100 text-emerald-700 text-sm sm:text-base p-2 rounded-xl shrink-0">
+                <div className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-sm sm:text-base p-2 rounded-xl shrink-0">
                   <FiCodesandbox />
                 </div>
                 <div>
-                  <p className="text-xs sm:text-sm font-bold text-gray-800 leading-tight">Pantry Radar</p>
-                  <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">Fridge, Freezer, Shelf</p>
+                  <p className="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 leading-tight">Pantry Radar</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 hidden sm:block">Fridge, Freezer, Shelf</p>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 text-center sm:text-left">
-                <div className="bg-amber-100 text-amber-700 text-sm sm:text-base p-2 rounded-xl shrink-0">
+                <div className="bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 text-sm sm:text-base p-2 rounded-xl shrink-0">
                   <FiShoppingCart />
                 </div>
                 <div>
-                  <p className="text-xs sm:text-sm font-bold text-gray-800 leading-tight">Shared Cart</p>
-                  <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">1-Click PDF Export</p>
+                  <p className="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 leading-tight">Shared Cart</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 hidden sm:block">1-Click PDF Export</p>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5 text-center sm:text-left">
-                <div className="bg-teal-100 text-teal-700 text-sm sm:text-base p-2 rounded-xl shrink-0">
+                <div className="bg-teal-100 dark:bg-teal-950/60 text-teal-700 dark:text-teal-400 text-sm sm:text-base p-2 rounded-xl shrink-0">
                   <FiActivity />
                 </div>
                 <div>
-                  <p className="text-xs sm:text-sm font-bold text-gray-800 leading-tight">Waste Analytics</p>
-                  <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">₹ Saved & Eco-Score</p>
+                  <p className="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 leading-tight">Waste Analytics</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 hidden sm:block">₹ Saved & Eco-Score</p>
                 </div>
               </div>
             </div>
@@ -195,10 +195,10 @@ const Home = () => {
           <div className="lg:col-span-5 relative w-full pt-4 lg:pt-0">
             <div className="relative mx-auto max-w-lg lg:max-w-none">
               {/* Soft glow background */}
-              <div className="absolute -inset-2 bg-gradient-to-tr from-emerald-400/30 to-green-300/20 rounded-3xl blur-2xl pointer-events-none"></div>
+              <div className="absolute -inset-2 bg-gradient-to-tr from-emerald-400/30 to-green-300/20 dark:from-emerald-500/10 dark:to-teal-500/10 rounded-3xl blur-2xl pointer-events-none"></div>
 
               {/* Main Simulated Kitchen Card */}
-              <div className="relative bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+              <div className="relative bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-gray-100 dark:border-slate-800 overflow-hidden transition-colors">
                 {/* Header ribbon */}
                 <div className="bg-gradient-to-r from-emerald-700 to-green-600 px-5 py-4 text-white flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
@@ -218,63 +218,63 @@ const Home = () => {
                 {/* Simulated Real-Time Inventory Items */}
                 <div className="p-4 sm:p-5 space-y-3">
                   {/* Item 1: Milk (Expiring Alert) */}
-                  <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-3 flex items-center justify-between gap-3 hover:shadow-xs transition">
+                  <div className="bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/60 rounded-2xl p-3 flex items-center justify-between gap-3 hover:shadow-xs transition">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center font-bold text-lg shrink-0">
                         🥛
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-bold text-gray-900 truncate">Organic Whole Milk</p>
-                        <p className="text-xs text-amber-800 font-semibold flex items-center gap-1 mt-0.5">
+                        <p className="text-sm font-bold text-gray-900 dark:text-white truncate">Organic Whole Milk</p>
+                        <p className="text-xs text-amber-800 dark:text-amber-400 font-semibold flex items-center gap-1 mt-0.5">
                           <FiClock className="shrink-0" />
                           <span>Expires in 2 days (Fridge)</span>
                         </p>
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="text-xs font-bold text-gray-900 bg-white px-2.5 py-1 rounded-lg border border-amber-200 shadow-xs">
+                      <span className="text-xs font-bold text-gray-900 dark:text-slate-200 bg-white dark:bg-slate-800 px-2.5 py-1 rounded-lg border border-amber-200 dark:border-amber-900/60 shadow-xs">
                         1 liter
                       </span>
                     </div>
                   </div>
 
                   {/* Item 2: Basmati Rice (In Stock) */}
-                  <div className="bg-emerald-50/60 border border-emerald-200/80 rounded-2xl p-3 flex items-center justify-between gap-3 hover:shadow-xs transition">
+                  <div className="bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/60 rounded-2xl p-3 flex items-center justify-between gap-3 hover:shadow-xs transition">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold text-lg shrink-0">
                         🍚
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-bold text-gray-900 truncate">Royal Basmati Rice</p>
-                        <p className="text-xs text-emerald-700 font-medium flex items-center gap-1 mt-0.5">
+                        <p className="text-sm font-bold text-gray-900 dark:text-white truncate">Royal Basmati Rice</p>
+                        <p className="text-xs text-emerald-700 dark:text-emerald-400 font-medium flex items-center gap-1 mt-0.5">
                           <FiCheckCircle className="shrink-0" />
                           <span>Pantry Shelf • Well Stocked</span>
                         </p>
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-300/60">
+                      <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 px-2.5 py-1 rounded-lg border border-emerald-300/60 dark:border-emerald-800">
                         10 kg
                       </span>
                     </div>
                   </div>
 
                   {/* Item 3: Vine Tomatoes (Low Stock) */}
-                  <div className="bg-red-50/50 border border-red-200/70 rounded-2xl p-3 flex items-center justify-between gap-3 hover:shadow-xs transition">
+                  <div className="bg-red-50/50 dark:bg-red-950/30 border border-red-200/70 dark:border-red-900/60 rounded-2xl p-3 flex items-center justify-between gap-3 hover:shadow-xs transition">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center font-bold text-lg shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-lg shrink-0">
                         🍅
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-bold text-gray-900 truncate">Vine Tomatoes</p>
-                        <p className="text-xs text-red-700 font-semibold flex items-center gap-1 mt-0.5">
+                        <p className="text-sm font-bold text-gray-900 dark:text-white truncate">Vine Tomatoes</p>
+                        <p className="text-xs text-red-700 dark:text-red-400 font-semibold flex items-center gap-1 mt-0.5">
                           <FiAlertTriangle className="shrink-0" />
                           <span>Low Stock • Auto-added to Cart</span>
                         </p>
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="text-xs font-bold text-red-800 bg-red-100 px-2.5 py-1 rounded-lg border border-red-200">
+                      <span className="text-xs font-bold text-red-800 dark:text-red-400 bg-red-100 dark:bg-red-950/80 px-2.5 py-1 rounded-lg border border-red-200 dark:border-red-900/60">
                         0.5 kg
                       </span>
                     </div>
@@ -282,12 +282,12 @@ const Home = () => {
                 </div>
 
                 {/* Card Footer with Quick Feature Status */}
-                <div className="bg-gray-50 border-t border-gray-100 px-5 py-3 flex items-center justify-between text-xs text-gray-600">
-                  <div className="flex items-center gap-1.5 text-emerald-700 font-semibold">
+                <div className="bg-gray-50 dark:bg-slate-800/80 border-t border-gray-100 dark:border-slate-800 px-5 py-3 flex items-center justify-between text-xs text-gray-600 dark:text-slate-400">
+                  <div className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-semibold">
                     <FaLeaf />
                     <span>Eco-Score: Grade A</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-gray-500 font-medium">
+                  <div className="flex items-center gap-1.5 text-gray-500 dark:text-slate-400 font-medium">
                     <FaFilePdf className="text-red-500" />
                     <span>PDF Shopping List Ready</span>
                   </div>
@@ -295,13 +295,13 @@ const Home = () => {
               </div>
 
               {/* Floating Badge: Live Sync */}
-              <div className="absolute -bottom-4 -left-3 sm:-left-6 bg-white p-3 rounded-2xl shadow-lg border border-gray-100 flex items-center gap-2.5 animate-bounce [animation-duration:3s]">
+              <div className="absolute -bottom-4 -left-3 sm:-left-6 bg-white dark:bg-slate-900 p-3 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-800 flex items-center gap-2.5 animate-bounce [animation-duration:3s]">
                 <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-sm font-bold">
                   ✓
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-gray-900 leading-tight">Live Family Sync</p>
-                  <p className="text-[10px] text-gray-500">Shared across 3 members</p>
+                  <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight">Live Family Sync</p>
+                  <p className="text-[10px] text-gray-500 dark:text-slate-400">Shared across 3 members</p>
                 </div>
               </div>
             </div>
@@ -310,67 +310,67 @@ const Home = () => {
       </div>
 
       {/* ----------------- SECTION 2: HOW IT WORKS (3 STEPS) ----------------- */}
-      <section className="bg-slate-50 py-16 sm:py-24 border-y border-gray-100">
+      <section className="bg-slate-50 dark:bg-slate-900/50 py-16 sm:py-24 border-y border-gray-100 dark:border-slate-800 transition-colors">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto space-y-3 mb-12 sm:mb-16">
-            <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest bg-emerald-100/70 px-3 py-1 rounded-full">
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-widest bg-emerald-100/70 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800 px-3 py-1 rounded-full">
               Seamless Workflow
             </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">
               How CookTrack Simplifies Your Kitchen
             </h2>
-            <p className="text-sm sm:text-base text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-slate-300">
               Three simple steps that replace messy notes, forgotten groceries, and wasted food forever.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {/* Step 1 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative space-y-4">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 dark:border-slate-800 hover:shadow-md transition-all relative space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-green-500 text-white flex items-center justify-center text-xl font-bold shadow-xs">
                 1
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                 Organize Your Pantry
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
                 Log items with custom units (kg, L, pieces, cans) and assign them to dedicated storage zones: <strong>Fridge, Freezer, or Pantry</strong> with quick expiry dates.
               </p>
-              <div className="pt-2 text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+              <div className="pt-2 text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
                 <span>Multi-Category Sorting</span>
                 <span>→</span>
               </div>
             </div>
 
             {/* Step 2 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative space-y-4">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 dark:border-slate-800 hover:shadow-md transition-all relative space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center text-xl font-bold shadow-xs">
                 2
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                 Smart Expiry Radar
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
                 Dynamic badges alert you when items are <strong>In Stock</strong>, running <strong>Low Stock</strong>, or <strong>Expiring Soon</strong> so you cook them before they spoil.
               </p>
-              <div className="pt-2 text-xs font-bold text-amber-700 flex items-center gap-1.5">
+              <div className="pt-2 text-xs font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
                 <span>Zero Waste Alerts</span>
                 <span>→</span>
               </div>
             </div>
 
             {/* Step 3 */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative space-y-4">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 dark:border-slate-800 hover:shadow-md transition-all relative space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-teal-600 to-emerald-500 text-white flex items-center justify-center text-xl font-bold shadow-xs">
                 3
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                 Shared Cart & Restock
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
                 Collaborate on a live shopping cart with family, download a printable <strong>PDF shopping list</strong>, and 1-tap restock purchased items directly into your pantry.
               </p>
-              <div className="pt-2 text-xs font-bold text-teal-700 flex items-center gap-1.5">
+              <div className="pt-2 text-xs font-bold text-teal-700 dark:text-teal-400 flex items-center gap-1.5">
                 <span>1-Click Restock Prompt</span>
                 <span>→</span>
               </div>
@@ -380,16 +380,16 @@ const Home = () => {
       </section>
 
       {/* ----------------- SECTION 3: INTERACTIVE FEATURE SHOWCASE ----------------- */}
-      <section className="py-16 sm:py-24 bg-white">
+      <section className="py-16 sm:py-24 bg-white dark:bg-slate-950 transition-colors">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto space-y-3 mb-10 sm:mb-14">
-            <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest bg-emerald-100/70 px-3 py-1 rounded-full">
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-widest bg-emerald-100/70 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800 px-3 py-1 rounded-full">
               Full Feature Tour
             </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">
               Built Specifically for Your Real Kitchen Needs
             </h2>
-            <p className="text-sm sm:text-base text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-slate-400">
               Explore the core modules built into CookTrack. Click any tab below to inspect features.
             </p>
           </div>
@@ -401,7 +401,7 @@ const Home = () => {
               onClick={() => setActiveTab("pantry")}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${activeTab === "pantry"
                 ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
+                : "bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200/80 dark:hover:bg-slate-700"
                 }`}
             >
               <FiCodesandbox />
@@ -413,7 +413,7 @@ const Home = () => {
               onClick={() => setActiveTab("shopping")}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${activeTab === "shopping"
                 ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
+                : "bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200/80 dark:hover:bg-slate-700"
                 }`}
             >
               <FiShoppingCart />
@@ -425,7 +425,7 @@ const Home = () => {
               onClick={() => setActiveTab("insights")}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${activeTab === "insights"
                 ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
+                : "bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200/80 dark:hover:bg-slate-700"
                 }`}
             >
               <FiActivity />
@@ -437,7 +437,7 @@ const Home = () => {
               onClick={() => setActiveTab("crew")}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${activeTab === "crew"
                 ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200/80"
+                : "bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200/80 dark:hover:bg-slate-700"
                 }`}
             >
               <FaPeopleGroup />
@@ -446,51 +446,51 @@ const Home = () => {
           </div>
 
           {/* Tab Content Display Card */}
-          <div className="bg-slate-50 border border-gray-200/80 rounded-3xl p-6 sm:p-10 shadow-sm animate-fadeIn">
+          <div className="bg-slate-50 dark:bg-slate-900 border border-gray-200/80 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-sm animate-fadeIn transition-colors">
             {/* TAB 1: PANTRY INVENTORY */}
             {activeTab === "pantry" && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div className="lg:col-span-6 space-y-4">
-                  <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
+                  <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800 px-3 py-1 rounded-full">
                     <span>Smart Inventory Management</span>
                   </div>
-                  <h3 className="text-xl sm:text-3xl font-extrabold text-gray-900">
+                  <h3 className="text-xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
                     Comprehensive Stock Tracking Across All Storage Zones
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-slate-300 leading-relaxed">
                     Easily categorize items across 10 culinary groups (Produce, Dairy, Meat, Pantry, Baking, Beverages). Filter by custom units (kg, grams, liters, ml, cups, pieces) and instantly search by product title.
                   </p>
-                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
+                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700 dark:text-slate-300">
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>Zone Categorization:</strong> Refrigerator, Freezer, and Pantry Shelves.</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>Stock Badges:</strong> Green (In Stock), Red (Low Stock), Gray (Out of Stock).</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>Edit & Notes Modal:</strong> Fast inline updates for quantities and brand notes.</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="lg:col-span-6 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 space-y-3">
-                  <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-                    <span className="text-xs font-bold text-gray-800 uppercase tracking-wider">Live Inventory Snapshot</span>
-                    <span className="text-xs text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded-lg">Real-Time Search & Filters</span>
+                <div className="lg:col-span-6 bg-white dark:bg-slate-850 p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 space-y-3 bg-white dark:bg-slate-900">
+                  <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-slate-800">
+                    <span className="text-xs font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">Live Inventory Snapshot</span>
+                    <span className="text-xs text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-800 px-2.5 py-1 rounded-lg">Real-Time Search & Filters</span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                    <div className="p-3 rounded-xl border border-gray-100 bg-gray-50/50">
-                      <p className="font-bold text-gray-900 text-sm">Farm Eggs</p>
-                      <p className="text-gray-500 mt-0.5">Fridge • 12 Pieces</p>
-                      <span className="inline-block mt-2 bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]">In Stock</span>
+                    <div className="p-3 rounded-xl border border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/60">
+                      <p className="font-bold text-gray-900 dark:text-white text-sm">Farm Eggs</p>
+                      <p className="text-gray-500 dark:text-slate-400 mt-0.5">Fridge • 12 Pieces</p>
+                      <span className="inline-block mt-2 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-bold px-2 py-0.5 rounded text-[10px]">In Stock</span>
                     </div>
-                    <div className="p-3 rounded-xl border border-amber-200 bg-amber-50/40">
-                      <p className="font-bold text-gray-900 text-sm">Greek Yogurt</p>
-                      <p className="text-gray-500 mt-0.5">Fridge • 1 cup</p>
-                      <span className="inline-block mt-2 bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded text-[10px]">Expires Tomorrow</span>
+                    <div className="p-3 rounded-xl border border-amber-200 dark:border-amber-900/60 bg-amber-50/40 dark:bg-amber-950/30">
+                      <p className="font-bold text-gray-900 dark:text-white text-sm">Greek Yogurt</p>
+                      <p className="text-gray-500 dark:text-slate-400 mt-0.5">Fridge • 1 cup</p>
+                      <span className="inline-block mt-2 bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 font-bold px-2 py-0.5 rounded text-[10px]">Expires Tomorrow</span>
                     </div>
                   </div>
                 </div>
@@ -501,53 +501,53 @@ const Home = () => {
             {activeTab === "shopping" && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div className="lg:col-span-6 space-y-4">
-                  <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full">
+                  <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 border border-amber-200/60 dark:border-amber-800 px-3 py-1 rounded-full">
                     <span>Collaborative Grocery List</span>
                   </div>
-                  <h3 className="text-xl sm:text-3xl font-extrabold text-gray-900">
+                  <h3 className="text-xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
                     Real-Time Shared Cart with 1-Click PDF Export
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-slate-300 leading-relaxed">
                     Never buy duplicates again. All members of your kitchen share a live shopping cart. When anyone buys an item, a prompt lets them transfer it straight into the kitchen pantry with 1 tap.
                   </p>
-                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
+                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700 dark:text-slate-300">
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>Printable PDF Export:</strong> Download high-quality, formatted checklists for grocery trips.</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>1-Tap Restock Modal:</strong> Marked an item as bought? It immediately offers to restock your pantry.</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>Quick Filters:</strong> View All, Pending purchases, or Completed purchases.</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="lg:col-span-6 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 space-y-3">
-                  <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-                    <span className="text-xs font-bold text-gray-800 uppercase tracking-wider">Shopping List Sample</span>
-                    <span className="flex items-center gap-1 text-xs font-bold text-red-600 bg-red-50 px-2.5 py-1 rounded-lg">
+                <div className="lg:col-span-6 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 space-y-3">
+                  <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-slate-800">
+                    <span className="text-xs font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">Shopping List Sample</span>
+                    <span className="flex items-center gap-1 text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/60 px-2.5 py-1 rounded-lg">
                       <FaFilePdf /> Export PDF Available
                     </span>
                   </div>
                   <div className="space-y-2 text-xs">
-                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 dark:bg-slate-800/70 border border-gray-100 dark:border-slate-800">
                       <div className="flex items-center gap-2">
-                        <span className="w-4 h-4 rounded border border-gray-400 flex items-center justify-center"></span>
-                        <span className="font-semibold text-gray-800">Brown Bread (2 packages)</span>
+                        <span className="w-4 h-4 rounded border border-gray-400 dark:border-slate-500 flex items-center justify-center"></span>
+                        <span className="font-semibold text-gray-800 dark:text-slate-200">Brown Bread (2 packages)</span>
                       </div>
-                      <span className="text-[11px] text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded">Pending</span>
+                      <span className="text-[11px] text-amber-700 dark:text-amber-400 font-bold bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded">Pending</span>
                     </div>
 
-                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-50/50 border border-emerald-100">
-                      <div className="flex items-center gap-2 line-through text-gray-400">
+                    <div className="flex items-center justify-between p-2.5 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/60">
+                      <div className="flex items-center gap-2 line-through text-gray-400 dark:text-slate-500">
                         <span className="w-4 h-4 rounded bg-emerald-600 text-white flex items-center justify-center text-[10px]">✓</span>
-                        <span>Olive Oil (1 bottle)</span>
+                        <span className="text-gray-500 dark:text-slate-400">Olive Oil (1 bottle)</span>
                       </div>
-                      <span className="text-[11px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">Bought → Restocked</span>
+                      <span className="text-[11px] text-emerald-700 dark:text-emerald-300 font-bold bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded">Bought → Restocked</span>
                     </div>
                   </div>
                 </div>
@@ -558,46 +558,46 @@ const Home = () => {
             {activeTab === "insights" && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div className="lg:col-span-6 space-y-4">
-                  <div className="inline-flex items-center gap-2 text-xs font-bold text-teal-800 bg-teal-100 px-3 py-1 rounded-full">
+                  <div className="inline-flex items-center gap-2 text-xs font-bold text-teal-800 dark:text-teal-300 bg-teal-100 dark:bg-teal-950/60 border border-teal-200/60 dark:border-teal-800 px-3 py-1 rounded-full">
                     <span>Waste & Savings Intelligence</span>
                   </div>
-                  <h3 className="text-xl sm:text-3xl font-extrabold text-gray-900">
+                  <h3 className="text-xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
                     Executive 2x2 KPI Grid & 6-Month Usage Trends
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-slate-300 leading-relaxed">
                     Gain deep visibility into food consumption habits. Track monetary savings in Rupees (₹), monitor food items diverted from the bin, and evaluate your kitchen's overall Eco-Score rating.
                   </p>
-                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
+                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700 dark:text-slate-300">
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>₹ Savings Tracker:</strong> Quantify the actual financial impact of zero food waste.</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>Monthly Trend Chart:</strong> Compare consumed vs. wasted supplies across 6 months.</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>Consumption Radial Gauge:</strong> Visual percentage of inventory consumed fresh.</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="lg:col-span-6 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 space-y-3">
+                <div className="lg:col-span-6 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 space-y-3">
                   <div className="grid grid-cols-2 gap-3 text-center">
-                    <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-xl">
-                      <p className="text-xs text-emerald-800 font-semibold uppercase tracking-wider">Money Saved</p>
-                      <p className="text-2xl font-black text-emerald-700 mt-1">₹4,850</p>
+                    <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/60 p-3 rounded-xl">
+                      <p className="text-xs text-emerald-800 dark:text-emerald-300 font-semibold uppercase tracking-wider">Money Saved</p>
+                      <p className="text-2xl font-black text-emerald-700 dark:text-emerald-400 mt-1">₹4,850</p>
                     </div>
-                    <div className="bg-teal-50 border border-teal-100 p-3 rounded-xl">
-                      <p className="text-xs text-teal-800 font-semibold uppercase tracking-wider">Eco-Score</p>
-                      <p className="text-2xl font-black text-teal-700 mt-1">Grade A</p>
+                    <div className="bg-teal-50 dark:bg-teal-950/40 border border-teal-100 dark:border-teal-900/60 p-3 rounded-xl">
+                      <p className="text-xs text-teal-800 dark:text-teal-300 font-semibold uppercase tracking-wider">Eco-Score</p>
+                      <p className="text-2xl font-black text-teal-700 dark:text-teal-400 mt-1">Grade A</p>
                     </div>
                   </div>
-                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 text-xs text-gray-600 text-center">
-                    <p className="font-semibold text-gray-800">89% Consumed Ratio</p>
-                    <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden mt-1.5">
-                      <div className="bg-emerald-600 h-full rounded-full" style={{ width: "89%" }}></div>
+                  <div className="p-3 bg-gray-50 dark:bg-slate-800/70 rounded-xl border border-gray-100 dark:border-slate-800 text-xs text-gray-600 dark:text-slate-400 text-center">
+                    <p className="font-semibold text-gray-800 dark:text-slate-200">89% Consumed Ratio</p>
+                    <div className="w-full bg-gray-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden mt-1.5">
+                      <div className="bg-emerald-600 dark:bg-emerald-500 h-full rounded-full" style={{ width: "89%" }}></div>
                     </div>
                   </div>
                 </div>
@@ -608,62 +608,62 @@ const Home = () => {
             {activeTab === "crew" && (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div className="lg:col-span-6 space-y-4">
-                  <div className="inline-flex items-center gap-2 text-xs font-bold text-blue-800 bg-blue-100 px-3 py-1 rounded-full">
+                  <div className="inline-flex items-center gap-2 text-xs font-bold text-blue-800 dark:text-blue-300 bg-blue-100 dark:bg-blue-950/60 border border-blue-200/60 dark:border-blue-800 px-3 py-1 rounded-full">
                     <span>Collaborative Kitchen Access</span>
                   </div>
-                  <h3 className="text-xl sm:text-3xl font-extrabold text-gray-900">
+                  <h3 className="text-xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
                     Shared Kitchen Invite Codes with Strict Safeguards
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-slate-300 leading-relaxed">
                     Managing a family kitchen or living in a shared apartment? Share your unique 6-character kitchen invite code. Assign KitchenAdmin privileges, view active crew members, and safeguard kitchen security with password + phone verification.
                   </p>
-                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
+                  <ul className="space-y-2 text-xs sm:text-sm text-gray-700 dark:text-slate-300">
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>1-Click Invite Code Copy:</strong> Easily copy and share your kitchen code with roommates.</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>Role Hierarchy:</strong> Seamlessly promote trusted members to KitchenAdmin.</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <FaCheck className="text-emerald-600 shrink-0" />
+                      <FaCheck className="text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span><strong>Security Safeguards:</strong> Removing members or deleting kitchens requires dual authentication.</span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="lg:col-span-6 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 space-y-3">
-                  <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl flex items-center justify-between">
+                <div className="lg:col-span-6 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 space-y-3">
+                  <div className="p-3 bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 rounded-xl flex items-center justify-between">
                     <div>
-                      <p className="text-xs font-bold text-emerald-900">Kitchen Invite Code</p>
-                      <p className="text-lg font-mono font-black tracking-widest text-emerald-800">CT-8492</p>
+                      <p className="text-xs font-bold text-emerald-900 dark:text-emerald-300">Kitchen Invite Code</p>
+                      <p className="text-lg font-mono font-black tracking-widest text-emerald-800 dark:text-emerald-400">CT-8492</p>
                     </div>
                     <span className="text-xs font-bold bg-emerald-600 text-white px-3 py-1.5 rounded-lg shadow-xs">
                       1-Click Copy
                     </span>
                   </div>
                   <div className="space-y-2 text-xs">
-                    <div className="flex items-center justify-between p-2.5 rounded-xl border border-gray-100 bg-gray-50/50">
+                    <div className="flex items-center justify-between p-2.5 rounded-xl border border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/60">
                       <div className="flex items-center gap-2.5">
                         <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold">R</div>
                         <div>
-                          <p className="font-bold text-gray-900">Chef Ritik</p>
-                          <p className="text-[10px] text-gray-500">ritik@cooktrack.app</p>
+                          <p className="font-bold text-gray-900 dark:text-white">Chef Ritik</p>
+                          <p className="text-[10px] text-gray-500 dark:text-slate-400">ritik@cooktrack.app</p>
                         </div>
                       </div>
-                      <span className="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]">KitchenAdmin</span>
+                      <span className="bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-bold px-2 py-0.5 rounded text-[10px]">KitchenAdmin</span>
                     </div>
 
-                    <div className="flex items-center justify-between p-2.5 rounded-xl border border-gray-100 bg-gray-50/50">
+                    <div className="flex items-center justify-between p-2.5 rounded-xl border border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/60">
                       <div className="flex items-center gap-2.5">
                         <div className="w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">A</div>
                         <div>
-                          <p className="font-bold text-gray-900">Alex Sharma</p>
-                          <p className="text-[10px] text-gray-500">alex@cooktrack.app</p>
+                          <p className="font-bold text-gray-900 dark:text-white">Alex Sharma</p>
+                          <p className="text-[10px] text-gray-500 dark:text-slate-400">alex@cooktrack.app</p>
                         </div>
                       </div>
-                      <span className="bg-gray-200 text-gray-700 font-bold px-2 py-0.5 rounded text-[10px]">Member</span>
+                      <span className="bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 font-bold px-2 py-0.5 rounded text-[10px]">Member</span>
                     </div>
                   </div>
                 </div>
@@ -756,16 +756,16 @@ const Home = () => {
       </section>
 
       {/* ----------------- SECTION 5: FREQUENTLY ASKED QUESTIONS (FAQ) ----------------- */}
-      <section className="py-16 sm:py-24 bg-white border-b border-gray-100">
+      <section className="py-16 sm:py-24 bg-white dark:bg-slate-950 border-b border-gray-100 dark:border-slate-800 transition-colors">
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto space-y-3 mb-10 sm:mb-14">
-            <span className="text-xs font-bold text-emerald-700 uppercase tracking-widest bg-emerald-100/70 px-3 py-1 rounded-full">
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-widest bg-emerald-100/70 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800 px-3 py-1 rounded-full">
               Got Questions?
             </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900 dark:text-white">
               Frequently Asked Questions
             </h2>
-            <p className="text-sm sm:text-base text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600 dark:text-slate-400">
               Everything you need to know about setting up your smart kitchen with CookTrack.
             </p>
           </div>
@@ -774,22 +774,22 @@ const Home = () => {
             {faqs.map((faq, idx) => (
               <div
                 key={idx}
-                className="border border-gray-200 rounded-2xl overflow-hidden transition-all bg-slate-50/50"
+                className="border border-gray-200 dark:border-slate-800 rounded-2xl overflow-hidden transition-all bg-slate-50/50 dark:bg-slate-900/60"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full text-left p-4 sm:p-5 font-bold text-sm sm:text-base text-gray-900 flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-100/60 transition"
+                  className="w-full text-left p-4 sm:p-5 font-bold text-sm sm:text-base text-gray-900 dark:text-white flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition"
                 >
                   <span>{faq.q}</span>
                   <FiChevronDown
-                    className={`text-lg text-emerald-600 shrink-0 transition-transform duration-200 ${openFaq === idx ? "rotate-180" : ""
+                    className={`text-lg text-emerald-600 dark:text-emerald-400 shrink-0 transition-transform duration-200 ${openFaq === idx ? "rotate-180" : ""
                       }`}
                   />
                 </button>
 
                 {openFaq === idx && (
-                  <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-gray-600 leading-relaxed border-t border-gray-100 pt-3 animate-fadeIn">
+                  <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-gray-600 dark:text-slate-300 leading-relaxed border-t border-gray-100 dark:border-slate-800 pt-3 animate-fadeIn">
                     {faq.a}
                   </div>
                 )}
@@ -800,7 +800,7 @@ const Home = () => {
       </section>
 
       {/* ----------------- SECTION 6: HIGH-IMPACT BOTTOM CTA BANNER ----------------- */}
-      <section className="py-12 sm:py-20 bg-slate-50">
+      <section className="py-12 sm:py-20 bg-slate-50 dark:bg-slate-900/50 transition-colors">
         <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-emerald-800 via-green-700 to-emerald-900 text-white rounded-3xl p-8 sm:p-14 shadow-xl text-center space-y-6 relative overflow-hidden">
             {/* Ambient decorative blobs */}
@@ -842,68 +842,68 @@ const Home = () => {
       </section>
 
       {/* ----------------- SECTION 7: MODERN COMPREHENSIVE FOOTER ----------------- */}
-      <footer className="bg-white border-t border-gray-200 py-12 sm:py-16 text-gray-600 text-xs sm:text-sm">
+      <footer className="bg-white dark:bg-slate-950 border-t border-gray-200 dark:border-slate-800 py-12 sm:py-16 text-gray-600 dark:text-slate-400 text-xs sm:text-sm transition-colors">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-gray-100">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-gray-100 dark:border-slate-800">
             {/* Col 1: Brand & Description */}
             <div className="md:col-span-5 space-y-3">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-emerald-600 to-green-500 text-white flex items-center justify-center text-lg shadow-sm">
                   <LuChefHat />
                 </div>
-                <span className="font-serif font-black text-2xl text-gray-900 tracking-tight">
+                <span className="font-serif font-black text-2xl text-gray-900 dark:text-white tracking-tight">
                   CookTrack
                 </span>
               </div>
-              <p className="text-gray-500 text-xs sm:text-sm max-w-sm leading-relaxed">
+              <p className="text-gray-500 dark:text-slate-400 text-xs sm:text-sm max-w-sm leading-relaxed">
                 Smart Kitchen & Pantry Management System built on MERN with real-time expiration tracking, collaborative grocery shopping, and zero food waste analytics.
               </p>
-              <div className="flex items-center gap-2 text-[11px] text-gray-400 pt-1 font-mono">
+              <div className="flex items-center gap-2 text-[11px] text-gray-400 dark:text-slate-500 pt-1 font-mono">
                 <span>React 19</span> • <span>Node.js</span> • <span>MongoDB</span> • <span>Tailwind v4</span>
               </div>
             </div>
 
             {/* Col 2: Navigation Links */}
             <div className="md:col-span-3 space-y-2.5">
-              <p className="font-bold text-gray-900 text-xs uppercase tracking-wider">Kitchen Modules</p>
+              <p className="font-bold text-gray-900 dark:text-white text-xs uppercase tracking-wider">Kitchen Modules</p>
               <ul className="space-y-1.5 text-xs sm:text-sm">
                 <li>
-                  <Link to="/kitchenitems" className="hover:text-emerald-600 transition">Pantry Inventory</Link>
+                  <Link to="/kitchenitems" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Pantry Inventory</Link>
                 </li>
                 <li>
-                  <Link to="/additemstoshoppingcart" className="hover:text-emerald-600 transition">Shopping List & PDF</Link>
+                  <Link to="/additemstoshoppingcart" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Shopping List & PDF</Link>
                 </li>
                 <li>
-                  <Link to="/dashboard" className="hover:text-emerald-600 transition">Kitchen Hub Dashboard</Link>
+                  <Link to="/dashboard" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Kitchen Hub Dashboard</Link>
                 </li>
                 <li>
-                  <Link to="/kitchenmembers" className="hover:text-emerald-600 transition">Crew Management</Link>
+                  <Link to="/kitchenmembers" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Crew Management</Link>
                 </li>
               </ul>
             </div>
 
             {/* Col 3: Authentication & Quick Access */}
             <div className="md:col-span-4 space-y-2.5">
-              <p className="font-bold text-gray-900 text-xs uppercase tracking-wider">Get Started</p>
+              <p className="font-bold text-gray-900 dark:text-white text-xs uppercase tracking-wider">Get Started</p>
               <ul className="space-y-1.5 text-xs sm:text-sm">
                 <li>
-                  <Link to="/signup" className="hover:text-emerald-600 transition">Create New Kitchen (Admin)</Link>
+                  <Link to="/signup" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Create New Kitchen (Admin)</Link>
                 </li>
                 <li>
-                  <Link to="/registertokitchen" className="hover:text-emerald-600 transition">Join Kitchen (Invite Code)</Link>
+                  <Link to="/registertokitchen" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Join Kitchen (Invite Code)</Link>
                 </li>
                 <li>
-                  <Link to="/signin" className="hover:text-emerald-600 transition">Sign In to Your Account</Link>
+                  <Link to="/signin" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Sign In to Your Account</Link>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400 dark:text-slate-500">
             <p>© {new Date().getFullYear()} CookTrack MERN. All rights reserved.</p>
             <p className="flex items-center gap-1.5">
               <span>Designed with</span>
-              <span className="text-emerald-600 font-bold">♥</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold">♥</span>
               <span>for smart, sustainable kitchens</span>
             </p>
           </div>

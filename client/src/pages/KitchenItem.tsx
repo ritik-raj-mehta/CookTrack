@@ -189,18 +189,18 @@ const KitchenItem = () => {
   });
 
   return (
-    <div className="w-full max-w-full bg-slate-50 min-h-screen relative overflow-x-hidden">
+    <div className="w-full max-w-full bg-slate-50 dark:bg-slate-950 min-h-screen relative overflow-x-hidden transition-colors">
       {/* HEADER */}
-      <div className="bg-white py-3 sm:py-4 border-b border-gray-100 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+      <div className="bg-white dark:bg-slate-900 py-3 sm:py-4 border-b border-gray-100 dark:border-slate-800 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 transition-colors">
         <div className="flex gap-2.5 sm:gap-3 items-center min-w-0">
-          <div className="bg-emerald-100 text-xl sm:text-2xl p-2 sm:p-2.5 rounded-xl text-emerald-800 shrink-0">
+          <div className="bg-emerald-100 dark:bg-emerald-950/60 text-xl sm:text-2xl p-2 sm:p-2.5 rounded-xl text-emerald-800 dark:text-emerald-400 shrink-0">
             <FiCodesandbox />
           </div>
           <div className="min-w-0">
-            <h1 className="text-xl sm:text-3xl font-serif font-bold text-gray-900 tracking-tight truncate">
+            <h1 className="text-xl sm:text-3xl font-serif font-bold text-gray-900 dark:text-white tracking-tight truncate">
               Pantry Inventory
             </h1>
-            <p className="text-xs sm:text-sm font-medium text-gray-500">
+            <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-slate-400">
               Items in Pantry ({filteredItems.length})
             </p>
           </div>
@@ -216,19 +216,19 @@ const KitchenItem = () => {
 
       <div className="px-3 sm:px-6 lg:px-8 py-2">
         {/* FILTER BOX */}
-        <div className="bg-white my-3 sm:my-6 font-semibold p-3.5 sm:p-6 rounded-2xl space-y-3 sm:space-y-4 shadow-2xs border border-gray-100">
-          <div className="flex items-center space-x-2 text-slate-800">
-            <CiFilter className="text-xl sm:text-2xl text-emerald-600" />
+        <div className="bg-white dark:bg-slate-900 my-3 sm:my-6 font-semibold p-3.5 sm:p-6 rounded-2xl space-y-3 sm:space-y-4 shadow-2xs border border-gray-100 dark:border-slate-800 transition-colors">
+          <div className="flex items-center space-x-2 text-slate-800 dark:text-slate-200">
+            <CiFilter className="text-xl sm:text-2xl text-emerald-600 dark:text-emerald-400" />
             <h3 className="text-base sm:text-lg font-bold">Filter & Search</h3>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-2.5 sm:gap-4">
             {/* Search */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 sm:py-2.5 flex items-center space-x-2 flex-1 focus-within:border-emerald-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-emerald-600 transition">
-              <CiSearch className="text-lg sm:text-xl text-gray-500 shrink-0" />
+            <div className="bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 sm:py-2.5 flex items-center space-x-2 flex-1 focus-within:border-emerald-600 focus-within:bg-white dark:focus-within:bg-slate-800 focus-within:ring-1 focus-within:ring-emerald-600 transition">
+              <CiSearch className="text-lg sm:text-xl text-gray-500 dark:text-slate-400 shrink-0" />
               <input
                 type="text"
-                className="outline-none w-full bg-transparent text-xs sm:text-sm font-normal text-gray-800 placeholder-gray-400"
+                className="outline-none w-full bg-transparent text-xs sm:text-sm font-normal text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-slate-500"
                 placeholder="Search by product name or category..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -238,7 +238,7 @@ const KitchenItem = () => {
             <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-3">
               {/* Category Filter */}
               <select
-                className="bg-gray-50 border border-gray-200 rounded-xl px-2.5 sm:px-3 py-2 text-xs sm:text-sm outline-none focus:border-emerald-600 focus:bg-white transition text-gray-700 font-medium truncate"
+                className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-2.5 sm:px-3 py-2 text-xs sm:text-sm outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 transition text-gray-700 dark:text-slate-200 font-medium truncate"
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
               >
@@ -257,7 +257,7 @@ const KitchenItem = () => {
 
               {/* Unit Filter */}
               <select
-                className="bg-gray-50 border border-gray-200 rounded-xl px-2.5 sm:px-3 py-2 text-xs sm:text-sm outline-none focus:border-emerald-600 focus:bg-white transition text-gray-700 font-medium truncate"
+                className="bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-2.5 sm:px-3 py-2 text-xs sm:text-sm outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-slate-800 transition text-gray-700 dark:text-slate-200 font-medium truncate"
                 value={unitFilter}
                 onChange={(e) => setUnitFilter(e.target.value)}
               >
@@ -291,8 +291,8 @@ const KitchenItem = () => {
           )}
 
           {filteredItems.length === 0 ? (
-            <div className="bg-white p-12 text-center rounded-xl shadow-sm text-slate-500">
-              <p className="text-lg font-medium">No items found</p>
+            <div className="bg-white dark:bg-slate-900 p-12 text-center rounded-xl shadow-sm text-slate-500 dark:text-slate-400 border border-gray-100 dark:border-slate-800 transition-colors">
+              <p className="text-lg font-medium text-gray-800 dark:text-white">No items found</p>
               <p className="text-sm mt-1">
                 Try adjusting your filters or search term, or add new items to your kitchen.
               </p>
@@ -319,29 +319,29 @@ const KitchenItem = () => {
       {/* ========================================================================= */}
       {itemToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-fadeIn overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 sm:space-y-5 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto">
-            <div className="flex justify-between items-center border-b border-gray-100 pb-3">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 sm:space-y-5 border border-gray-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto my-auto transition-colors">
+            <div className="flex justify-between items-center border-b border-gray-100 dark:border-slate-800 pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl shadow-xs">
+                <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 rounded-xl flex items-center justify-center text-xl shadow-xs">
                   🍽️
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">Finish or Remove Item</h3>
-                  <p className="text-xs text-gray-500">Track food usage for kitchen insights</p>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">Finish or Remove Item</h3>
+                  <p className="text-xs text-gray-500 dark:text-slate-400">Track food usage for kitchen insights</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setItemToDelete(null)}
-                className="text-gray-400 hover:text-gray-600 text-xl cursor-pointer p-1 rounded-lg hover:bg-gray-100 transition"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 text-xl cursor-pointer p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition"
               >
                 <FiX />
               </button>
             </div>
 
-            <div className="bg-slate-50 border border-gray-200/80 rounded-xl p-3.5 text-xs text-gray-700">
+            <div className="bg-slate-50 dark:bg-slate-800/80 border border-gray-200/80 dark:border-slate-700 rounded-xl p-3.5 text-xs text-gray-700 dark:text-slate-300">
               <p>
-                How was <strong className="text-gray-900 font-semibold">"{itemToDelete.productName}"</strong>{" "}
+                How was <strong className="text-gray-900 dark:text-white font-semibold">"{itemToDelete.productName}"</strong>{" "}
                 ({itemToDelete.quantity} {itemToDelete.unit}) used?
               </p>
             </div>
@@ -368,13 +368,13 @@ const KitchenItem = () => {
                 type="button"
                 disabled={isDeleting}
                 onClick={() => handleLogConsumption("wasted")}
-                className="w-full py-3 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/90 font-bold text-xs sm:text-sm flex items-center justify-between transition hover-lift cursor-pointer disabled:opacity-50"
+                className="w-full py-3 px-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 hover:bg-amber-100 dark:hover:bg-amber-900/40 text-amber-900 dark:text-amber-300 border border-amber-200/90 dark:border-amber-800/60 font-bold text-xs sm:text-sm flex items-center justify-between transition hover-lift cursor-pointer disabled:opacity-50"
               >
                 <span className="flex items-center gap-2">
                   <span>🗑️</span>
                   <span>Expired / Spoiled</span>
                 </span>
-                <span className="text-[11px] font-medium text-amber-800">
+                <span className="text-[11px] font-medium text-amber-800 dark:text-amber-300">
                   Track food waste
                 </span>
               </button>
@@ -385,7 +385,7 @@ const KitchenItem = () => {
                   type="button"
                   disabled={isDeleting}
                   onClick={handleConfirmDelete}
-                  className="text-xs text-gray-400 hover:text-red-600 font-semibold transition cursor-pointer"
+                  className="text-xs text-gray-400 hover:text-red-600 dark:text-slate-400 dark:hover:text-red-400 font-semibold transition cursor-pointer"
                 >
                   Just remove without logging
                 </button>
@@ -393,7 +393,7 @@ const KitchenItem = () => {
                   type="button"
                   disabled={isDeleting}
                   onClick={() => setItemToDelete(null)}
-                  className="text-xs text-gray-500 hover:text-gray-800 font-bold transition cursor-pointer px-3 py-1.5 rounded-lg hover:bg-gray-100"
+                  className="text-xs text-gray-500 hover:text-gray-800 dark:text-slate-400 dark:hover:text-white font-bold transition cursor-pointer px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800"
                 >
                   Cancel
                 </button>
@@ -408,28 +408,28 @@ const KitchenItem = () => {
       {/* ========================================================================= */}
       {itemToEdit && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-3 sm:p-4 overflow-y-auto animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-6 shadow-2xl space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto my-auto">
-            <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-4 sm:p-6 shadow-2xl space-y-4 border border-gray-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto my-auto transition-colors">
+            <div className="flex justify-between items-center pb-3 border-b border-gray-100 dark:border-slate-800">
               <div className="flex items-center gap-2.5">
-                <div className="bg-blue-100 text-blue-600 p-2 rounded-lg text-lg">
+                <div className="bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 p-2 rounded-lg text-lg">
                   <FiEdit3 />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">Edit Kitchen Item</h3>
-                  <p className="text-xs text-gray-500">Update product information</p>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Edit Kitchen Item</h3>
+                  <p className="text-xs text-gray-500 dark:text-slate-400">Update product information</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setItemToEdit(null)}
-                className="text-gray-400 hover:text-gray-600 text-xl cursor-pointer p-1 rounded-lg hover:bg-gray-100"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 text-xl cursor-pointer p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800"
               >
                 <FiX />
               </button>
             </div>
 
             {editError && (
-              <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-2.5 rounded-lg">
+              <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 text-sm px-4 py-2.5 rounded-lg">
                 {editError}
               </div>
             )}
@@ -437,7 +437,7 @@ const KitchenItem = () => {
             <form onSubmit={handleSaveEdit} className="space-y-4">
               {/* Product Name */}
               <div className="flex flex-col space-y-1">
-                <label className="text-sm font-semibold text-gray-700" htmlFor="edit-productName">
+                <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="edit-productName">
                   Product Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -447,7 +447,7 @@ const KitchenItem = () => {
                   required
                   value={editFormData.productName}
                   onChange={handleEditInputChange}
-                  className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                  className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   placeholder="e.g. Basmati Rice, Olive Oil"
                 />
               </div>
@@ -455,7 +455,7 @@ const KitchenItem = () => {
               {/* Category & Storage Location */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold text-gray-700" htmlFor="edit-category">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="edit-category">
                     Category
                   </label>
                   <select
@@ -463,7 +463,7 @@ const KitchenItem = () => {
                     name="category"
                     value={editFormData.category}
                     onChange={handleEditInputChange}
-                    className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   >
                     <option value="Fruits & Vegetable">Fruits & Vegetable</option>
                     <option value="Dairy & Eggs">Dairy & Eggs</option>
@@ -480,7 +480,7 @@ const KitchenItem = () => {
 
                 <div className="flex flex-col space-y-1">
                   <label
-                    className="text-sm font-semibold text-gray-700"
+                    className="text-sm font-semibold text-gray-700 dark:text-slate-300"
                     htmlFor="edit-storageLocation"
                   >
                     Storage Location
@@ -490,7 +490,7 @@ const KitchenItem = () => {
                     name="storageLocation"
                     value={editFormData.storageLocation}
                     onChange={handleEditInputChange}
-                    className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   >
                     <option value="Pantry">Pantry</option>
                     <option value="Fridge">Fridge</option>
@@ -505,7 +505,7 @@ const KitchenItem = () => {
               {/* Quantity & Unit */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold text-gray-700" htmlFor="edit-quantity">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="edit-quantity">
                     Quantity
                   </label>
                   <input
@@ -515,13 +515,13 @@ const KitchenItem = () => {
                     min="0"
                     value={editFormData.quantity ?? ""}
                     onChange={handleEditInputChange}
-                    className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                     placeholder="Enter quantity"
                   />
                 </div>
 
                 <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-semibold text-gray-700" htmlFor="edit-unit">
+                  <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="edit-unit">
                     Unit
                   </label>
                   <select
@@ -529,7 +529,7 @@ const KitchenItem = () => {
                     name="unit"
                     value={editFormData.unit}
                     onChange={handleEditInputChange}
-                    className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                    className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                   >
                     <option value="Pieces">Pieces</option>
                     <option value="kg">kg</option>
@@ -546,7 +546,7 @@ const KitchenItem = () => {
 
               {/* Expiry Date */}
               <div className="flex flex-col space-y-1">
-                <label className="text-sm font-semibold text-gray-700" htmlFor="edit-expiryDate">
+                <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="edit-expiryDate">
                   Expiry Date
                 </label>
                 <input
@@ -555,13 +555,13 @@ const KitchenItem = () => {
                   name="expiryDate"
                   value={editFormData.expiryDate}
                   onChange={handleEditInputChange}
-                  className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                  className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                 />
               </div>
 
               {/* Notes */}
               <div className="flex flex-col space-y-1">
-                <label className="text-sm font-semibold text-gray-700" htmlFor="edit-notes">
+                <label className="text-sm font-semibold text-gray-700 dark:text-slate-300" htmlFor="edit-notes">
                   Notes
                 </label>
                 <textarea
@@ -571,17 +571,17 @@ const KitchenItem = () => {
                   value={editFormData.notes || ""}
                   onChange={handleEditInputChange}
                   placeholder="Optional details or brand notes..."
-                  className="bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-600 focus:bg-white transition"
+                  className="bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-green-600 focus:bg-white dark:focus:bg-slate-800 transition"
                 />
               </div>
 
               {/* Modal Actions */}
-              <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
+              <div className="flex items-center gap-3 pt-3 border-t border-gray-100 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setItemToEdit(null)}
                   disabled={isUpdating}
-                  className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
+                  className="flex-1 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 font-semibold text-sm rounded-xl transition cursor-pointer disabled:opacity-50"
                 >
                   Cancel
                 </button>
