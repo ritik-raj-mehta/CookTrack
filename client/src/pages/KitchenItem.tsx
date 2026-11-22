@@ -173,72 +173,8 @@ const KitchenItem = () => {
     }
   };
 
-  const samplePreviewItems: ItemsTypes[] = [
-    {
-      _id: "prev1",
-      productName: "Royal Basmati Rice",
-      category: "Pantry Items",
-      quantity: 10,
-      unit: "kg",
-      storageLocation: "Pantry Cabinet",
-      expiryDate: "2027-04-15",
-      notes: "Aromatic long grain rice for family meals",
-    },
-    {
-      _id: "prev2",
-      productName: "Organic Whole Milk",
-      category: "Dairy & Eggs",
-      quantity: 1,
-      unit: "liters",
-      storageLocation: "Fridge",
-      expiryDate: "2026-11-24",
-      notes: "1 liter remaining - refill recommended",
-    },
-    {
-      _id: "prev3",
-      productName: "Fresh Vine Tomatoes",
-      category: "Fruits & Vegetable",
-      quantity: 2,
-      unit: "kg",
-      storageLocation: "Veggie Drawer",
-      expiryDate: "2026-11-23",
-      notes: "Use within 2 days",
-    },
-    {
-      _id: "prev4",
-      productName: "Cold Pressed Olive Oil",
-      category: "Condiment & Sauces",
-      quantity: 500,
-      unit: "ml",
-      storageLocation: "Spice Rack",
-      expiryDate: "2027-02-10",
-      notes: "Virgin Italian olive oil",
-    },
-    {
-      _id: "prev5",
-      productName: "Greek Protein Yogurt",
-      category: "Dairy & Eggs",
-      quantity: 0,
-      unit: "cups",
-      storageLocation: "Fridge",
-      expiryDate: "2026-11-25",
-      notes: "Completely finished yesterday",
-    },
-    {
-      _id: "prev6",
-      productName: "Organic Brown Eggs",
-      category: "Dairy & Eggs",
-      quantity: 2,
-      unit: "Pieces",
-      storageLocation: "Fridge Door",
-      expiryDate: "2026-12-05",
-      notes: "Only 2 left",
-    },
-  ];
-
   // ---------- FILTER LOGIC ----------
-  const rawItems = Array.isArray(kitchenItems) ? kitchenItems : [];
-  const items = rawItems.length > 0 ? rawItems : (!kitchenId ? samplePreviewItems : []);
+  const items = Array.isArray(kitchenItems) ? kitchenItems : [];
   const filteredItems = items.filter((item: ItemsTypes) => {
     const pName = (item.productName || "").toLowerCase();
     const cat = (item.category || "").toLowerCase();

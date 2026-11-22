@@ -38,7 +38,6 @@ const RegisterToKitchen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [localError, setLocalError] = useState<string | null>(null);
   const [showOtpModal, setShowOtpModal] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [devOtp, setDevOtp] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
 
@@ -76,7 +75,6 @@ const RegisterToKitchen = () => {
       const res = (await dispatch(registerToKitchen(inputData)).unwrap()) as any;
       if (res?.requiresOtp) {
         setShowOtpModal(true);
-        if (res.previewUrl) setPreviewUrl(res.previewUrl);
         if (res.devOtp) setDevOtp(res.devOtp);
         if (res.warning) setWarning(res.warning);
       } else {
@@ -96,7 +94,6 @@ const RegisterToKitchen = () => {
       {showOtpModal && (
         <OtpVerificationModal
           email={inputData.userEmail.trim()}
-          previewUrl={previewUrl}
           devOtp={devOtp}
           warning={warning}
           onBack={() => setShowOtpModal(false)}

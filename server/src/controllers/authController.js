@@ -144,7 +144,6 @@ const registerUser = async (req, res) => {
         : 'Verification code generated! Please enter the code below to complete signup.',
       devOtp: emailResult?.devOtp || null,
       warning: emailResult?.warning || null,
-      previewUrl: emailResult?.previewUrl || null,
     });
   } catch (err) {
     console.error(err);
@@ -234,7 +233,6 @@ const registerToKitchen = async (req, res) => {
         : 'Verification code generated! Please enter the code below to join kitchen.',
       devOtp: emailResult?.devOtp || null,
       warning: emailResult?.warning || null,
-      previewUrl: emailResult?.previewUrl || null,
     });
   } catch (err) {
     console.error(err);
@@ -443,7 +441,6 @@ const resendOtp = async (req, res) => {
         : 'A new verification code has been generated.',
       devOtp: emailResult?.devOtp || null,
       warning: emailResult?.warning || null,
-      previewUrl: emailResult?.previewUrl || null,
     });
   } catch (err) {
     console.error(err);

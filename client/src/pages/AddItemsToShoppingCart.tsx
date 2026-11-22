@@ -31,60 +31,6 @@ import type { ShoppingItem, ShoppingItemInput } from "../types/KitchenTypes";
 
 export type shoppingItemTypes = ShoppingItemInput;
 
-// Fallback preview items for unauthenticated preview / testing
-const PREVIEW_SHOPPING_ITEMS: ShoppingItem[] = [
-  {
-    _id: "demo-item-1",
-    name: "Farm Fresh Milk",
-    neededQuantity: 2,
-    unit: "liters",
-    isBought: false,
-    notes: "Prefer whole milk, check manufacturing date",
-    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    kitchenId: "demo-kitchen",
-  },
-  {
-    _id: "demo-item-2",
-    name: "Baby Spinach & Red Tomatoes",
-    neededQuantity: 1,
-    unit: "kg",
-    isBought: true,
-    notes: "Organic salad leaves from local farm",
-    createdAt: new Date(Date.now() - 3600000 * 18).toISOString(),
-    kitchenId: "demo-kitchen",
-  },
-  {
-    _id: "demo-item-3",
-    name: "Whole Wheat Bread",
-    neededQuantity: 2,
-    unit: "package",
-    isBought: false,
-    notes: "Multigrain or brown loaf",
-    createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
-    kitchenId: "demo-kitchen",
-  },
-  {
-    _id: "demo-item-4",
-    name: "Greek Plain Yogurt",
-    neededQuantity: 3,
-    unit: "cups",
-    isBought: true,
-    notes: "High protein, unsweetened",
-    createdAt: new Date(Date.now() - 3600000 * 72).toISOString(),
-    kitchenId: "demo-kitchen",
-  },
-  {
-    _id: "demo-item-5",
-    name: "Extra Virgin Olive Oil",
-    neededQuantity: 1,
-    unit: "bottles",
-    isBought: false,
-    notes: "Cold pressed 500ml",
-    createdAt: new Date(Date.now() - 3600000 * 96).toISOString(),
-    kitchenId: "demo-kitchen",
-  },
-];
-
 const AddItemsToShoppingCart = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { kitchenId, userId, isAuthenticated } = useSelector(
@@ -360,16 +306,9 @@ const AddItemsToShoppingCart = () => {
     }
   };
 
-  // Fallback to preview mock items for testing when empty/unauthenticated
   const effectiveItems = useMemo(() => {
-    if (Array.isArray(shoppingItems) && shoppingItems.length > 0) {
-      return shoppingItems;
-    }
-    if (!kitchenId) {
-      return PREVIEW_SHOPPING_ITEMS;
-    }
-    return [];
-  }, [shoppingItems, kitchenId]);
+    return Array.isArray(shoppingItems) ? shoppingItems : [];
+  }, [shoppingItems]);
 
   // Filtered and searched shopping items
   const filteredItems = useMemo(() => {

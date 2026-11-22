@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaPeopleGroup } from "react-icons/fa6";
@@ -31,31 +31,6 @@ import {
 import { logout } from "../stores/slices/AuthSlice";
 import type { KitchenMember } from "../types/KitchenTypes";
 
-// Fallback preview members for demo and unauthenticated visual inspection
-const PREVIEW_MEMBERS: KitchenMember[] = [
-  {
-    _id: "demo-member-1",
-    userName: "Chef Ritik",
-    userEmail: "ritik@cooktrack.local",
-    role: "KitchenAdmin",
-    createdAt: new Date(Date.now() - 3600000 * 24 * 30).toISOString(),
-  },
-  {
-    _id: "demo-member-2",
-    userName: "Alex Sharma",
-    userEmail: "alex@cooktrack.local",
-    role: "Member",
-    createdAt: new Date(Date.now() - 3600000 * 24 * 14).toISOString(),
-  },
-  {
-    _id: "demo-member-3",
-    userName: "Priya Patel",
-    userEmail: "priya@cooktrack.local",
-    role: "Member",
-    createdAt: new Date(Date.now() - 3600000 * 24 * 5).toISOString(),
-  },
-];
-
 const KitchenMembers = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -64,17 +39,8 @@ const KitchenMembers = () => {
   );
   const { kitchenId, role, userId } = useSelector((state: RootState) => state.auth);
 
-  const effectiveMembers = useMemo(() => {
-    if (Array.isArray(members) && members.length > 0) {
-      return members;
-    }
-    if (!kitchenId) {
-      return PREVIEW_MEMBERS;
-    }
-    return [];
-  }, [members, kitchenId]);
-
-  const effectiveKitchenId = kitchenId || "CT-84920";
+  const effectiveMembers = Array.isArray(members) ? members : [];
+  const effectiveKitchenId = kitchenId || "";
 
   const [copied, setCopied] = useState(false);
   const [actionSuccess, setActionSuccess] = useState<string | null>(null);

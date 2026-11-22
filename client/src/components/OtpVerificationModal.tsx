@@ -7,7 +7,6 @@ import { verifyOtp, resendOtp, clearError } from "../stores/slices/AuthSlice";
 type OtpModalProps = {
   email: string;
   onBack: () => void;
-  previewUrl?: string | null;
   devOtp?: string | null;
   warning?: string | null;
 };
@@ -15,7 +14,6 @@ type OtpModalProps = {
 const OtpVerificationModal: React.FC<OtpModalProps> = ({
   email,
   onBack,
-  previewUrl,
   devOtp,
   warning,
 }) => {
@@ -167,23 +165,6 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
             </div>
             <p className="text-[11px] text-amber-800/90 leading-tight">
               {currentWarning || "Render Free Tier blocks outbound SMTP. Enter the code above or configure RESEND_API_KEY."}
-            </p>
-          </div>
-        )}
-
-        {/* Development preview link if available */}
-        {previewUrl && (
-          <div className="bg-blue-50 border border-blue-200 p-2.5 rounded-xl text-center">
-            <p className="text-xs text-blue-700 font-medium">
-              Ethereal Test Mail Preview:{" "}
-              <a
-                href={previewUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="underline font-bold text-blue-900 hover:text-blue-950"
-              >
-                View Email Inbox ↗
-              </a>
             </p>
           </div>
         )}

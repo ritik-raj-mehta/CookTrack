@@ -23,93 +23,6 @@ import type {
   ActivityLog,
 } from "../types/KitchenTypes";
 
-// Fallback preview analytics for demo and unauthenticated visual inspection
-const PREVIEW_ANALYTICS: AnalyticsData = {
-  wasteStats: {
-    totalConsumed: 48,
-    totalWasted: 6,
-    totalRestocked: 52,
-    consumedRatio: 89,
-    moneySaved: 4850,
-    moneyWasted: 420,
-    ecoScore: "A",
-    ecoLabel: "Eco Champion",
-  },
-  inventoryHealth: {
-    totalProducts: 24,
-    totalUnits: 45,
-    freshCount: 19,
-    expiringSoonCount: 4,
-    expiredCount: 1,
-    atRiskValue: 680,
-  },
-  monthlyTrends: [
-    { month: "Jun", year: 2026, consumed: 28, wasted: 5, restocked: 32, saved: 2800 },
-    { month: "Jul", year: 2026, consumed: 35, wasted: 4, restocked: 38, saved: 3500 },
-    { month: "Aug", year: 2026, consumed: 42, wasted: 6, restocked: 44, saved: 4200 },
-    { month: "Sep", year: 2026, consumed: 38, wasted: 3, restocked: 40, saved: 3800 },
-    { month: "Oct", year: 2026, consumed: 46, wasted: 4, restocked: 50, saved: 4600 },
-    { month: "Nov", year: 2026, consumed: 48, wasted: 6, restocked: 52, saved: 4850 },
-  ],
-  categoryDistribution: [
-    { category: "Dairy & Eggs", count: 8, percentage: 33 },
-    { category: "Fruits & Vegetable", count: 6, percentage: 25 },
-    { category: "Pantry Items", count: 5, percentage: 21 },
-    { category: "Baking Supplies", count: 3, percentage: 13 },
-    { category: "Beverages", count: 2, percentage: 8 },
-  ],
-  storageDistribution: [
-    { location: "Refrigerator", count: 12 },
-    { location: "Pantry", count: 9 },
-    { location: "Freezer", count: 3 },
-  ],
-  topWastedCategories: [
-    { category: "Fruits & Vegetable", count: 3 },
-  ],
-  recentActivity: [
-    {
-      _id: "act-1",
-      action: "consumed",
-      productName: "Whole Milk",
-      quantity: 1,
-      unit: "liters",
-      category: "Dairy & Eggs",
-      userName: "Chef Ritik",
-      loggedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    },
-    {
-      _id: "act-2",
-      action: "consumed",
-      productName: "Baby Spinach",
-      quantity: 500,
-      unit: "grams",
-      category: "Fruits & Vegetable",
-      userName: "Alex",
-      loggedAt: new Date(Date.now() - 3600000 * 6).toISOString(),
-    },
-    {
-      _id: "act-3",
-      action: "wasted",
-      productName: "Greek Yogurt",
-      quantity: 1,
-      unit: "cups",
-      category: "Dairy & Eggs",
-      userName: "Chef Ritik",
-      loggedAt: new Date(Date.now() - 3600000 * 24).toISOString(),
-    },
-    {
-      _id: "act-4",
-      action: "restocked",
-      productName: "Organic Eggs",
-      quantity: 12,
-      unit: "Pieces",
-      category: "Dairy & Eggs",
-      userName: "Priya",
-      loggedAt: new Date(Date.now() - 3600000 * 36).toISOString(),
-    },
-  ],
-};
-
 const KitchenInsights: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { analyticsData, analyticsLoading, kitchenData } = useSelector(
@@ -129,7 +42,7 @@ const KitchenInsights: React.FC = () => {
     dispatch(fetchKitchenAnalytics());
   };
 
-  const effectiveData: AnalyticsData | null = analyticsData || (!kitchenId ? PREVIEW_ANALYTICS : null);
+  const effectiveData: AnalyticsData | null = analyticsData;
   const stats = effectiveData?.wasteStats;
   const health = effectiveData?.inventoryHealth;
   const trends: MonthlyTrend[] = effectiveData?.monthlyTrends || [];
