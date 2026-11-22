@@ -4,7 +4,9 @@ import { useDispatch } from "react-redux";
 import { getMe, clearError, clearMessage } from "./stores/slices/AuthSlice";
 import type { AppDispatch } from "./stores/store";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SuperAdminRoute from "./components/SuperAdminRoute";
 import NavBar from "./components/NavBar";
+import GlobalAnnouncement from "./components/GlobalAnnouncement";
 
 // Lazy-loaded route pages for code-splitting and faster initial page loads
 const Home = lazy(() => import("./pages/Home"));
@@ -17,6 +19,7 @@ const KitchenItem = lazy(() => import("./pages/KitchenItem"));
 const KitchenMembers = lazy(() => import("./pages/KitchenMembers"));
 const AddItemsToShoppingCart = lazy(() => import("./pages/AddItemsToShoppingCart"));
 const KitchenInsights = lazy(() => import("./pages/KitchenInsights"));
+const SuperAdminDashboard = lazy(() => import("./pages/SuperAdmin/SuperAdminDashboard"));
 
 const PageLoader = () => (
   <div className="flex min-h-[60vh] h-full w-full items-center justify-center p-8">
@@ -48,14 +51,26 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <Suspense fallback={<PageLoader />}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/registertokitchen" element={<RegisterToKitchen />} />
+    <>
+      <GlobalAnnouncement />
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/registertokitchen" element={<RegisterToKitchen />} />
 
-        <Route element={<Layout />}>
+          {/* Super Admin Command Center Route */}
+          <Route
+            path="/superadmin"
+            element={
+              <SuperAdminRoute>
+                <SuperAdminDashboard />
+              </SuperAdminRoute>
+            }
+          />
+
+          <Route element={<Layout />}>
           <Route
             path="/dashboard"
             element={
@@ -107,6 +122,7 @@ const App = () => {
         </Route>
       </Routes>
     </Suspense>
+    </>
   );
 };
 

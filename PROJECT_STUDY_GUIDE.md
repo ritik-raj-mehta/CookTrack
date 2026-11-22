@@ -371,6 +371,32 @@ The newly overhauled [`client/src/pages/Home.tsx`](file:///e:/projects%20dev/Coo
 
 ---
 
+### 5.9 Super Admin Command Center, Master Fleet Telemetry & Moderation Engine
+
+Located at [`client/src/pages/SuperAdmin/SuperAdminDashboard.tsx`](file:///e:/projects%20dev/CookTrack%20Mern/client/src/pages/SuperAdmin/SuperAdminDashboard.tsx) and protected by `SuperAdminRoute`:
+
+1. **Executive Telemetry Deck**:
+   - Total active kitchens fleet and average household size.
+   - Total registered users and 24-hour active users count.
+   - Aggregate ₹ value of food rescued from spoilage across all homes.
+   - Platform-wide Eco-Score rating with storage location breakdown (Fridge vs. Freezer vs. Pantry Shelf).
+2. **Master Kitchen Fleet Management**:
+   - Search by 6-character invite code or kitchen name.
+   - 1-click **Deep Inspect Modal**: View any kitchen's live pantry inventory, shopping cart, crew members, and recent logs without needing their password.
+   - 1-click administrative kitchen purge with safety confirmation code check.
+3. **Master User Directory & Moderation**:
+   - Search users across name, email, phone number, and kitchen ID.
+   - 1-click account suspension: Locks out abusive users and invalidates active refresh tokens.
+   - Dynamic role promotion: Promote trusted members to `SuperAdmin`.
+4. **Global Announcement & Maintenance Broadcaster**:
+   - Live broadcast banner rendered at the top of all user screens via `<GlobalAnnouncement />`.
+   - Supports 3 severity levels (`info`, `warning`, `critical`).
+   - Maintenance Mode lock: Puts the platform into read-only mode during major database updates.
+5. **1-Click Database Pruner**:
+   - Cleans expired OTP tokens older than 10 minutes and prunes orphaned item references.
+
+---
+
 ## 6. Security, Performance & Deployment Hardening
 
 ```mermaid
@@ -421,6 +447,22 @@ graph LR
 | `POST` | `/:kitchenId/makeadmin/:memberId`| Promote member to Admin (Admin Auth) | Yes (Admin) |
 | `POST` | `/:kitchenId/removemember/:memberId`| Remove member from kitchen | Yes (Admin) |
 | `DELETE`| `/:kitchenId/deletekitchen` | Delete entire kitchen & contents | Yes (Admin) |
+
+### Super Admin Platform Routes (`/api/superadmin`)
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/stats` | Platform telemetry, ₹ saved, storage breakdown | Yes (SuperAdmin) |
+| `GET` | `/kitchens` | Master fleet directory with search & pagination | Yes (SuperAdmin) |
+| `GET` | `/kitchens/:kitchenId` | Deep inspect kitchen pantry, cart, & crew | Yes (SuperAdmin) |
+| `DELETE`| `/kitchens/:kitchenId` | Purge kitchen and all child items | Yes (SuperAdmin) |
+| `GET` | `/users` | Master user directory with role & status filters | Yes (SuperAdmin) |
+| `PATCH`| `/users/:userId/suspend` | Suspend or unsuspend account (revokes token) | Yes (SuperAdmin) |
+| `PATCH`| `/users/:userId/role` | Update user role (promote to SuperAdmin) | Yes (SuperAdmin) |
+| `GET` | `/logs` | System-wide audit logs with action filters | Yes (SuperAdmin) |
+| `GET` | `/settings` | Retrieve platform settings & announcements | Yes (SuperAdmin) |
+| `PUT` | `/settings` | Broadcast announcement & toggle maintenance | Yes (SuperAdmin) |
+| `POST` | `/cleanup` | Prune expired OTPs & orphaned references | Yes (SuperAdmin) |
+| `GET` | `/announcement/public` | Public active announcement for all users | No |
 
 ---
 

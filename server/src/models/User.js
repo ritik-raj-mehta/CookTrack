@@ -20,7 +20,9 @@ const UserSchema = new mongoose.Schema({
   kitchenId: { type: String, default: () => generateKitchenCode(6) },
   kitchenName: { type: String },
   phoneNumber: { type: String, required: true },
-  refreshToken: { type: String, default: null }
+  refreshToken: { type: String, default: null },
+  isSuspended: { type: Boolean, default: false },
+  lastLogin: { type: Date, default: Date.now }
 }, { timestamps: true });
 
 UserSchema.index({ kitchenId: 1 });

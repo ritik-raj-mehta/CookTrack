@@ -474,6 +474,20 @@ const loginUser = async (req, res) => {
         .json({ isSuccess: false, message: 'Invalid password' });
     }
 
+    if (user.isSuspended) {
+      return res.status(403).json({
+        isSuccess: false,
+        message: 'Your account has been suspended by the platform administrator.'
+      });
+    }
+
+    // Auto-sync SuperAdmin role for designated owner email
+    const superAdminEmail = (process.env.SUPERADMIN_EMAIL || 'ritikmehta9835@gmail.com').toLowerCase();
+    if (user.userEmail && user.userEmail.toLowerCase() === superAdminEmail && user.role !== 'SuperAdmin') {
+      user.role = 'SuperAdmin';
+    }
+    user.lastLogin = new Date();
+
     const payload = {
       userEmail: user.userEmail,
       role: user.role,
@@ -584,6 +598,21 @@ const getMe = async (req, res) => {
     const user = await User.findById(claims.Id);
     if (!user) {
       return res.status(404).json({ isSuccess: false, message: 'User not found' });
+    }
+
+    if (user.isSuspended) {
+      clearAuthCookies(res);
+      return res.status(403).json({
+        isSuccess: false,
+        message: 'Your account has been suspended by the platform administrator.'
+      });
+    }
+
+    // Auto-sync SuperAdmin role for designated owner email
+    const superAdminEmail = (process.env.SUPERADMIN_EMAIL || 'ritikmehta9835@gmail.com').toLowerCase();
+    if (user.userEmail && user.userEmail.toLowerCase() === superAdminEmail && user.role !== 'SuperAdmin') {
+      user.role = 'SuperAdmin';
+      await user.save();
     }
 
     return res.json({

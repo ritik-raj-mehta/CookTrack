@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/AuthSlice";
 import kitchenReducer from "./slices/KitchenSlice";
+import superAdminReducer from "./slices/SuperAdminSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -13,6 +14,7 @@ const authPersistConfig = {
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   kitchen: kitchenReducer,
+  superAdmin: superAdminReducer,
 });
 
 export const store = configureStore({

@@ -5,7 +5,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FaCartPlus, FaHome } from "react-icons/fa";
 import { FiActivity, FiCodesandbox, FiCopy, FiCheck, FiLogOut, FiMenu, FiX } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
-import { FaPeopleGroup } from "react-icons/fa6";
+import { FaPeopleGroup, FaCrown } from "react-icons/fa6";
 import { LuChefHat } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../stores/store";
@@ -25,8 +25,12 @@ const NavBar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { kitchenId } = useSelector((state: RootState) => state.auth);
+  const { kitchenId, role, user } = useSelector((state: RootState) => state.auth);
   const { kitchenData } = useSelector((state: RootState) => state.kitchen);
+
+  const isSuperAdmin =
+    role === "SuperAdmin" ||
+    (user?.email && user.email.toLowerCase() === "ritikmehta9835@gmail.com");
 
   const pathToKey: Record<string, string> = {
     "/dashboard": "1",
@@ -179,6 +183,19 @@ const NavBar: React.FC = () => {
               </div>
             </div>
 
+            {/* Super Admin Entry Button */}
+            {isSuperAdmin && (
+              <div className="p-3 border-t border-gray-100">
+                <NavLink
+                  to="/superadmin"
+                  className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-amber-400 text-slate-950 hover:bg-amber-300 font-bold text-xs transition shadow-xs"
+                >
+                  <FaCrown className="text-sm shrink-0" />
+                  {!collapsed && <span className="truncate">Super Admin</span>}
+                </NavLink>
+              </div>
+            )}
+
             {/* Bottom status badge */}
             {!collapsed && (
               <div className="p-4 border-t border-gray-100 space-y-2">
@@ -324,6 +341,20 @@ const NavBar: React.FC = () => {
                   );
                 })}
               </nav>
+
+              {/* Super Admin Drawer Link */}
+              {isSuperAdmin && (
+                <div className="px-4 py-2">
+                  <NavLink
+                    to="/superadmin"
+                    onClick={() => setMobileDrawerOpen(false)}
+                    className="w-full flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-amber-400 text-slate-950 font-black text-xs hover:bg-amber-300 transition shadow-xs"
+                  >
+                    <FaCrown className="text-base" />
+                    <span>👑 Super Admin Command Center</span>
+                  </NavLink>
+                </div>
+              )}
             </div>
 
             {/* Bottom Sign-out Button */}

@@ -8,7 +8,11 @@ import { logout } from "../stores/slices/AuthSlice";
 const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { isAuthenticated, kitchenId } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, kitchenId, role, user } = useSelector((state: RootState) => state.auth);
+
+  const isSuperAdmin =
+    role === "SuperAdmin" ||
+    (user?.email && user.email.toLowerCase() === "ritikmehta9835@gmail.com");
 
   const handleLogout = async () => {
     try {
@@ -40,6 +44,14 @@ const Header = () => {
 
       {isAuthenticated ? (
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          {isSuperAdmin && (
+            <NavLink
+              to="/superadmin"
+              className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-1.5 sm:py-2 px-2.5 sm:px-3.5 rounded-xl text-xs sm:text-sm transition shadow-sm flex items-center gap-1.5"
+            >
+              <span>👑 Super Admin</span>
+            </NavLink>
+          )}
           {kitchenId && (
             <NavLink
               to="/dashboard"

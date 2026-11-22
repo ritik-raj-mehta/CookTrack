@@ -11,6 +11,7 @@ import connectDB from './config/db.js';
 
 import authRoutes from './routes/auth.js';
 import kitchenRoutes from './routes/kitchen.js';
+import superAdminRoutes, { getPublicAnnouncement } from './routes/superAdmin.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -114,6 +115,8 @@ app.use(cors(corsOptions));
 // ---- ROUTES ----
 app.use('/api/auth', authRoutes);
 app.use('/api/kitchen', kitchenRoutes);
+app.use('/api/superadmin', superAdminRoutes);
+app.get('/api/platform/announcement', getPublicAnnouncement);
 
 app.get('/', (req, res) => res.send('CookTrack MERN server is running'));
 
