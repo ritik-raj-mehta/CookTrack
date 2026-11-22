@@ -15,6 +15,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import { jsPDF } from "jspdf";
+import ThemeToggle from "../components/ThemeToggle";
 import type { AppDispatch, RootState } from "../stores/store";
 import {
   addKitchenItems,
@@ -530,6 +531,9 @@ const AddItemsToShoppingCart = () => {
 
         {/* Action Buttons */}
         <div className="grid grid-cols-2 sm:flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+          <div className="hidden md:flex items-center shrink-0">
+            <ThemeToggle />
+          </div>
           <button
             type="button"
             onClick={handleDownloadPDF}

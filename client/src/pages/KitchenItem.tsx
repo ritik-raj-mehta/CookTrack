@@ -13,6 +13,7 @@ import {
   updateKitchenItem,
 } from "../stores/slices/KitchenSlice";
 import ItemCard from "../components/ItemCard";
+import ThemeToggle from "../components/ThemeToggle";
 import type { ItemsTypes } from "../types/KitchenTypes";
 
 const KitchenItem = () => {
@@ -206,12 +207,17 @@ const KitchenItem = () => {
           </div>
         </div>
 
-        <NavLink
-          className="self-stretch sm:self-auto bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 active:scale-95 text-white py-2.5 px-4 rounded-xl shadow-xs font-bold text-xs sm:text-sm transition hover-lift text-center"
-          to="/additemstokitchen"
-        >
-          + Restock Item
-        </NavLink>
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="hidden md:flex items-center shrink-0">
+            <ThemeToggle />
+          </div>
+          <NavLink
+            className="self-stretch sm:self-auto bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 active:scale-95 text-white py-2.5 px-4 rounded-xl shadow-xs font-bold text-xs sm:text-sm transition hover-lift text-center"
+            to="/additemstokitchen"
+          >
+            + Restock Item
+          </NavLink>
+        </div>
       </div>
 
       <div className="px-3 sm:px-6 lg:px-8 py-2">

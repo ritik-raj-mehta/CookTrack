@@ -3,6 +3,7 @@ import { FiCheck, FiCodesandbox, FiX } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../stores/store";
 import { addKitchenItems } from "../stores/slices/KitchenSlice";
+import ThemeToggle from "../components/ThemeToggle";
 import type { ItemsTypes } from "../types/KitchenTypes";
 
 const AddItemsToKitchen = () => {
@@ -86,6 +87,10 @@ const AddItemsToKitchen = () => {
               Stock items and track expiry in your kitchen pantry
             </p>
           </div>
+        </div>
+
+        <div className="hidden md:flex items-center shrink-0">
+          <ThemeToggle />
         </div>
       </div>
 

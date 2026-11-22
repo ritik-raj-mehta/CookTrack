@@ -5,6 +5,7 @@ import { AiOutlineRise } from "react-icons/ai";
 import { FaCartPlus, FaStore } from "react-icons/fa";
 import { FiAlertTriangle, FiCheck, FiCodesandbox, FiCopy, FiPlus, FiTrendingUp } from "react-icons/fi";
 import { SlCalender } from "react-icons/sl";
+import ThemeToggle from "../components/ThemeToggle";
 import type { AppDispatch, RootState } from "../stores/store";
 import { fetchKitchenData } from "../stores/slices/KitchenSlice";
 import type { KitchenItem } from "../types/KitchenTypes";
@@ -91,6 +92,9 @@ const Dashboard = () => {
         </div>
 
         <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 sm:gap-3 w-full sm:w-auto">
+          <div className="hidden md:flex items-center shrink-0">
+            <ThemeToggle />
+          </div>
           {kitchenId && (
             <div className="flex items-center gap-1.5 sm:gap-2 bg-amber-50/90 dark:bg-amber-950/40 border border-amber-200/90 dark:border-amber-800 px-2.5 sm:px-3 py-1.5 rounded-xl shadow-2xs max-w-full">
               <span className="text-[11px] sm:text-xs font-semibold text-amber-900 dark:text-amber-300 shrink-0">Code:</span>

@@ -13,6 +13,7 @@ import {
 } from "react-icons/fi";
 import { FaIndianRupeeSign, FaLeaf } from "react-icons/fa6";
 import { IoSparklesOutline } from "react-icons/io5";
+import ThemeToggle from "../components/ThemeToggle";
 import type { AppDispatch, RootState } from "../stores/store";
 import { fetchKitchenAnalytics } from "../stores/slices/KitchenSlice";
 import type {
@@ -89,6 +90,9 @@ const KitchenInsights: React.FC = () => {
 
         {/* Action Controls */}
         <div className="grid grid-cols-2 sm:flex items-center gap-2.5 w-full sm:w-auto">
+          <div className="hidden md:flex items-center shrink-0">
+            <ThemeToggle />
+          </div>
           <button
             type="button"
             onClick={handleRefresh}

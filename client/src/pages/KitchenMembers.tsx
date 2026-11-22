@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaPeopleGroup } from "react-icons/fa6";
+import ThemeToggle from "../components/ThemeToggle";
 import {
   FiAlertTriangle,
   FiCalendar,
@@ -227,6 +228,9 @@ const KitchenMembers = () => {
 
         {/* Actions in Header */}
         <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="hidden md:flex items-center shrink-0">
+            <ThemeToggle />
+          </div>
           {effectiveKitchenId && (
             <div className="flex items-center justify-between sm:justify-start gap-2 bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200/90 dark:border-amber-800/60 px-3.5 py-1.5 rounded-xl shadow-2xs w-full sm:w-auto">
               <span className="text-xs font-semibold text-amber-900 dark:text-amber-300">Invite Code:</span>
