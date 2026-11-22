@@ -3,6 +3,11 @@ server/node_modules
 *.env
 .env
 .env.*
+server/.env
+client/.env
+!.env.example
+!server/.env.example
 dist/
 dist-ssr/
 *.log
+

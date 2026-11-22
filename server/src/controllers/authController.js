@@ -125,6 +125,10 @@ const registerUser = async (req, res) => {
       expiresAt,
     });
 
+    console.log(`\n========================================`);
+    console.log(`🔑 [CookTrack Local OTP] For ${cleanEmail}: ${otpCode}`);
+    console.log(`========================================\n`);
+
     // Send email using emailService (supports Resend HTTP API, Brevo, and SMTP with fast timeout)
     let emailResult = null;
     try {
@@ -134,6 +138,10 @@ const registerUser = async (req, res) => {
     }
 
     const emailSent = emailResult && emailResult.success;
+    const isDev = process.env.NODE_ENV !== 'production';
+    const superAdminEmail = (process.env.SUPERADMIN_EMAIL || 'ritikmehta9835@gmail.com').toLowerCase();
+    const isAdminEmail = cleanEmail === superAdminEmail;
+    const allowDevAutoFill = isDev && isAdminEmail;
 
     return res.json({
       isSuccess: true,
@@ -142,8 +150,8 @@ const registerUser = async (req, res) => {
       message: emailSent
         ? 'Verification code sent to your email. Please check your inbox (and spam folder) to complete signup.'
         : 'Verification code generated! Please enter the code below to complete signup.',
-      devOtp: emailResult?.devOtp || null,
-      warning: emailResult?.warning || null,
+      devOtp: allowDevAutoFill ? otpCode : null,
+      warning: allowDevAutoFill ? 'Local Admin Mode: Direct auto-fill code provided for platform administrator.' : null,
     });
   } catch (err) {
     console.error(err);
@@ -213,6 +221,10 @@ const registerToKitchen = async (req, res) => {
       expiresAt,
     });
 
+    console.log(`\n========================================`);
+    console.log(`🔑 [CookTrack Local OTP] For ${cleanEmail}: ${otpCode}`);
+    console.log(`========================================\n`);
+
     // Send email using emailService (supports Resend HTTP API, Brevo, and SMTP with fast timeout)
     let emailResult = null;
     try {
@@ -222,6 +234,10 @@ const registerToKitchen = async (req, res) => {
     }
 
     const emailSent = emailResult && emailResult.success;
+    const isDev = process.env.NODE_ENV !== 'production';
+    const superAdminEmail = (process.env.SUPERADMIN_EMAIL || 'ritikmehta9835@gmail.com').toLowerCase();
+    const isAdminEmail = cleanEmail === superAdminEmail;
+    const allowDevAutoFill = isDev && isAdminEmail;
 
     return res.json({
       isSuccess: true,
@@ -231,8 +247,8 @@ const registerToKitchen = async (req, res) => {
       message: emailSent
         ? 'Verification code sent to your email. Please check your inbox (and spam folder) to join kitchen.'
         : 'Verification code generated! Please enter the code below to join kitchen.',
-      devOtp: emailResult?.devOtp || null,
-      warning: emailResult?.warning || null,
+      devOtp: allowDevAutoFill ? otpCode : null,
+      warning: allowDevAutoFill ? 'Local Admin Mode: Direct auto-fill code provided for platform administrator.' : null,
     });
   } catch (err) {
     console.error(err);
@@ -425,6 +441,10 @@ const resendOtp = async (req, res) => {
     otpRecord.expiresAt = new Date(Date.now() + 10 * 60 * 1000);
     await otpRecord.save();
 
+    console.log(`\n========================================`);
+    console.log(`🔑 [CookTrack Local OTP RESEND] For ${cleanEmail}: ${newOtp}`);
+    console.log(`========================================\n`);
+
     let emailResult = null;
     try {
       emailResult = await sendOtpEmail(cleanEmail, newOtp, otpRecord.signupData?.userName);
@@ -433,14 +453,18 @@ const resendOtp = async (req, res) => {
     }
 
     const emailSent = emailResult && emailResult.success;
+    const isDev = process.env.NODE_ENV !== 'production';
+    const superAdminEmail = (process.env.SUPERADMIN_EMAIL || 'ritikmehta9835@gmail.com').toLowerCase();
+    const isAdminEmail = cleanEmail === superAdminEmail;
+    const allowDevAutoFill = isDev && isAdminEmail;
 
     return res.json({
       isSuccess: true,
       message: emailSent
         ? 'A new verification code has been sent to your email.'
         : 'A new verification code has been generated.',
-      devOtp: emailResult?.devOtp || null,
-      warning: emailResult?.warning || null,
+      devOtp: allowDevAutoFill ? newOtp : null,
+      warning: allowDevAutoFill ? 'Local Admin Mode: Direct auto-fill code provided for platform administrator.' : null,
     });
   } catch (err) {
     console.error(err);

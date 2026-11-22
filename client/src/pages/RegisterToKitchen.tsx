@@ -74,9 +74,9 @@ const RegisterToKitchen = () => {
     try {
       const res = (await dispatch(registerToKitchen(inputData)).unwrap()) as any;
       if (res?.requiresOtp) {
-        setShowOtpModal(true);
         if (res.devOtp) setDevOtp(res.devOtp);
         if (res.warning) setWarning(res.warning);
+        setShowOtpModal(true);
       } else {
         navigate("/dashboard");
       }

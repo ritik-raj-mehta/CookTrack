@@ -29,6 +29,9 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
   const [currentDevOtp, setCurrentDevOtp] = useState<string | null>(devOtp || null);
   const [currentWarning, setCurrentWarning] = useState<string | null>(warning || null);
 
+  const isAdminEmail = email.trim().toLowerCase() === "ritikmehta9835@gmail.com";
+  const showAdminAutoFill = Boolean(currentDevOtp && isAdminEmail);
+
   useEffect(() => {
     if (devOtp) setCurrentDevOtp(devOtp);
   }, [devOtp]);
@@ -138,12 +141,12 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
           </p>
         </div>
 
-        {/* Direct verification fallback if cloud host blocked outbound SMTP */}
-        {currentDevOtp && (
+        {/* Direct verification auto-fill: strictly local and only for Admin */}
+        {showAdminAutoFill && (
           <div className="bg-amber-50/90 border border-amber-200/90 p-4 rounded-2xl text-center space-y-2 animate-fadeIn shadow-xs">
             <div className="flex items-center justify-center gap-1.5 text-amber-900 text-xs font-bold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
-              <span>Verification Code (Direct Access)</span>
+              <span>Admin Local Direct Access</span>
             </div>
             <div className="flex items-center justify-center gap-2.5 pt-1">
               <span className="font-mono text-2xl font-black tracking-widest text-emerald-800 bg-white px-4 py-1.5 rounded-xl border border-amber-300 shadow-inner">
@@ -152,7 +155,7 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  const digits = currentDevOtp.slice(0, 6).split("");
+                  const digits = (currentDevOtp || "").slice(0, 6).split("");
                   const padded = [...digits, "", "", "", "", ""].slice(0, 6);
                   setOtp(padded);
                   setLocalError(null);
@@ -164,7 +167,7 @@ const OtpVerificationModal: React.FC<OtpModalProps> = ({
               </button>
             </div>
             <p className="text-[11px] text-amber-800/90 leading-tight">
-              {currentWarning || "Render Free Tier blocks outbound SMTP. Enter the code above or configure RESEND_API_KEY."}
+              {currentWarning || "Local Development Mode: Auto-fill active exclusively for Administrator."}
             </p>
           </div>
         )}

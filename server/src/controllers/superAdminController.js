@@ -134,30 +134,55 @@ export const getAllKitchens = async (req, res) => {
 
     const totalKitchens = await Kitchen.countDocuments(query);
     const kitchens = await Kitchen.find(query)
-      .populate('kitchenAdminId', 'userName userEmail phoneNumber')
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
       .lean();
 
+    // Fetch members associated with these kitchenIds from User collection
+    const kIds = kitchens.map((k) => k.kitchenId);
+    const users = await User.find({ kitchenId: { $in: kIds } })
+      .select('userName userEmail phoneNumber role kitchenId')
+      .lean();
+
+    const usersByKitchen = {};
+    users.forEach((u) => {
+      if (!usersByKitchen[u.kitchenId]) {
+        usersByKitchen[u.kitchenId] = [];
+      }
+      usersByKitchen[u.kitchenId].push(u);
+    });
+
     // Map kitchen metadata with exact item and member lengths
-    const formatted = kitchens.map((k) => ({
-      _id: k._id,
-      kitchenId: k.kitchenId,
-      kitchenName: k.kitchenName,
-      admin: k.kitchenAdminId
-        ? {
-            name: k.kitchenAdminId.userName,
-            email: k.kitchenAdminId.userEmail,
-            phone: k.kitchenAdminId.phoneNumber,
-          }
-        : null,
-      membersCount: Array.isArray(k.kitchenMembersIds) ? k.kitchenMembersIds.length : 0,
-      itemsCount: Array.isArray(k.kitchenItemIds) ? k.kitchenItemIds.length : 0,
-      shoppingItemsCount: Array.isArray(k.shoppingItemIds) ? k.shoppingItemIds.length : 0,
-      createdAt: k.createdAt,
-      updatedAt: k.updatedAt,
-    }));
+    const formatted = kitchens.map((k) => {
+      const kMembers = usersByKitchen[k.kitchenId] || [];
+      const adminUser =
+        kMembers.find(
+          (m) => m.role === 'KitchenAdmin' || m.role === 'Admin' || m.role === 'SuperAdmin'
+        ) || kMembers[0] || null;
+
+      return {
+        _id: k._id,
+        kitchenId: k.kitchenId,
+        kitchenName: k.kitchenName,
+        admin: adminUser
+          ? {
+              name: adminUser.userName,
+              email: adminUser.userEmail,
+              phone: adminUser.phoneNumber,
+            }
+          : null,
+        membersCount: kMembers.length,
+        itemsCount: Array.isArray(k.kitchenItemIds) ? k.kitchenItemIds.length : 0,
+        shoppingItemsCount: Array.isArray(k.kitchenShoppingItemIds)
+          ? k.kitchenShoppingItemIds.length
+          : Array.isArray(k.shoppingItemIds)
+          ? k.shoppingItemIds.length
+          : 0,
+        createdAt: k.createdAt,
+        updatedAt: k.updatedAt,
+      };
+    });
 
     return res.status(200).json({
       isSuccess: true,
@@ -185,10 +210,7 @@ export const inspectKitchen = async (req, res) => {
   try {
     const { kitchenId } = req.params;
 
-    const kitchen = await Kitchen.findOne({ kitchenId })
-      .populate('kitchenAdminId', 'userName userEmail phoneNumber createdAt')
-      .populate('kitchenMembersIds', 'userName userEmail phoneNumber role createdAt')
-      .lean();
+    const kitchen = await Kitchen.findOne({ kitchenId }).lean();
 
     if (!kitchen) {
       return res.status(404).json({
@@ -197,11 +219,20 @@ export const inspectKitchen = async (req, res) => {
       });
     }
 
-    const [items, shoppingItems, logs] = await Promise.all([
+    const [members, items, shoppingItems, logs] = await Promise.all([
+      User.find({ kitchenId }).select('userName userEmail phoneNumber role createdAt').lean(),
       KitchenItem.find({ kitchenId }).sort({ createdAt: -1 }).lean(),
       ShoppingItem.find({ kitchenId }).sort({ createdAt: -1 }).lean(),
       ItemLog.find({ kitchenId }).sort({ createdAt: -1 }).limit(30).lean(),
     ]);
+
+    const adminUser =
+      members.find(
+        (m) => m.role === 'KitchenAdmin' || m.role === 'Admin' || m.role === 'SuperAdmin'
+      ) || members[0] || null;
+
+    kitchen.kitchenAdminId = adminUser;
+    kitchen.kitchenMembersIds = members;
 
     return res.status(200).json({
       isSuccess: true,
